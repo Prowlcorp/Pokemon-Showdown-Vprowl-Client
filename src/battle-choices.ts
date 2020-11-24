@@ -26,20 +26,11 @@ interface BattleRequestActivePokemon {
 		target: MoveTarget,
 		disabled?: boolean,
 	}[];
-	maxMoves?: {
-		name: string,
-		id: ID,
-		target: MoveTarget,
-		disabled?: boolean,
-	}[];
 	zMoves?: ({
 		name: string,
 		id: ID,
 		target: MoveTarget,
 	} | null)[];
-	/** also true if the pokemon can Gigantamax */
-	canDynamax?: boolean;
-	canGigantamax?: boolean;
 	canMegaEvo?: boolean;
 	canUltraBurst?: boolean;
 	trapped?: boolean;
@@ -82,7 +73,6 @@ interface BattleMoveChoice {
 	targetLoc: number;
 	mega: boolean;
 	ultra: boolean;
-	max: boolean;
 	z: boolean;
 }
 interface BattleShiftChoice {
@@ -114,11 +104,9 @@ class BattleChoiceBuilder {
 		mega: false,
 		ultra: false,
 		z: false,
-		max: false,
 	};
 	alreadySwitchingIn: number[] = [];
 	alreadyMega = false;
-	alreadyMax = false;
 	alreadyZ = false;
 
 	constructor(request: BattleRequest) {
@@ -185,18 +173,15 @@ class BattleChoiceBuilder {
 					this.current.mega = choice.mega;
 					this.current.ultra = choice.ultra;
 					this.current.z = choice.z;
-					this.current.max = choice.max;
 					return null;
 				}
 			}
 			if (choice.mega) this.alreadyMega = true;
 			if (choice.z) this.alreadyZ = true;
-			if (choice.max) this.alreadyMax = true;
 			this.current.move = 0;
 			this.current.mega = false;
 			this.current.ultra = false;
 			this.current.z = false;
-			this.current.max = false;
 		} else if (choice.choiceType === 'switch' || choice.choiceType === 'team') {
 			if (this.alreadySwitchingIn.includes(choice.targetPokemon)) {
 				if (choice.choiceType === 'switch') {
@@ -250,9 +235,6 @@ class BattleChoiceBuilder {
 		if (choice.z) {
 			return activePokemon.zMoves![moveIndex]!;
 		}
-		if (choice.max || (activePokemon.maxMoves && !activePokemon.canDynamax)) {
-			return activePokemon.maxMoves![moveIndex];
-		}
 		return activePokemon.moves[moveIndex];
 	}
 
@@ -280,7 +262,6 @@ class BattleChoiceBuilder {
 				mega: false,
 				ultra: false,
 				z: false,
-				max: false,
 			};
 			while (true) {
 				// If data ends with a number, treat it as a target location.
@@ -300,12 +281,6 @@ class BattleChoiceBuilder {
 				} else if (choice.endsWith(' ultra')) {
 					current.ultra = true;
 					choice = choice.slice(0, -6);
-				} else if (choice.endsWith(' dynamax')) {
-					current.max = true;
-					choice = choice.slice(0, -8);
-				} else if (choice.endsWith(' max')) {
-					current.max = true;
-					choice = choice.slice(0, -4);
 				} else {
 					break;
 				}
@@ -336,17 +311,7 @@ class BattleChoiceBuilder {
 						}
 					}
 				}
-				if (!current.move && moveRequest.maxMoves) {
-					for (let i = 0; i < moveRequest.maxMoves.length; i++) {
-						if (moveid === moveRequest.maxMoves[i].id) {
-							current.move = i + 1;
-							current.max = true;
-							break;
-						}
-					}
-				}
 			}
-			if (current.max && !moveRequest.canDynamax) current.max = false;
 			return current;
 		}
 
@@ -416,7 +381,7 @@ class BattleChoiceBuilder {
 		switch (choice.choiceType) {
 		case 'move':
 			const target = choice.targetLoc ? ` ${choice.targetLoc > 0 ? '+' : ''}${choice.targetLoc}` : ``;
-			const boost = `${choice.max ? ' max' : ''}${choice.mega ? ' mega' : ''}${choice.z ? ' zmove' : ''}`;
+			const boost = `${choice.mega ? ' mega' : ''}${choice.z ? ' zmove' : ''}`;
 			return `move ${choice.move}${boost}${target}`;
 		case 'switch':
 		case 'team':
@@ -466,16 +431,6 @@ class BattleChoiceBuilder {
 				for (const move of active.moves) {
 					if (move.move) move.name = move.move;
 					move.id = toID(move.name);
-				}
-				if (active.maxMoves) {
-					if (active.maxMoves.maxMoves) {
-						active.canGigantamax = active.maxMoves.gigantamax;
-						active.maxMoves = active.maxMoves.maxMoves;
-					}
-					for (const move of active.maxMoves) {
-						if (move.move) move.name = Dex.getMove(move.move).name;
-						move.id = toID(move.name);
-					}
 				}
 				if (active.canZMove) {
 					active.zMoves = active.canZMove;

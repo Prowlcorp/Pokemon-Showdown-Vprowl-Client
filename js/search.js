@@ -225,29 +225,6 @@
 			}
 			var egggroup = {name: egName};
 			return this.renderEggGroupRow(egggroup, matchStart, matchLength, errorMessage);
-		case 'tier':
-			// very hardcode
-			var tierTable = {
-				uber: "Uber",
-				ou: "OU",
-				uu: "UU",
-				ru: "RU",
-				nu: "NU",
-				pu: "PU",
-				zu: "(PU)",
-				nfe: "NFE",
-				lcuber: "LC Uber",
-				lc: "LC",
-				cap: "CAP",
-				caplc: "CAP LC",
-				capnfe: "CAP NFE",
-				uubl: "UUBL",
-				rubl: "RUBL",
-				nubl: "NUBL",
-				publ: "PUBL"
-			};
-			var tier = {name: tierTable[id]};
-			return this.renderTierRow(tier, matchStart, matchLength, errorMessage);
 		case 'category':
 			var category = {name: id[0].toUpperCase() + id.substr(1), id: id};
 			return this.renderCategoryRow(category, matchStart, matchLength, errorMessage);
@@ -369,12 +346,8 @@
 		buf += '<span class="col statcol"><em>HP</em><br />' + stats.hp + '</span> ';
 		buf += '<span class="col statcol"><em>Atk</em><br />' + stats.atk + '</span> ';
 		buf += '<span class="col statcol"><em>Def</em><br />' + stats.def + '</span> ';
-		if (gen >= 2) {
-			buf += '<span class="col statcol"><em>SpA</em><br />' + stats.spa + '</span> ';
-			buf += '<span class="col statcol"><em>SpD</em><br />' + stats.spd + '</span> ';
-		} else {
-			buf += '<span class="col statcol"><em>Spc</em><br />' + stats.spa + '</span> ';
-		}
+		buf += '<span class="col statcol"><em>SpA</em><br />' + stats.spa + '</span> ';
+		buf += '<span class="col statcol"><em>SpD</em><br />' + stats.spd + '</span> ';
 		buf += '<span class="col statcol"><em>Spe</em><br />' + stats.spe + '</span> ';
 		var bst = 0;
 		for (i in stats) bst += stats[i];

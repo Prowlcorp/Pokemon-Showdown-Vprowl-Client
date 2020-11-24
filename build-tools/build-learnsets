@@ -26,7 +26,7 @@ function updateLearnsets(callback) {
 	const reservedRegExp = /^(return|\d.*)$/g; // `return` is the only ES3+ reserved keyword that (currently) raises conflicts
 	const alphabetize = (a, b) => a.localeCompare(b);
 
-	const formatLset = function (lset) {
+	const formatLset = function (lset) {//PROWL change?
 		const secondChar = lset.charAt(1);
 		if (secondChar !== 'L') return lset;
 		const firstFragment = lset.substr(0, 2);

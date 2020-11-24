@@ -1016,35 +1016,6 @@
 				}
 				Storage.prefs('avatar', avatar);
 				return '/avatar ' + avatar; // Send the command through to the server.
-
-			case 'afd':
-				if (this.checkBroadcast(cmd, text)) return false;
-				var cleanedTarget = toID(target);
-				if (cleanedTarget === 'off' || cleanedTarget === 'disable') {
-					Config.server.afd = false;
-					if (typeof BattleTextNotAFD !== 'undefined') BattleText = BattleTextNotAFD;
-					this.add('April Fools\' day mode disabled.');
-				} else {
-					Config.server.afd = true;
-					if (typeof BattleTextAFD !== 'undefined') BattleText = BattleTextAFD;
-					this.add('April Fools\' day mode enabled.');
-				}
-				for (var roomid in app.rooms) {
-					var battle = app.rooms[roomid] && app.rooms[roomid].battle;
-					if (!battle) continue;
-					var turn = battle.turn;
-					var oldState = battle.playbackState;
-					if (oldState === 4) turn = -1;
-					battle.reset(true);
-					battle.fastForwardTo(turn);
-					if (oldState !== 3) {
-						battle.play();
-					} else {
-						battle.pause();
-					}
-				}
-				return false;
-
 			// documentation of client commands
 			case 'help':
 				if (this.checkBroadcast(cmd, text)) return false;
@@ -1130,11 +1101,6 @@
 					this.add('/rating - Get your own rating.');
 					this.add('/rating [username] - Get user [username]\'s rating.');
 					return false;
-				case 'afd':
-					this.add('/afd - Enable April Fools\' Day sprites.');
-					this.add('/afd disable - Disable April Fools\' Day sprites.');
-					return false;
-				}
 			}
 
 			return text;

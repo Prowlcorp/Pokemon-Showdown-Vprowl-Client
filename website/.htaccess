@@ -1,5 +1,5 @@
 # -FrontPage-
-
+//PROWL change
 IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
 
 <Limit GET POST>
@@ -42,7 +42,6 @@ RewriteRule ^secure$ ./ [L,QSA]
 
 RewriteRule ^privacy$ /.pages-cached/privacy.html [L,QSA]
 RewriteRule ^rules/?$ /.pages-cached/rules.html [L,QSA]
-RewriteRule ^contact/?$ /.pages-cached/contact.html [L,QSA]
 RewriteRule ^credits$ credits.php [L,QSA]
 RewriteRule ^userstats$ userstats.php [L,QSA]
 RewriteRule ^interstice$ interstice.php [L,QSA]

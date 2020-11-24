@@ -114,7 +114,7 @@ class BattleTextParser {
 			if ([
 				'ingrain', 'quickguard', 'wideguard', 'craftyshield', 'matblock', 'protect', 'mist', 'safeguard',
 				'electricterrain', 'mistyterrain', 'psychicterrain', 'telepathy', 'stickyhold', 'suctioncups', 'aromaveil',
-				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads',
+				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads',//PROWL change?
 			].includes(id)) {
 				if (target) {
 					kwArgs.of = pokemon;
@@ -144,7 +144,7 @@ class BattleTextParser {
 				kwArgs.ability = arg3;
 				kwArgs.ability2 = arg4;
 			} else if ([
-				'eeriespell', 'gmaxdepletion', 'spite', 'grudge', 'forewarn', 'sketch', 'leppaberry', 'mysteryberry',
+				'spite', 'grudge', 'forewarn', 'sketch', 'leppaberry',
 			].includes(id)) {
 				kwArgs.move = arg3;
 				kwArgs.number = arg4;
@@ -469,8 +469,6 @@ class BattleTextParser {
 				case 'necrozmaultra': id = 'ultranecroziumz'; break;
 				case 'darmanitanzen': id = 'zenmode'; break;
 				case 'darmanitan': id = 'zenmode'; templateName = 'transformEnd'; break;
-				case 'darmanitangalarzen': id = 'zenmode'; break;
-				case 'darmanitangalar': id = 'zenmode'; templateName = 'transformEnd'; break;
 				case 'aegislashblade': id = 'stancechange'; break;
 				case 'aegislash': id = 'stancechange'; templateName = 'transformEnd'; break;
 				case 'wishiwashischool': id = 'schooling'; break;
@@ -995,7 +993,7 @@ class BattleTextParser {
 			}
 
 			templateId = 'fail';
-			if (['brn', 'frz', 'par', 'psn', 'slp', 'substitute'].includes(id)) {
+			if (['bld', 'brn', 'frz', 'par', 'psn', 'slp', 'substitute'].includes(id)) {
 				templateId = 'alreadyStarted';
 			}
 			if (kwArgs.heavy) templateId = 'failTooHeavy';
@@ -1041,6 +1039,10 @@ class BattleTextParser {
 			let templateId = cmd.slice(1);
 			if (species === 'Rayquaza') {
 				id = 'dragonascent';
+				templateId = 'megaNoItem';
+			}
+			if (species === 'Mew') {
+				id = 'angelwings';
 				templateId = 'megaNoItem';
 			}
 			if (!id && cmd === '-mega' && this.gen < 7) templateId = 'megaGen6';

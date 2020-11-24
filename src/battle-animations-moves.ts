@@ -854,9 +854,6 @@ const BattleMoveAnims: AnimTable = {
 	playnice: {
 		anim: BattleOtherAnims.dance.anim,
 	},
-	tailwhip: {
-		anim: BattleOtherAnims.dance.anim,
-	},
 	leer: {
 		anim: BattleOtherAnims.dance.anim,
 	},
@@ -884,7 +881,7 @@ const BattleMoveAnims: AnimTable = {
 			scene.backgroundEffect('#FF99FF', 1000, 0.3);
 			BattleOtherAnims.dance.anim(scene, [attacker]);
 		},
-	},
+	}, //PROWL change
 	lifedew: {
 		anim(scene, [attacker, ...defenders]) {
 			for (const defender of defenders) {
@@ -943,70 +940,6 @@ const BattleMoveAnims: AnimTable = {
 					opacity: 0.6,
 					time: 700,
 				}, 'decel', 'explode');
-			}
-		},
-	},
-	junglehealing: {
-		anim(scene, [attacker, ...defenders]) {
-			scene.backgroundEffect('#9AB440', 1000, 0.3);
-			for (const defender of defenders) {
-				BattleOtherAnims.dance.anim(scene, [defender]);
-				scene.showEffect('leaf1', {
-					x: defender.x,
-					y: defender.y,
-					z: defender.z,
-					scale: 1,
-					opacity: 1,
-					time: 500,
-				}, {
-					x: defender.x,
-					y: defender.y - 60,
-					scale: 1.5,
-					opacity: 0,
-					time: 1100,
-				}, 'linear', 'fade');
-				scene.showEffect('leaf2', {
-					x: defender.x,
-					y: defender.y,
-					z: defender.z,
-					scale: 1,
-					opacity: 1,
-					time: 500,
-				}, {
-					x: defender.x + 60,
-					y: defender.y,
-					scale: 1.5,
-					opacity: 0,
-					time: 1100,
-				}, 'linear', 'fade');
-				scene.showEffect('leaf2', {
-					x: defender.x,
-					y: defender.y,
-					z: defender.z,
-					scale: 1,
-					opacity: 1,
-					time: 500,
-				}, {
-					x: defender.x,
-					y: defender.y + 60,
-					scale: 1.5,
-					opacity: 0,
-					time: 1100,
-				}, 'linear', 'fade');
-				scene.showEffect('leaf1', {
-					x: defender.x,
-					y: defender.y,
-					z: defender.z,
-					scale: 1,
-					opacity: 1,
-					time: 500,
-				}, {
-					x: defender.x - 60,
-					y: defender.y,
-					scale: 1.5,
-					opacity: 0,
-					time: 1100,
-				}, 'linear', 'fade');
 			}
 		},
 	},
@@ -32233,7 +32166,6 @@ BattleMoveAnims['counter'] = {anim: BattleMoveAnims['slam'].anim};
 BattleMoveAnims['payback'] = {anim: BattleMoveAnims['slam'].anim};
 BattleMoveAnims['revenge'] = {anim: BattleMoveAnims['slam'].anim};
 BattleMoveAnims['rockclimb'] = {anim: BattleMoveAnims['slam'].anim};
-BattleMoveAnims['tackle'] = {anim: BattleMoveAnims['slam'].anim};
 BattleMoveAnims['dragonhammer'] = {anim: BattleMoveAnims['heavyslam'].anim};
 
 BattleMoveAnims['highhorsepower'] = {anim: BattleMoveAnims['stomp'].anim};
@@ -32350,7 +32282,6 @@ BattleMoveAnims['purify'] = {anim: BattleMoveAnims['weatherball'].anim};
 BattleMoveAnims['pollenpuff'] = {anim: BattleMoveAnims['revelationdance'].anim};
 
 BattleMoveAnims['amnesia'] = {anim: BattleMoveAnims['rest'].anim};
-BattleMoveAnims['slackoff'] = {anim: BattleMoveAnims['rest'].anim};
 
 BattleMoveAnims['secretpower'] = {anim: BattleMoveAnims['technoblast'].anim};
 BattleMoveAnims['naturalgift'] = {anim: BattleMoveAnims['technoblast'].anim};
@@ -32374,54 +32305,14 @@ BattleMoveAnims['10000000voltthunderbolt'] = {anim: BattleMoveAnims['triattack']
 BattleMoveAnims['menacingmoonrazemaelstrom'] = {anim: BattleMoveAnims['moongeistbeam'].anim};
 BattleMoveAnims['lightthatburnsthesky'] = {anim: BattleMoveAnims['fusionflare'].anim};
 
-BattleMoveAnims['maxflutterby'] = BattleMoveAnims['savagespinout'];
-BattleMoveAnims['gmaxbefuddle'] = BattleMoveAnims['savagespinout'];
-BattleMoveAnims['maxdarkness'] = BattleMoveAnims['maliciousmoonsault'];
-BattleMoveAnims['gmaxsnooze'] = BattleMoveAnims['maliciousmoonsault'];
-BattleMoveAnims['maxwyrmwind'] = BattleMoveAnims['devastatingdrake'];
-BattleMoveAnims['gmaxdepletion'] = BattleMoveAnims['devastatingdrake'];
-BattleMoveAnims['maxlightning'] = BattleMoveAnims['gigavolthavoc'];
-BattleMoveAnims['maxstarfall'] = BattleMoveAnims['twinkletackle'];
-BattleMoveAnims['gmaxfinale'] = BattleMoveAnims['twinkletackle'];
-BattleMoveAnims['gmaxsmite'] = BattleMoveAnims['twinkletackle'];
-BattleMoveAnims['maxknuckle'] = BattleMoveAnims['alloutpummeling'];
-BattleMoveAnims['gmaxoneblow'] = BattleMoveAnims['alloutpummeling'];
-BattleMoveAnims['gmaxrapidflow'] = BattleMoveAnims['alloutpummeling'];
-BattleMoveAnims['maxflare'] = BattleMoveAnims['infernooverdrive'];
-BattleMoveAnims['gmaxcentiferno'] = BattleMoveAnims['infernooverdrive'];
-BattleMoveAnims['gmaxfireball'] = BattleMoveAnims['infernooverdrive'];
-BattleMoveAnims['maxairstream'] = BattleMoveAnims['supersonicskystrike'];
-BattleMoveAnims['maxphantasm'] = BattleMoveAnims['neverendingnightmare'];
-BattleMoveAnims['maxovergrowth'] = BattleMoveAnims['bloomdoom'];
-BattleMoveAnims['gmaxvinelash'] = BattleMoveAnims['bloomdoom'];
-BattleMoveAnims['gmaxdrumsolo'] = BattleMoveAnims['bloomdoom'];
-BattleMoveAnims['maxquake'] = BattleMoveAnims['tectonicrage'];
-BattleMoveAnims['gmaxsandblast'] = BattleMoveAnims['tectonicrage'];
-BattleMoveAnims['maxhailstorm'] = BattleMoveAnims['subzeroslammer'];
-BattleMoveAnims['gmaxresonance'] = BattleMoveAnims['subzeroslammer'];
-BattleMoveAnims['maxstrike'] = BattleMoveAnims['breakneckblitz'];
-BattleMoveAnims['gmaxcuddle'] = BattleMoveAnims['breakneckblitz'];
-BattleMoveAnims['gmaxreplenish'] = BattleMoveAnims['breakneckblitz'];
-BattleMoveAnims['maxooze'] = BattleMoveAnims['aciddownpour'];
-BattleMoveAnims['gmaxmalodor'] = BattleMoveAnims['aciddownpour'];
-BattleMoveAnims['maxmindstorm'] = BattleMoveAnims['shatteredpsyche'];
-BattleMoveAnims['gmaxgravitas'] = BattleMoveAnims['shatteredpsyche'];
-BattleMoveAnims['maxrockfall'] = BattleMoveAnims['continentalcrush'];
-BattleMoveAnims['maxsteelspike'] = BattleMoveAnims['corkscrewcrash'];
-BattleMoveAnims['maxgeyser'] = BattleMoveAnims['hydrovortex'];
-BattleMoveAnims['gmaxcannonade'] = BattleMoveAnims['hydrovortex'];
-BattleMoveAnims['gmaxhydrosnipe'] = BattleMoveAnims['hydrovortex'];
 
-BattleMoveAnims['dynamaxcannon'] = {anim: BattleMoveAnims['dragonpulse'].anim};
 BattleMoveAnims['snipeshot'] = {anim: BattleMoveAnims['waterpulse'].anim};
 BattleMoveAnims['jawlock'] = {anim: BattleMoveAnims['crunch'].anim};
-BattleMoveAnims['stuffcheeks'] = {anim: BattleMoveAnims['stockpile'].anim};
 BattleMoveAnims['noretreat'] = {anim: BattleMoveAnims['stockpile'].anim};
 BattleMoveAnims['tarshot'] = {anim: BattleMoveAnims['mudbomb'].anim};
 BattleMoveAnims['magicpowder'] = {anim: BattleMoveAnims['spore'].anim};
 BattleMoveAnims['dragondarts'] = {anim: BattleMoveAnims['dragonbreath'].anim};
 BattleMoveAnims['teatime'] = {anim: BattleMoveAnims['healbell'].anim};
-BattleMoveAnims['octolock'] = {anim: BattleMoveAnims['bind'].anim};
 BattleMoveAnims['boltbeak'] = {anim: BattleMoveAnims['spark'].anim};
 BattleMoveAnims['courtchange'] = {anim: BattleMoveAnims['skillswap'].anim};
 BattleMoveAnims['clangoroussoul'] = {anim: BattleMoveAnims['extremeevoboost'].anim};
@@ -32432,7 +32323,6 @@ BattleMoveAnims['snaptrap'] = {anim: BattleMoveAnims['magicalleaf'].anim};
 BattleMoveAnims['pyroball'] = {anim: BattleMoveAnims['flameburst'].anim};
 BattleMoveAnims['behemothblade'] = {anim: BattleMoveAnims['smartstrike'].anim};
 BattleMoveAnims['behemothbash'] = {anim: BattleMoveAnims['smartstrike'].anim};
-BattleMoveAnims['aurawheel'] = {anim: BattleMoveAnims['discharge'].anim};
 BattleMoveAnims['breakingswipe'] = {anim: BattleMoveAnims['dragonclaw'].anim};
 BattleMoveAnims['branchpoke'] = {anim: BattleMoveAnims['vinewhip'].anim};
 BattleMoveAnims['overdrive'] = {anim: BattleMoveAnims['discharge'].anim};
@@ -32440,12 +32330,9 @@ BattleMoveAnims['appleacid'] = {anim: BattleMoveAnims['energyball'].anim};
 BattleMoveAnims['gravapple'] = {anim: BattleMoveAnims['energyball'].anim};
 BattleMoveAnims['spiritbreak'] = {anim: BattleMoveAnims['moonblast'].anim};
 BattleMoveAnims['obstruct'] = {anim: BattleMoveAnims['kingsshield'].anim};
-BattleMoveAnims['maxguard'] = {anim: BattleMoveAnims['banefulbunker'].anim};
 BattleMoveAnims['falsesurrender'] = {anim: BattleMoveAnims['feintattack'].anim};
 BattleMoveAnims['meteorassault'] = {anim: BattleMoveAnims['aurasphere'].anim};
-BattleMoveAnims['eternabeam'] = {anim: BattleMoveAnims['roaroftime'].anim};
 BattleMoveAnims['steelbeam'] = {anim: BattleMoveAnims['magnetbomb'].anim};
-BattleMoveAnims['strangesteam'] = {anim: BattleMoveAnims['dazzlinggleam'].anim};
 BattleMoveAnims['burningjealousy'] = {anim: BattleMoveAnims['heatwave'].anim};
 BattleMoveAnims['grassyglide'] = {anim: BattleMoveAnims['powerwhip'].anim};
 BattleMoveAnims['risingvoltage'] = {anim: BattleMoveAnims['discharge'].anim};
@@ -32459,4 +32346,3 @@ BattleMoveAnims['scaleshot'] = {anim: BattleMoveAnims['clangingscales'].anim};
 BattleMoveAnims['lashout'] = {anim: BattleMoveAnims['nightslash'].anim};
 BattleMoveAnims['steelroller'] = {anim: BattleMoveAnims['steamroller'].anim};
 BattleMoveAnims['surgingstrikes'] = {anim: BattleMoveAnims['aquajet'].anim};
-BattleMoveAnims['eeriespell'] = {anim: BattleMoveAnims['psyshock'].anim};

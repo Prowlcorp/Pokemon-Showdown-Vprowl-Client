@@ -527,7 +527,7 @@ class BattleScene {
 			const isSpecial = !targetsSelf && this.battle.dex.getMove(moveid).category === 'Special';
 			animEntry = BattleOtherAnims[targetsSelf ? 'fastanimself' : isSpecial ? 'fastanimspecial' : 'fastanimattack'];
 		} else if (!animEntry) {
-			animEntry = BattleMoveAnims['tackle'];
+			animEntry = BattleMoveAnims['pound'];
 		}
 		animEntry.anim(this, participants.map(p => p.sprite));
 	}
@@ -841,6 +841,7 @@ class BattleScene {
 				raindance: 'Rain',
 				primordialsea: 'Heavy Rain',
 				sandstorm: 'Sandstorm',
+				ragingsandstorm: 'Raging Sandstorm',
 				hail: 'Hail',
 				deltastream: 'Strong Winds',
 			};
@@ -866,7 +867,7 @@ class BattleScene {
 		return buf;
 	}
 	upkeepWeather() {
-		const isIntense = ['desolateland', 'primordialsea', 'deltastream'].includes(this.curWeather);
+		const isIntense = ['desolateland', 'primordialsea', 'deltastream', 'ragingsandstorm'].includes(this.curWeather);
 		this.$weather.animate({
 			opacity: 1.0,
 		}, 300).animate({
@@ -885,6 +886,7 @@ class BattleScene {
 			case 'grassyterrain':
 			case 'mistyterrain':
 			case 'psychicterrain':
+			case 'hellfire':
 				terrain = pwid;
 				break;
 			default:
@@ -892,7 +894,7 @@ class BattleScene {
 				break;
 			}
 		}
-		if (weather === 'desolateland' || weather === 'primordialsea' || weather === 'deltastream') {
+		if (weather === 'desolateland' || weather === 'primordialsea' || weather === 'deltastream' || weather === 'ragingsandstorm') {
 			isIntense = true;
 		}
 
@@ -1141,37 +1143,6 @@ class BattleScene {
 			this.$spritesFront[siden].append(rock3.$el!);
 			this.$spritesFront[siden].append(rock4.$el!);
 			this.sideConditions[siden][id] = [rock1, rock2, rock3, rock4];
-			break;
-		case 'gmaxsteelsurge':
-			const surge1 = new Sprite(BattleEffects.greenmetal1, {
-				display: 'block',
-				x: side.leftof(-30),
-				y: side.y - 20,
-				z: side.z,
-				opacity: 0.5,
-				scale: 0.8,
-			}, this);
-			const surge2 = new Sprite(BattleEffects.greenmetal2, {
-				display: 'block',
-				x: side.leftof(35),
-				y: side.y - 15,
-				z: side.z,
-				opacity: 0.5,
-				scale: 0.8,
-			}, this);
-			const surge3 = new Sprite(BattleEffects.greenmetal1, {
-				display: 'block',
-				x: side.leftof(50),
-				y: side.y - 10,
-				z: side.z,
-				opacity: 0.5,
-				scale: 0.8,
-			}, this);
-
-			this.$spritesFront[siden].append(surge1.$el!);
-			this.$spritesFront[siden].append(surge2.$el!);
-			this.$spritesFront[siden].append(surge3.$el!);
-			this.sideConditions[siden][id] = [surge1, surge2, surge3];
 			break;
 		case 'spikes':
 			let spikeArray = this.sideConditions[siden]['spikes'];
@@ -1670,7 +1641,6 @@ class PokemonSprite extends Sprite {
 		formechange: null,
 		typechange: null,
 		typeadd: null,
-		dynamax: ['Dynamaxed', 'good'],
 		trapped: null, // linked volatiles are not implemented yet
 		throatchop: ['Throat Chop', 'bad'],
 		confusion: ['Confused', 'bad'],
@@ -1710,7 +1680,6 @@ class PokemonSprite extends Sprite {
 		focusenergy: ['Critical Hit Boost', 'good'],
 		slowstart: ['Slow Start', 'bad'],
 		noretreat: ['No Retreat', 'bad'],
-		octolock: ['Octolock', 'bad'],
 		tarshot: ['Tar Shot', 'bad'],
 		doomdesire: null,
 		futuresight: null,
@@ -1727,7 +1696,6 @@ class PokemonSprite extends Sprite {
 		wideguard: ['Wide Guard', 'good'],
 		craftyshield: ['Crafty Shield', 'good'],
 		matblock: ['Mat Block', 'good'],
-		maxguard: ['Max Guard', 'good'],
 		helpinghand: ['Helping Hand', 'good'],
 		magiccoat: ['Magic Coat', 'good'],
 		destinybond: ['Destiny Bond', 'good'],
@@ -2623,6 +2591,8 @@ class PokemonSprite extends Sprite {
 		let status = '';
 		if (pokemon.status === 'brn') {
 			status += '<span class="brn">BRN</span> ';
+		} else if (pokemon.status === 'bld') {
+			status += '<span class="bld">BLD</span> ';
 		} else if (pokemon.status === 'psn') {
 			status += '<span class="psn">PSN</span> ';
 		} else if (pokemon.status === 'tox') {
@@ -2985,21 +2955,6 @@ const BattleEffects: {[k: string]: SpriteData} = {
 		BattleEffects[id].url = Dex.fxPrefix + BattleEffects[id].url;
 	}
 })();
-const BattleBackdropsThree = [
-	'bg-gen3.png',
-	'bg-gen3-cave.png',
-	'bg-gen3-ocean.png',
-	'bg-gen3-sand.png',
-	'bg-gen3-forest.png',
-	'bg-gen3-arena.png',
-];
-const BattleBackdropsFour = [
-	'bg-gen4.png',
-	'bg-gen4-cave.png',
-	'bg-gen4-snow.png',
-	'bg-gen4-indoors.png',
-	'bg-gen4-water.png',
-];
 const BattleBackdropsFive = [
 	'bg-beach.png',
 	'bg-beachshore.png',
@@ -5643,7 +5598,7 @@ const BattleStatusAnims: AnimTable = {
 				time: 300,
 			}, 'swing', 'fade');
 		},
-	},
+	},//PROWL change
 	psn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('poisonwisp', {

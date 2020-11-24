@@ -268,15 +268,13 @@ class BattleTooltips {
 		let buf: string;
 		switch (type) {
 		case 'move':
-		case 'zmove':
-		case 'maxmove': { // move|MOVE|ACTIVEPOKEMON|[GMAXMOVE]
+		case 'zmove':{ // move|MOVE|ACTIVEPOKEMON|[GMAXMOVE]
 			let move = this.battle.dex.getMove(args[1]);
 			let index = parseInt(args[2], 10);
 			let pokemon = this.battle.mySide.active[index];
 			let serverPokemon = this.battle.myPokemon![index];
-			let gmaxMove = args[3] ? this.battle.dex.getMove(args[3]) : undefined;
 			if (!pokemon) return false;
-			buf = this.showMoveTooltip(move, type, pokemon, serverPokemon, gmaxMove);
+			buf = this.showMoveTooltip(move, type, pokemon, serverPokemon);
 			break;
 		}
 
@@ -469,29 +467,7 @@ class BattleTooltips {
 		"???": "",
 	};
 
-	static maxMoveTable: {[type in TypeName]: string} = {
-		Poison: "Max Ooze",
-		Fighting: "Max Knuckle",
-		Dark: "Max Darkness",
-		Grass: "Max Overgrowth",
-		Normal: "Max Strike",
-		Rock: "Max Rockfall",
-		Steel: "Max Steelspike",
-		Dragon: "Max Wyrmwind",
-		Electric: "Max Lightning",
-		Water: "Max Geyser",
-		Fire: "Max Flare",
-		Ghost: "Max Phantasm",
-		Bug: "Max Flutterby",
-		Psychic: "Max Mindstorm",
-		Ice: "Max Hailstorm",
-		Flying: "Max Airstream",
-		Ground: "Max Quake",
-		Fairy: "Max Starfall",
-		"???": "",
-	};
-
-	showMoveTooltip(move: Move, isZOrMax: string, pokemon: Pokemon, serverPokemon: ServerPokemon, gmaxMove?: Move) {
+	showMoveTooltip(move: Move, isZOrMax: string, pokemon: Pokemon, serverPokemon: ServerPokemon) {
 		let text = '';
 
 		let zEffect = '';
@@ -531,6 +507,7 @@ class BattleTooltips {
 						zMove = this.battle.dex.getMove(BattleTooltips.zMoveTable['Water']);
 						break;
 					case 'sandstorm':
+					case: 'ragingsandstorm':
 						zMove = this.battle.dex.getMove(BattleTooltips.zMoveTable['Rock']);
 						break;
 					case 'hail':
@@ -542,57 +519,6 @@ class BattleTooltips {
 					...zMove,
 					category: move.category,
 					basePower: movePower,
-				});
-			}
-		} else if (isZOrMax === 'maxmove') {
-			if (move.category === 'Status') {
-				move = this.battle.dex.getMove('Max Guard');
-			} else {
-				// TODO look into if client knows if a pokemon (on its side) can gmax rather than dynamax.
-				// If not, tell client so we can use it for tooltips.
-				let maxMove = gmaxMove ? gmaxMove :
-					this.battle.dex.getMove(BattleTooltips.maxMoveTable[move.type]);
-				if (move.id === 'aurawheel' && pokemon.getSpeciesForme() === 'Morpeko-Hangry') {
-					maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Dark']);
-				}
-				if (move.id === 'weatherball') {
-					const item = this.battle.dex.getItem(pokemon.item);
-					switch (this.battle.weather) {
-					case 'sunnyday':
-					case 'desolateland':
-						if (item.id === 'utilityumbrella') break;
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Fire']);
-						break;
-					case 'raindance':
-					case 'primordialsea':
-						if (item.id === 'utilityumbrella') break;
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Water']);
-						break;
-					case 'sandstorm':
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Rock']);
-						break;
-					case 'hail':
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Ice']);
-						break;
-					}
-				}
-				if (move.id === 'terrainpulse') {
-					if (this.battle.hasPseudoWeather('Electric Terrain')) {
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Electric']);
-					} else if (this.battle.hasPseudoWeather('Grassy Terrain')) {
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Grass']);
-					} else if (this.battle.hasPseudoWeather('Misty Terrain')) {
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Fairy']);
-					} else if (this.battle.hasPseudoWeather('Psychic Terrain')) {
-						maxMove = this.battle.dex.getMove(BattleTooltips.maxMoveTable['Psychic']);
-					}
-				}
-				const basePower = ['gmaxdrumsolo', 'gmaxfireball', 'gmaxhydrosnipe'].includes(maxMove.id) ?
-					maxMove.basePower : move.maxMove.basePower;
-				move = new Move(maxMove.id, maxMove.name, {
-					...maxMove,
-					category: move.category,
-					basePower,
 				});
 			}
 		}
@@ -638,7 +564,7 @@ class BattleTooltips {
 		let accuracy = this.getMoveAccuracy(move, value);
 
 		// Deal with Nature Power special case, indicating which move it calls.
-		if (move.id === 'naturepower') {
+		if (move.id === 'naturepower') {//PROWL change
 			let calls;
 			if (this.battle.gen > 5) {
 				if (this.battle.hasPseudoWeather('Electric Terrain')) {
@@ -730,6 +656,9 @@ class BattleTooltips {
 			}
 			if (move.flags.bite && ability === 'strongjaw') {
 				text += `<p class="movetag">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>`;
+			}
+			if (move.flags.sword && ability === 'unbendingblade') {
+				text += `<p class="movetag">&#x2713; Sword <small>(boosted by Unbending Blade)</small></p>`;
 			}
 			if ((move.recoil || move.hasCustomRecoil) && ability === 'reckless') {
 				text += `<p class="movetag">&#x2713; Recoil <small>(boosted by Reckless)</small></p>`;
@@ -1061,7 +990,7 @@ class BattleTooltips {
 			if (this.battle.gen >= 4 && this.pokemonHasType(serverPokemon, 'Rock') && weather === 'sandstorm') {
 				stats.spd = Math.floor(stats.spd * 1.5);
 			}
-			if (ability === 'sandrush' && weather === 'sandstorm') {
+			if (ability === 'sandrush' && (weather === 'sandstorm' || weather === 'ragingsandstorm')) {
 				stats.spe *= 2;
 			}
 			if (ability === 'slushrush' && weather === 'hail') {
@@ -1311,6 +1240,7 @@ class BattleTooltips {
 				moveType = 'Water';
 				break;
 			case 'sandstorm':
+			case 'ragingsandstorm':
 				moveType = 'Rock';
 				break;
 			case 'hail':
@@ -1330,10 +1260,6 @@ class BattleTooltips {
 			}
 		}
 
-		// Aura Wheel as Morpeko-Hangry changes the type to Dark
-		if (move.id === 'aurawheel' && value.pokemon.getSpeciesForme() === 'Morpeko-Hangry') {
-			moveType = 'Dark';
-		}
 
 		// Other abilities that change the move type.
 		const noTypeOverride = [
@@ -1347,6 +1273,7 @@ class BattleTooltips {
 		if (allowTypeOverride && category !== 'Status' && !move.isZ) {
 			if (moveType === 'Normal') {
 				if (value.abilityModify(0, 'Aerilate')) moveType = 'Flying';
+				if (value.abilityModify(0, 'Colonize')) moveType = 'Bug';
 				if (value.abilityModify(0, 'Galvanize')) moveType = 'Electric';
 				if (value.abilityModify(0, 'Pixilate')) moveType = 'Fairy';
 				if (value.abilityModify(0, 'Refrigerate')) moveType = 'Ice';
@@ -1620,6 +1547,9 @@ class BattleTooltips {
 		if (move.flags['bite']) {
 			value.abilityModify(1.5, "Strong Jaw");
 		}
+		if (move.flags['sword']) {
+			value.abilityModify(1.5, "Unbending Blade");
+		}
 		if (value.value <= 60) {
 			value.abilityModify(1.5, "Technician");
 		}
@@ -1629,7 +1559,7 @@ class BattleTooltips {
 		if (this.battle.gen > 2 && serverPokemon.status === 'brn' && move.id !== 'facade' && move.category === 'Physical') {
 			if (!value.tryAbility("Guts")) value.modify(0.5, 'Burn');
 		}
-		if (['Rock', 'Ground', 'Steel'].includes(moveType) && this.battle.weather === 'sandstorm') {
+		if (['Rock', 'Ground', 'Steel'].includes(moveType) && (this.battle.weather === 'sandstorm' || this.battle.weather === 'ragingsandstorm')) {
 			if (value.tryAbility("Sand Force")) value.weatherModify(1.3, "Sandstorm", "Sand Force");
 		}
 		if (move.secondaries) {
@@ -1637,9 +1567,6 @@ class BattleTooltips {
 		}
 		if (move.flags['contact']) {
 			value.abilityModify(1.3, "Tough Claws");
-		}
-		if (moveType === 'Steel') {
-			value.abilityModify(1.5, "Steely Spirit");
 		}
 		if (move.flags['sound']) {
 			value.abilityModify(1.3, "Punk Rock");
@@ -1657,6 +1584,7 @@ class BattleTooltips {
 		if (move.category !== 'Status' && !noTypeOverride.includes(move.id) && !move.isZ && !move.isMax) {
 			if (move.type === 'Normal') {
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Aerilate");
+				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Colonize");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Galvanize");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Pixilate");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Refrigerate");
@@ -1953,8 +1881,6 @@ interface PokemonSet {
 	pokeball?: string;
 	/** Defaults to the type of your Hidden Power in Moves, otherwise Dark */
 	hpType?: string;
-	/** Defaults to no (can only be yes for certain Pokemon) */
-	gigantamax?: boolean;
 }
 
 class BattleStatGuesser {

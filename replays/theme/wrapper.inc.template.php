@@ -1,4 +1,4 @@
-<?php
+<?php//PROWL change
 
 if ((substr($_SERVER['REMOTE_ADDR'],0,11) === '69.164.163.') ||
 		(substr(@$_SERVER['HTTP_X_FORWARDED_FOR'],0,11) === '69.164.163.')) {
@@ -38,7 +38,7 @@ function ThemeHeaderTemplate() {
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26211653-1']);
-		_gaq.push(['_setDomainName', 'pokemonshowdown.com']);
+		_gaq.push(['_setDomainName', 'pokemonshowdown.com']);//PROWL change
 		_gaq.push(['_setAllowLinker', true]);
 		_gaq.push(['_trackPageview']);
 
@@ -60,7 +60,7 @@ function ThemeHeaderTemplate() {
 				<li><a class="button nav-last" href="//pokemonshowdown.com/forums/">Forum</a></li>
 			</ul>
 			<ul class="nav nav-play">
-				<li><a class="button greenbutton nav-first nav-last" href="http://play.pokemonshowdown.com/">Play</a></li>
+				<li><a class="button greenbutton nav-first nav-last" href="http://play.pokemonshowdown.com/">Play</a></li>//PROWL change
 			</ul>
 			<div style="clear:both"></div>
 		</div>
@@ -84,7 +84,7 @@ function ThemeScriptsTemplate() {
 function ThemeFooterTemplate() {
 	global $panels;
 ?>
-<?php $panels->scripts(); ?>
+<?php $panels->scripts(); ?>//PROWL change
 
 	<script src="//play.pokemonshowdown.com/js/lib/jquery-cookie.js"></script>
 	<script src="//play.pokemonshowdown.com/js/lib/html-sanitizer-minified.js"></script>

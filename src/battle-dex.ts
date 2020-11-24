@@ -187,7 +187,7 @@ const Dex = new class implements ModdedDex {
 
 	fxPrefix = (() => {
 		if (window.document?.location?.protocol === 'file:') {
-			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
+			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;//PROWL change
 			return `fx/`;
 		}
 		return `//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
@@ -479,13 +479,10 @@ const Dex = new class implements ModdedDex {
 		gen?: number,
 		shiny?: boolean,
 		gender?: GenderName,
-		afd?: boolean,
 		noScale?: boolean,
 		mod?: string,
-		dynamax?: boolean,
 	} = {gen: 6}) {
 		const mechanicsGen = options.gen || 6;
-		let isDynamax = !!options.dynamax;
 		if (pokemon instanceof Pokemon) {
 			if (pokemon.volatiles.transform) {
 				options.shiny = pokemon.volatiles.transform[2];
@@ -494,12 +491,9 @@ const Dex = new class implements ModdedDex {
 				options.shiny = pokemon.shiny;
 				options.gender = pokemon.gender;
 			}
-			if (pokemon.volatiles.dynamax) isDynamax = true;
 			pokemon = pokemon.getSpeciesForme();
 		}
 		const species = Dex.getSpecies(pokemon);
-		// Gmax sprites are already extremely large, so we don't need to double.
-		if (species.name.endsWith('-Gmax')) isDynamax = false;
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
@@ -563,7 +557,6 @@ const Dex = new class implements ModdedDex {
 				formeid === '-sky' ||
 				formeid === '-therian' ||
 				formeid === '-primal' ||
-				formeid === '-eternal' ||
 				baseSpeciesid === 'kyurem' ||
 				baseSpeciesid === 'necrozma' ||
 				formeid === '-super' ||
@@ -579,24 +572,6 @@ const Dex = new class implements ModdedDex {
 		}
 
 		if (options.shiny && mechanicsGen > 1) dir += '-shiny';
-
-		// April Fool's 2014
-		if (window.Config && Config.server && Config.server.afd || options.afd) {
-			dir = 'afd' + dir;
-			spriteData.url += dir + '/' + name + '.png';
-			// Duplicate code but needed to make AFD tinymax work
-			// April Fool's 2020
-			if (isDynamax && !options.noScale) {
-				spriteData.w *= 0.25;
-				spriteData.h *= 0.25;
-				spriteData.y += -22;
-			} else if (species.isTotem && !options.noScale) {
-				spriteData.w *= 0.5;
-				spriteData.h *= 0.5;
-				spriteData.y += -11;
-			}
-			return spriteData;
-		}
 
 		// Mod Cries
 		if (options.mod) {
@@ -643,11 +618,7 @@ const Dex = new class implements ModdedDex {
 			}
 			if (spriteData.gen <= 2) spriteData.y += 2;
 		}
-		if (isDynamax && !options.noScale) {
-			spriteData.w *= 2;
-			spriteData.h *= 2;
-			spriteData.y += -22;
-		} else if ((species.isTotem || isDynamax) && !options.noScale) {
+		if ((species.isTotem) && !options.noScale) {
 			spriteData.w *= 1.5;
 			spriteData.h *= 1.5;
 			spriteData.y += -11;
@@ -729,9 +700,7 @@ const Dex = new class implements ModdedDex {
 		};
 		if (pokemon.shiny) spriteData.shiny = true;
 		if (Dex.prefs('nopastgens')) gen = 6;
-		let xydexExists = (!species.isNonstandard || species.isNonstandard === 'Past') || [
-			"pikachustarter", "eeveestarter", "meltan", "melmetal", "fidgit", "stratagem", "tomohawk", "mollux", "crucibelle", "crucibellemega", "kerfluffle", "pajantom", "jumbao", "caribolt", "smokomodo", "snaelstrom", "equilibra", "astrolotl", "scratchet", "pluffle", "smogecko", "pokestarufo", "pokestarufo2", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit",
-		].includes(species.id);
+		let xydexExists = (!species.isNonstandard || species.isNonstandard === 'Past');
 		if (species.gen === 8) xydexExists = false;
 		if ((!gen || gen >= 6) && xydexExists) {
 			if (species.gen >= 7) {

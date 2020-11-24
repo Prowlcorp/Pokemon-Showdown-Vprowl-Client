@@ -687,12 +687,6 @@ class Side {
 		case 'stickyweb':
 			this.sideConditions[condition] = [effect.name, 1, 0, 0];
 			break;
-		case 'gmaxwildfire':
-		case 'gmaxvolcalith':
-		case 'gmaxvinelash':
-		case 'gmaxcannonade':
-			this.sideConditions[condition] = [effect.name, 1, 4, 0];
-			break;
 		case 'grasspledge':
 			this.sideConditions[condition] = ['Swamp', 1, 4, 0];
 			break;
@@ -1302,7 +1296,7 @@ class Battle {
 			return;
 		}
 		if (weather) {
-			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
+			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea' || weather === 'ragingsandstorm');
 			if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
@@ -1539,6 +1533,9 @@ class Battle {
 				switch (effect.id) {
 				case 'brn':
 					this.scene.runStatusAnim('brn' as ID, [poke]);
+					break;
+				case 'bld':
+					this.scene.runStatusAnim('bld' as ID, [poke]);
 					break;
 				case 'psn':
 					this.scene.runStatusAnim('psn' as ID, [poke]);
@@ -1849,6 +1846,9 @@ class Battle {
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
 				break;
+			case 'bld':
+				this.scene.resultAnim(poke, 'Already wounded', 'neutral');
+				break;
 			case 'tox':
 			case 'psn':
 				this.scene.resultAnim(poke, 'Already poisoned', 'neutral');
@@ -1953,6 +1953,10 @@ class Battle {
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
 				break;
+			case 'bld':
+				this.scene.resultAnim(poke, 'Wounded', 'bld'); //PROWL change
+				this.scene.runStatusAnim('bld' as ID, [poke]);
+				break;
 			case 'tox':
 				this.scene.resultAnim(poke, 'Toxic poison', 'psn');
 				this.scene.runStatusAnim('psn' as ID, [poke]);
@@ -2004,6 +2008,9 @@ class Battle {
 				switch (args[2]) {
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
+					break;
+				case 'bld':
+					this.scene.resultAnim(poke, 'Bleed cured', 'good');
 					break;
 				case 'tox':
 				case 'psn':
@@ -2340,10 +2347,6 @@ class Battle {
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, type);
 				break;
-			case 'dynamax':
-				poke.addVolatile('dynamax' as ID);
-				this.scene.animTransform(poke, true);
-				break;
 			case 'powertrick':
 				this.scene.resultAnim(poke, 'Power Trick', 'neutral');
 				break;
@@ -2481,9 +2484,6 @@ class Battle {
 				// do nothing
 			} else {
 				switch (effect.id) {
-				case 'dynamax':
-					this.scene.animTransform(poke);
-					break;
 				case 'powertrick':
 					this.scene.resultAnim(poke, 'Power Trick', 'neutral');
 					break;
@@ -2678,8 +2678,6 @@ class Battle {
 					this.scene.updateStatbar(curTarget);
 				}
 				break;
-			case 'eeriespell':
-			case 'gmaxdepletion':
 			case 'spite':
 				let move = Dex.getMove(kwArgs.move).name;
 				let pp = Number(kwArgs.number);
@@ -2734,7 +2732,6 @@ class Battle {
 
 			// item activations
 			case 'leppaberry':
-			case 'mysteryberry':
 				poke.rememberMove(kwArgs.move, effect.id === 'leppaberry' ? -10 : -5);
 				break;
 			case 'focusband':
@@ -2760,10 +2757,6 @@ class Battle {
 			case 'lightscreen':
 			case 'safeguard':
 			case 'mist':
-			case 'gmaxwildfire':
-			case 'gmaxvolcalith':
-			case 'gmaxvinelash':
-			case 'gmaxcannonade':
 			case 'grasspledge':
 			case 'firepledge':
 			case 'waterpledge':

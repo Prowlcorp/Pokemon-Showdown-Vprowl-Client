@@ -65,10 +65,6 @@ Storage.bg = {
 			bgUrl = Dex.resourcePrefix + 'fx/client-bg-' + bgid + '.jpg';
 		}
 
-		// April Fool's 2016 - Digimon theme
-		// bgid = 'digimon';
-		// bgUrl = Dex.resourcePrefix + 'sprites/afd/digimonbg.jpg';
-
 		var background;
 		if (bgUrl.charAt(0) === '#') {
 			background = bgUrl;
@@ -110,9 +106,6 @@ Storage.bg = {
 				hues = ["24.705882352941174,25.37313432835821%", "260.4651162790697,59.44700460829492%", "165.3191489361702,46.07843137254901%", "16.363636363636367,42.63565891472869%", "259.04761904761904,34.05405405405405%", "24.705882352941174,25.37313432835821%"];
 				attrib = 'Pok&eacute;mon Showdown Day background <small>by LifeisDANK</small>';
 				break;
-			case 'digimon':
-				hues = ["170.45454545454544,27.500000000000004%", "84.70588235294119,13.821138211382115%", "112.50000000000001,7.8431372549019605%", "217.82608695652175,54.761904761904766%", "0,1.6949152542372816%", ""];
-			}
 		}
 		if (attrib) attrib = '<small style="display:block;padding-bottom:4px">' + attrib + '</small>';
 		$('.bgcredit').html(attrib);
@@ -771,7 +764,6 @@ Storage.packTeam = function (team) {
 		if (set.pokeball || (set.hpType && !hasHP) || set.gigantamax) {
 			buf += ',' + (set.hpType || '');
 			buf += ',' + toID(set.pokeball);
-			buf += ',' + (set.gigantamax ? 'G' : '');
 		}
 	}
 
@@ -884,7 +876,6 @@ Storage.fastUnpackTeam = function (buf) {
 			set.happiness = (misc[0] ? Number(misc[0]) : 255);
 			set.hpType = misc[1];
 			set.pokeball = misc[2];
-			set.gigantamax = !!misc[3];
 		}
 		if (j < 0) break;
 		i = j + 1;
@@ -1000,7 +991,6 @@ Storage.unpackTeam = function (buf) {
 			set.happiness = (misc[0] ? Number(misc[0]) : 255);
 			set.hpType = misc[1];
 			set.pokeball = misc[2];
-			set.gigantamax = !!misc[3];
 		}
 		if (j < 0) break;
 		i = j + 1;
@@ -1179,8 +1169,6 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 14) === 'Hidden Power: ') {
 			line = line.substr(14);
 			curSet.hpType = line;
-		} else if (line === 'Gigantamax: Yes') {
-			curSet.gigantamax = true;
 		} else if (line.substr(0, 5) === 'EVs: ') {
 			line = line.substr(5);
 			var evLines = line.split('/');
@@ -1298,9 +1286,6 @@ Storage.exportTeam = function (team) {
 		}
 		if (curSet.hpType) {
 			text += 'Hidden Power: ' + curSet.hpType + "  \n";
-		}
-		if (curSet.gigantamax) {
-			text += 'Gigantamax: Yes  \n';
 		}
 		var first = true;
 		if (curSet.evs) {

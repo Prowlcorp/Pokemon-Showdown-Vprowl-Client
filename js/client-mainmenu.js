@@ -435,9 +435,6 @@
 			case 'hl': case 'highlight':
 			case 'buttonban': case 'buttonmute': case 'buttonunmute': case 'buttonkick': case 'buttonwarn':
 			case 'part': case 'leave':
-			case 'afd':
-				$chat.append('<div class="chat">Use this command in a proper chat room.</div>');
-				break;
 			default:
 				if (!userid) userid = '~';
 				if (text.startsWith('\n')) text = text.slice(1);

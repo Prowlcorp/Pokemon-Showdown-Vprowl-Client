@@ -71,7 +71,7 @@ function includeFooter() {
 ?>
 		<div class="footer">
 			<p>
-				<small><a href="/rules">Rules</a> | <a href="/privacy">Privacy policy</a> | <a href="/credits"<?php classCurPage('credits') ?>>Credits</a> | <a href="/contact"<?php classCurPage('contact') ?>>Contact</a></small>
+				<small><a href="/rules">Rules</a> | <a href="/privacy">Privacy policy</a> | <a href="/credits"<?php classCurPage('credits') ?>>Credits</a></small>
 			</p>
 		</div>
 	</div></body>
