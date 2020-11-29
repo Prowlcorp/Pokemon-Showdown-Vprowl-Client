@@ -507,7 +507,7 @@ class BattleTooltips {
 						zMove = this.battle.dex.getMove(BattleTooltips.zMoveTable['Water']);
 						break;
 					case 'sandstorm':
-					case: 'ragingsandstorm':
+					case 'ragingsandstorm':
 						zMove = this.battle.dex.getMove(BattleTooltips.zMoveTable['Rock']);
 						break;
 					case 'hail':
