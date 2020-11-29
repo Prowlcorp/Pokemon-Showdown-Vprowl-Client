@@ -2929,7 +2929,7 @@
 			}
 
 			if (!set.ivs) {
-				if (minSpe === undefined && (!minAtk) return;
+				if (minSpe === undefined && (!minAtk)) return;
 				set.ivs = {};
 			}
 			if (!set.ivs['spe'] && set.ivs['spe'] !== 0) set.ivs['spe'] = 31;
