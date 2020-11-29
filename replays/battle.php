@@ -185,7 +185,7 @@ Most PS pages you'd want to scrape will have a .json version!
 		-->
 		<script type="text/plain" class="log"><?php if ($replay['id'] === 'smogtours-ou-509') readfile('js/smogtours-ou-509.log'); else if ($replay['id'] === 'ou-305002749') readfile('js/ou-305002749.log'); else echo str_replace('/','\\/',$replay['log']); ?></script>
 <?php
-if (substr($replay['formatid'], -12) === 'randombattle' || substr($replay['formatid'], -19) === 'randomdoublesbattle' || $replay['formatid'] === 'gen7challengecup' || $replay['formatid'] === 'gen7challengecup1v1' || $replay['formatid'] === 'gen7battlefactory' || $replay['formatid'] === 'gen7bssfactory' || $replay['formatid'] === 'gen7hackmonscup' || $manage) {
+if ($replay['formatid'] === 'gen7challengecup' || $replay['formatid'] === 'gen7challengecup1v1' || $replay['formatid'] === 'gen7battlefactory' || $replay['formatid'] === 'gen7bssfactory' || $manage) {
 ?>
 
 		<script type="text/plain" class="inputlog"><?php echo str_replace('</','<\\/',$replay['inputlog']); ?></script>

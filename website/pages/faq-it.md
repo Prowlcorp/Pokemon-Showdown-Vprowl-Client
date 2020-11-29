@@ -97,19 +97,9 @@ Le groupchat su PS! sono chatroom create dagli utenti che possono essere usate p
 
 Per cambiare lo sfondo, clicca sulla rotella delle impostazioni nell'angolo in alto a destra, poi clicca su "Change Background" (o cambia sfondo se l'abbiamo già tradotto). Puoi sceglierne uno di quelli offerti dal sito, oppure caricare quello che preferisci. In alternativa, puoi scaricare l'estenzione "Stlylish", che ti permetterà di cambiare l'aspetto generale di Pokémon Showdown!
 
-## Tiering
-
 ### Cos'è Smogon?
 
 Smogon è la principale e più precisa guida online riguardante le battaglie competitive su Pokémon; comprende articoli sulle strategie, guide, forum e il proprio simulatore, Pokémon Showdown. Le tier di Smogon sono alla base di Pokémon Showdown.
-
-### Cosa significano AG, Ubers, OU, UU, RU, NU o LC?
-
-Se vuoi conoscere di più su ciascuna tier, utilizza il comando `/tier [nome della tier]`, il quale ti mostrerà informazioni su quel specifico format. Per maggiori informazioni, visita lo [Smogon dex](https://www.smogon.com/dex/ss/formats/).
-
-### Qual è la differenza fra Random Battle e Battle Factory?
-
-I Pokémon in Random Battle sono generati casualmente dalla tier PU in su, mentre in Battle Factory, tutti i Pokémon di entrambi i team appartengono a un'unica tier e i loro moveset sono competitivi.
 
 ### Cosa significa GXE?
 

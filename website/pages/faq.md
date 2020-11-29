@@ -71,7 +71,7 @@ Click on the room name and hold, dragging it to the desired position.
 
 ### What is autoconfirmed?
 
-To talk in autoconfirmed chat, you must have had your account registered for one week and have won at least 1 ladder match with it. Click the "Battle! button and select any format besides "Unrated Random Battle" to play a ladder match. If you do not yet meet those requirements, you can try asking a staff member (user with `%`, `@`, or `#` in front of their name) of the room to turn it off.
+To talk in autoconfirmed chat, you must have had your account registered for one week and have won at least 1 ladder match with it. Click the "Battle! button and select any format to play a ladder match. If you do not yet meet those requirements, you can try asking a staff member (user with `%`, `@`, or `#` in front of their name) of the room to turn it off.
 
 ### Why did my teams get removed?
 
@@ -97,19 +97,9 @@ Groupchats on PS! are user-created chatrooms that can be used to talk with frien
 
 To change the background, click on the settings cog in the top right corner, then click on "Change Background". You can choose one from there, or upload your own. Alternatively, you can download the extension "Stylish" which will change the whole look of Pokemon Showdown!
 
-## Tiering
-
 ### What is Smogon?
 
 Smogon is the most comprehensive and accurate online resource for competitive Pokemon battling, comprising strategy articles, guides, forums and its own simulator, Pokémon Showdown. Smogon's tiering is the basis for Pokémon Showdown.
-
-### What does AG, Ubers, OU, UU, RU, NU or LC stand for?
-
-If you want to know more about a specific tier you can use the command `/tier [tier name]`; it will show you information about that format. For more information on other tiers available please visit [the Smogon dex](https://www.smogon.com/dex/ss/formats/).
-
-### What is the difference between Random Battle and Battle Factory?
-
-Pokémon in Random Battles are randomly generated from PU and above, whereas in Battle Factory, all Pokemon from both teams will belong from the same tier, and movesets are competitive.
 
 ### What does GXE mean?
 
@@ -129,7 +119,7 @@ By using the `/smogdex [pokemon]` command you can find the updates analysis for 
 
 Click the "Battle!" button located on the homepage, which will instantly search for a ladder match.
 
-The default format is Random Battle. You can choose a different format and team before clicking "Battle!".
+The default format is Custom Game. You can choose a different format and team before clicking "Battle!".
 
 ### How can I battle my friend or a specific person?
 
@@ -155,7 +145,7 @@ Teams are rejected for illegal moves / abilities or by breaking Smogon clauses.
 
 ### Why does this Pokemon show as "illegal" in the Teambuilder?
 
-It may be a Pokemon's alternate forme impossible to start a battle with. An example is Meloetta-Pirouette; you must use its standard forme (Meloetta-Aria) and execute the move Relic Song in battle. The Pokemon could also be a CAP Pokemon, one made by Smogon's Create-A-Pokemon Project. You can type `/cap` or join the [CAP](https://psim.us/cap) room on PS! to learn more about those.
+It may be a Pokemon's alternate forme impossible to start a battle with. An example is Meloetta-Pirouette; you must use its standard forme (Meloetta-Aria) and execute the move Relic Song in battle.
 
 ### Why can't I use my Shiny Legendary Pokemon?
 

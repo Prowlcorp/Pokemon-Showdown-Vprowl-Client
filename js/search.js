@@ -316,29 +316,24 @@
 		buf += '</span> ';
 
 		// abilities
-		if (gen >= 3) {
-			var abilities = Dex.forGen(gen).getSpecies(id).abilities;
-			if (abilities['1']) {
-				buf += '<span class="col twoabilitycol">' + abilities['0'] + '<br />' +
-					abilities['1'] + '</span>';
+		var abilities = Dex.forGen(gen).getSpecies(id).abilities;
+		if (abilities['1']) {
+			buf += '<span class="col twoabilitycol">' + abilities['0'] + '<br />' +
+				abilities['1'] + '</span>';
+		} else {
+			buf += '<span class="col abilitycol">' + abilities['0'] + '</span>';
+		}
+		var unreleasedHidden = pokemon.unreleasedHidden;
+		if (abilities['S']) {
+			if (abilities['H']) {
+				buf += '<span class="col twoabilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
 			} else {
-				buf += '<span class="col abilitycol">' + abilities['0'] + '</span>';
+				buf += '<span class="col abilitycol">(' + abilities['S'] + ')</span>';
 			}
-			if (gen >= 5) {
-				var unreleasedHidden = pokemon.unreleasedHidden;
-				if (unreleasedHidden === 'Past' && (this.mod === 'natdex' || gen < 8)) unreleasedHidden = false;
-				if (abilities['S']) {
-					if (abilities['H']) {
-						buf += '<span class="col twoabilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
-					} else {
-						buf += '<span class="col abilitycol">(' + abilities['S'] + ')</span>';
-					}
-				} else if (abilities['H']) {
-					buf += '<span class="col abilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + abilities['H'] + '</span>';
-				} else {
-					buf += '<span class="col abilitycol"></span>';
-				}
-			}
+		} else if (abilities['H']) {
+			buf += '<span class="col abilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + abilities['H'] + '</span>';
+		} else {
+			buf += '<span class="col abilitycol"></span>';
 		}
 
 		// base stats
@@ -640,7 +635,7 @@
 	};
 	Search.prototype.renderCategoryRow = function (category, matchStart, matchLength, errorMessage) {
 		var attrs = '';
-		if (Search.urlRoot) attrs = ' href="' + Search.urlRoot + 'categories/' + category.id + '" data-target="push"';
+		if (Search.urlRoot) attrs = ' href="' + Search.urlRoot + 'misc/' + category.id + '" data-target="push"';
 		var buf = '<li class="result"><a' + attrs + ' data-entry="category|' + BattleLog.escapeHTML(category.name) + '">';
 
 		// name

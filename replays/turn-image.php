@@ -85,14 +85,14 @@ imagedestroy($srcim);
 
 if ($Ahp)
 {
-$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');//PROWL change
+$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png')
 //imagecopymerge($im, $srcim, 124, 4, 0,0, 96,96, $Ahp?100:30);
 imagecopyresampled($im, $srcim, 124,4, 96,0, 96,96, -96,96);
 imagedestroy($srcim);
 }
 else
 {
-	$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');//PROWL change
+	$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');
 
 	$srcim2 = imagecreatetruecolor(96,96);
 	$s2t = imagecolorallocate($srcim2, 246, 234, 252);
@@ -130,7 +130,7 @@ else
 
 if ($oA)
 {
-	$srcim = @imagecreatefrompng('../sprites/gen5/'.$oA.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');//PROWL change
+	$srcim = @imagecreatefrompng('../sprites/gen5/'.$oA.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');
 
 	$srcim2 = imagecreatetruecolor(96,96);
 	$s2t = imagecolorallocate($srcim2, 246, 234, 252);
@@ -171,7 +171,7 @@ if ($oA)
 
 // Pokemon B
 
-$srcim = @imagecreatefrompng('../sprites/gen5/'.$B.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');//PROWL change
+$srcim = @imagecreatefrompng('../sprites/gen5/'.$B.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');
 imagecopymerge($im, $srcim, 284, 4, 0,0, 96,96, $Bhp?100:30);
 imagedestroy($srcim);
 
@@ -194,7 +194,7 @@ else
 
 if ($oB)
 {
-	$srcim = @imagecreatefrompng('../sprites/gen5/'.$oB.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');//PROWL change
+	$srcim = @imagecreatefrompng('../sprites/gen5/'.$oB.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');
 	imagecopymerge($im, $srcim, 384, 4, 0,0, 96,96, 30);
 	imagedestroy($srcim);
 

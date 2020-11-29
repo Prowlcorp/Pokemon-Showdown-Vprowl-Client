@@ -32,16 +32,6 @@ $panels->start();
 				<button type="submit"><strong>Search by format</strong></button>
 			</p>
 		</form>
-		<h1>Featured replays</h1>
-		<ul class="linklist" style="max-width:480px;margin:0 auto;text-align:center">
-			<h3>Fun</h3>
-			<li><a href="/anythinggoes-218380995" data-target="push">
-				<small>[anythinggoes]<br /></small>
-				<strong>Anta2</strong> vs. <strong>dscottnew</strong>
-				<small><br />Cheek Pouch</small>
-			</a></li>
-			<li><button class="button" onclick="$('.older2').show();$(this).parent().hide()">Older</button></li>
-		</ul>
 		<h1>Recent replays</h1>
 		<ul class="linklist" style="max-width:480px;margin:0 auto;text-align:center">
 <?php

@@ -741,7 +741,9 @@ Storage.packTeam = function (team) {
 		}
 
 		// shiny
-		if (set.shiny) {
+		if (set.shiny === "Albino") {
+			buf += '|A';
+		} else if (set.shiny === "Shiny") {
 			buf += '|S';
 		} else {
 			buf += '|';
@@ -761,7 +763,7 @@ Storage.packTeam = function (team) {
 			buf += '|';
 		}
 
-		if (set.pokeball || (set.hpType && !hasHP) || set.gigantamax) {
+		if (set.pokeball || (set.hpType && !hasHP)) {
 			buf += ',' + (set.hpType || '');
 			buf += ',' + toID(set.pokeball);
 		}
@@ -856,7 +858,7 @@ Storage.fastUnpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = true;
+		if (i !== j) set.shiny = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -971,7 +973,7 @@ Storage.unpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = true;
+		if (i !== j) set.shiny = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -1155,8 +1157,10 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 9) === 'Ability: ') {
 			line = line.substr(9);
 			curSet.ability = line;
-		} else if (line === 'Shiny: Yes') {
-			curSet.shiny = true;
+		} else if (line === 'Shiny: Albino') {
+			curSet.shiny = "Albino";
+		} else if (line === 'Shiny: Shiny') {
+			curSet.shiny = "Shiny";
 		} else if (line.substr(0, 7) === 'Level: ') {
 			line = line.substr(7);
 			curSet.level = +line;
@@ -1275,8 +1279,11 @@ Storage.exportTeam = function (team) {
 		if (curSet.level && curSet.level != 100) {
 			text += 'Level: ' + curSet.level + "  \n";
 		}
-		if (curSet.shiny) {
-			text += 'Shiny: Yes  \n';
+		if (curSet.shiny === "Albino") {
+			text += 'Shiny: Albino  \n';
+		}
+		if (curSet.shiny === "Shiny") {
+			text += 'Shiny: Shiny  \n';
 		}
 		if (typeof curSet.happiness === 'number' && curSet.happiness !== 255 && !isNaN(curSet.happiness)) {
 			text += 'Happiness: ' + curSet.happiness + "  \n";

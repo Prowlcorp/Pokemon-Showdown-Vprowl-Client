@@ -117,8 +117,6 @@ const BattleStatIDs: {[k: string]: StatName | undefined} = {
 	SAtk: 'spa',
 	SpAtk: 'spa',
 	spa: 'spa',
-	spc: 'spa',
-	Spc: 'spa',
 	SpD: 'spd',
 	SDef: 'spd',
 	SpDef: 'spd',
@@ -764,14 +762,13 @@ type NatureName = 'Adamant' | 'Bashful' | 'Bold' | 'Brave' | 'Calm' | 'Careful' 
 type StatNameExceptHP = 'atk' | 'def' | 'spa' | 'spd' | 'spe';
 type TypeName = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' |
 	'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Dark' | 'Fairy' | '???';
-type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn';
-type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy' | 'spc';
+type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn' | 'bld';
+type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy';
 type GenderName = 'M' | 'F' | 'N';
 
 interface Effect {
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly effectType: 'Item' | 'Move' | 'Ability' | 'Species' | 'PureEffect';
 	/**
 	 * Do we have data on this item/move/ability/species?
@@ -799,10 +796,8 @@ class Item implements Effect {
 	readonly effectType = 'Item';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
-	readonly num: number;
 	readonly spritenum: number;
 	readonly desc: string;
 	readonly shortDesc: string;
@@ -826,10 +821,8 @@ class Item implements Effect {
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 
-		this.num = data.num || 0;
 		this.spritenum = data.spritenum || 0;
 		this.desc = data.desc || data.shortDesc || '';
 		this.shortDesc = data.shortDesc || this.desc;
@@ -847,18 +840,6 @@ class Item implements Effect {
 		this.naturalGift = data.naturalGift || null;
 		this.isPokeball = !!data.isPokeball;
 		this.itemUser = data.itemUser;
-
-		if (!this.gen) {
-			if (this.num >= 577) {
-				this.gen = 6;
-			} else if (this.num >= 537) {
-				this.gen = 5;
-			} else if (this.num >= 377) {
-				this.gen = 4;
-			} else {
-				this.gen = 3;
-			}
-		}
 	}
 }
 
@@ -919,7 +900,6 @@ class Move implements Effect {
 	readonly effectType = 'Move';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
 	readonly basePower: number;
@@ -934,7 +914,6 @@ class Move implements Effect {
 
 	readonly desc: string;
 	readonly shortDesc: string;
-	readonly isNonstandard: string | null;
 	readonly isZ: ID;
 	readonly zMove?: {
 		basePower?: number,
@@ -948,14 +927,12 @@ class Move implements Effect {
 	readonly hasCustomRecoil: boolean;
 	readonly noPPBoosts: boolean;
 	readonly secondaries: ReadonlyArray<any> | null;
-	readonly num: number;
 
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 
 		this.basePower = data.basePower || 0;
@@ -971,7 +948,6 @@ class Move implements Effect {
 		// TODO: move to text.js
 		this.desc = data.desc;
 		this.shortDesc = data.shortDesc;
-		this.isNonstandard = data.isNonstandard || null;
 		this.isZ = data.isZ || '';
 		this.zMove = data.zMove || {};
 		this.ohko = data.ohko || null;
@@ -1010,23 +986,6 @@ class Move implements Effect {
 				this.zMove.basePower = 100;
 			}
 		}
-
-		this.num = data.num || 0;
-		if (!this.gen) {
-			if (this.num >= 560) {
-				this.gen = 6;
-			} else if (this.num >= 468) {
-				this.gen = 5;
-			} else if (this.num >= 355) {
-				this.gen = 4;
-			} else if (this.num >= 252) {
-				this.gen = 3;
-			} else if (this.num >= 166) {
-				this.gen = 2;
-			} else if (this.num >= 1) {
-				this.gen = 1;
-			}
-		}
 	}
 }
 
@@ -1035,43 +994,22 @@ class Ability implements Effect {
 	readonly effectType = 'Ability';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
-	readonly num: number;
 	readonly shortDesc: string;
 	readonly desc: string;
 
 	readonly rating: number;
-	readonly isNonstandard: boolean;
 
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
-		this.num = data.num || 0;
 		this.shortDesc = data.shortDesc || data.desc || '';
 		this.desc = data.desc || data.shortDesc || '';
 		this.rating = data.rating || 1;
-		this.isNonstandard = !!data.isNonstandard;
-		if (!this.gen) {
-			if (this.num >= 234) {
-				this.gen = 8;
-			} else if (this.num >= 192) {
-				this.gen = 7;
-			} else if (this.num >= 165) {
-				this.gen = 6;
-			} else if (this.num >= 124) {
-				this.gen = 5;
-			} else if (this.num >= 77) {
-				this.gen = 4;
-			} else if (this.num >= 1) {
-				this.gen = 3;
-			}
-		}
 	}
 }
 
@@ -1080,7 +1018,6 @@ class Species implements Effect {
 	readonly effectType = 'Species';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
 	// name
@@ -1124,7 +1061,6 @@ class Species implements Effect {
 	readonly isMega: boolean;
 	readonly isPrimal: boolean;
 	readonly battleOnly: string | string[] | undefined;
-	readonly isNonstandard: string | null;
 	readonly unreleasedHidden: boolean | 'Past';
 	readonly changesFrom: string | undefined;
 
@@ -1133,7 +1069,6 @@ class Species implements Effect {
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 		this.baseSpecies = data.baseSpecies || name;
 		this.forme = data.forme || '';
@@ -1172,39 +1107,8 @@ class Species implements Effect {
 		this.isMega = false;
 		this.isPrimal = false;
 		this.battleOnly = data.battleOnly || undefined;
-		this.isNonstandard = data.isNonstandard || null;
 		this.unreleasedHidden = data.unreleasedHidden || false;
 		this.changesFrom = data.changesFrom || undefined;
-		if (!this.gen) {
-			if (this.num >= 810 || this.formeid.startsWith('-galar')) {
-				this.gen = 8;
-			} else if (this.num >= 722 || this.formeid === '-alola' || this.formeid === '-starter') {
-				this.gen = 7;
-			} else if (this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid)) {
-				this.gen = 6;
-				this.isMega = true;
-				this.battleOnly = this.baseSpecies;
-			} else if (this.formeid === '-primal') {
-				this.gen = 6;
-				this.isPrimal = true;
-				this.battleOnly = this.baseSpecies;
-			} else if (this.formeid === '-totem' || this.formeid === '-alolatotem') {
-				this.gen = 7;
-				this.isTotem = true;
-			} else if (this.num >= 650) {
-				this.gen = 6;
-			} else if (this.num >= 494) {
-				this.gen = 5;
-			} else if (this.num >= 387) {
-				this.gen = 4;
-			} else if (this.num >= 252) {
-				this.gen = 3;
-			} else if (this.num >= 152) {
-				this.gen = 2;
-			} else if (this.num >= 1) {
-				this.gen = 1;
-			}
-		}
 	}
 }
 

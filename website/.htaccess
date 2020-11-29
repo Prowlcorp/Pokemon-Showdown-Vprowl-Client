@@ -1,5 +1,4 @@
 # -FrontPage-
-//PROWL change
 IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
 
 <Limit GET POST>

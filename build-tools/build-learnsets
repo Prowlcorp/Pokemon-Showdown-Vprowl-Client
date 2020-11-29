@@ -58,7 +58,7 @@ function updateLearnsets(callback) {
 
 	const buf = [];
 	const pokemonList = Object.keys(Pokedex).map(speciesId => Pokedex[speciesId]).sort(function (a, b) {
-		// Missingno. goes first (zeroth); afterwards, CAP in descending dex order (increasingly negative)
+		// Missingno. goes first (zeroth);
 		// Finally, standard Pokémon in ascending dex order
 		if (a.num <= 0 && b.num > 0) return -1;
 		if (b.num <= 0 && a.num > 0) return 1;

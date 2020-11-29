@@ -109,7 +109,6 @@ class BattleScene {
 		let numericId = 0;
 		if (battle.id) {
 			numericId = parseInt(battle.id.slice(battle.id.lastIndexOf('-') + 1), 10);
-			if (this.battle.id.includes('digimon')) this.mod = 'digimon';
 		}
 		if (!numericId) {
 			numericId = Math.floor(Math.random() * 1000000);
@@ -469,9 +468,6 @@ class BattleScene {
 				}, this.battle.messageFadeTime / this.acceleration);
 			}
 		}
-		if (this.battle.hardcoreMode && message.slice(0, 8) === '<small>(') {
-			message = '';
-		}
 		if (message && this.animating) {
 			this.$hiddenMessage.append('<p></p>');
 			let $message = this.$hiddenMessage.children().last();
@@ -564,19 +560,10 @@ class BattleScene {
 		const isSPL = (typeof this.battle.rated === 'string' && this.battle.rated.startsWith("Smogon Premier League"));
 		let bg: string;
 		if (isSPL) {
-			if (gen <= 1) bg = 'fx/bg-gen1-spl.png';
-			else if (gen <= 2) bg = 'fx/bg-gen2-spl.png';
-			else if (gen <= 3) bg = 'fx/bg-gen3-spl.png';
-			else if (gen <= 4) bg = 'fx/bg-gen4-spl.png';
-			else bg = 'fx/bg-spl.png';
+			bg = 'fx/bg-spl.png';
 			this.setBgm(-101);
 		} else {
-			if (gen <= 1) bg = 'fx/bg-gen1.png?';
-			else if (gen <= 2) bg = 'fx/bg-gen2.png?';
-			else if (gen <= 3) bg = 'fx/' + BattleBackdropsThree[this.numericId % BattleBackdropsThree.length] + '?';
-			else if (gen <= 4) bg = 'fx/' + BattleBackdropsFour[this.numericId % BattleBackdropsFour.length];
-			else if (gen <= 5) bg = 'fx/' + BattleBackdropsFive[this.numericId % BattleBackdropsFive.length];
-			else bg = 'sprites/gen6bgs/' + BattleBackdrops[this.numericId % BattleBackdrops.length];
+			bg = 'sprites/gen6bgs/' + BattleBackdrops[this.numericId % BattleBackdrops.length];
 		}
 
 		this.backdropImage = bg;
@@ -613,7 +600,6 @@ class BattleScene {
 
 	updateSidebar(side: Side) {
 		if (!this.animating) return;
-		let noShow = this.battle.hardcoreMode && this.battle.gen < 7;
 
 		let speciesOverage = this.battle.speciesClause ? Infinity : Math.max(side.pokemon.length - side.totalPokemon, 0);
 		const sidebarIcons: (
@@ -663,14 +649,6 @@ class BattleScene {
 			const tooltipCode = ` class="picon has-tooltip" data-tooltip="pokemon|${side.n}|${pokeIndex}${iconType === 'pokemon-illusion' ? '|illusion' : ''}"`;
 			if (iconType === 'empty') {
 				pokemonhtml += `<span class="picon" style="` + Dex.getPokemonIcon('pokeball-none') + `"></span>`;
-			} else if (noShow) {
-				if (poke?.fainted) {
-					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball-fainted') + `" aria-label="Fainted"></span>`;
-				} else if (poke?.status) {
-					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball-statused') + `" aria-label="Statused"></span>`;
-				} else {
-					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball') + `" aria-label="Non-statused"></span>`;
-				}
 			} else if (iconType === 'pseudo-zoroark') {
 				pokemonhtml += `<span class="picon" style="` + Dex.getPokemonIcon('zoroark') + `" title="Unrevealed Illusion user" aria-label="Unrevealed Illusion user"></span>`;
 			} else if (!poke) {
@@ -805,7 +783,6 @@ class BattleScene {
 			pWeather[1] = pWeather[2];
 			pWeather[2] = 0;
 		}
-		if (this.battle.gen < 7 && this.battle.hardcoreMode) return buf;
 		if (pWeather[2]) {
 			return buf + ' <small>(' + pWeather[1] + ' or ' + pWeather[2] + ' turns)</small>';
 		}
@@ -817,7 +794,6 @@ class BattleScene {
 	sideConditionLeft(cond: [string, number, number, number], siden: number, all?: boolean) {
 		if (!cond[2] && !cond[3] && !all) return '';
 		let buf = `<br />${siden && !all ? "Foe's " : ""}${Dex.getMove(cond[0]).name}`;
-		if (this.battle.gen < 7 && this.battle.hardcoreMode) return buf;
 
 		if (!cond[2] && !cond[3]) return buf;
 		if (!cond[2] && cond[3]) {
@@ -830,8 +806,6 @@ class BattleScene {
 		return buf + ' <small>(' + cond[2] + ' or ' + cond[3] + ' turns)</small>';
 	}
 	weatherLeft() {
-		if (this.battle.gen < 7 && this.battle.hardcoreMode) return '';
-
 		let weatherhtml = ``;
 
 		if (this.battle.weather) {
@@ -1308,7 +1282,7 @@ class BattleScene {
 			callback = () => { $hp.addClass('hp-yellow hp-red'); };
 		}
 
-		this.resultAnim(pokemon, this.battle.hardcoreMode ? 'Damage' : '&minus;' + damage, 'bad');
+		this.resultAnim(pokemon, '&minus;' + damage, 'bad');
 
 		$hp.animate({
 			width: w,
@@ -1331,7 +1305,7 @@ class BattleScene {
 			callback = () => { $hp.removeClass('hp-red'); };
 		}
 
-		this.resultAnim(pokemon, this.battle.hardcoreMode ? 'Heal' : '+' + damage, 'good');
+		this.resultAnim(pokemon, '+' + damage, 'good');
 
 		$hp.animate({
 			width: w,
@@ -1935,7 +1909,7 @@ class PokemonSprite extends Sprite {
 	reset(pokemon: Pokemon) {
 		this.clearEffects();
 
-		if (pokemon.volatiles.formechange || pokemon.volatiles.dynamax) {
+		if (pokemon.volatiles.formechange) {
 			if (!this.oldsp) this.oldsp = this.sp;
 			this.sp = Dex.getSpriteData(pokemon, this.isBackSprite ? 0 : 1, {
 				gen: this.scene.gen,
@@ -2647,13 +2621,9 @@ class PokemonSprite extends Sprite {
 		if (!this.$statbar) return;
 		let $hptext = this.$statbar.find('.hptext');
 		let $hptextborder = this.$statbar.find('.hptextborder');
-		if (pokemon.maxhp === 48 || this.scene.battle.hardcoreMode && pokemon.maxhp === 100) {
+		if (pokemon.maxhp === 48) {
 			$hptext.hide();
 			$hptextborder.hide();
-		} else if (this.scene.battle.hardcoreMode) {
-			$hptext.html(pokemon.hp + '/');
-			$hptext.show();
-			$hptextborder.show();
 		} else {
 			$hptext.html(pokemon.hpWidth(100) + '%');
 			$hptext.show();
@@ -5598,7 +5568,25 @@ const BattleStatusAnims: AnimTable = {
 				time: 300,
 			}, 'swing', 'fade');
 		},
-	},//PROWL change
+	},
+	bld: {
+		anim(scene, [attacker]) {
+			scene.showEffect('rightslash', {
+				x: attacker.x - 20,
+				y: attacker.y - 15,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 0.3,
+			}, {
+				x: attacker.x + 40,
+				y: attacker.y + 15,
+				z: attacker.z,
+				scale: 1,
+				opacity: 1,
+				time: 300,
+			}, 'swing', 'fade');
+		},
+	},
 	psn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('poisonwisp', {

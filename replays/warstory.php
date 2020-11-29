@@ -265,13 +265,13 @@ function endCallback(battle)
 	var teamcode = '[hide="'+battle.mySide.name+'\'s team"]';
 	for (var i=0; i<battle.mySide.pokemon.length && i<6; i++)
 	{
-		teamcode += '[img]http://<?= $psconfig['routes']['client'] ?>/sprites/gen5/'+battle.mySide.pokemon[i].spriteid+'.png[/img]';//PROWL change
+		teamcode += '[img]http://<?= $psconfig['routes']['client'] ?>/sprites/gen5/'+battle.mySide.pokemon[i].spriteid+'.png[/img]';
 	}
 	teamcode += '[/hide]'+"\n";
 	teamcode += '[hide="'+battle.yourSide.name+'\'s team"]';
 	for (var i=0; i<battle.yourSide.pokemon.length && i<6; i++)
 	{
-		teamcode += '[img]http://<?= $psconfig['routes']['client'] ?>/sprites/gen5/'+battle.yourSide.pokemon[i].spriteid+'.png[/img]';//PROWL change
+		teamcode += '[img]http://<?= $psconfig['routes']['client'] ?>/sprites/gen5/'+battle.yourSide.pokemon[i].spriteid+'.png[/img]';
 	}
 	teamcode += '[/hide]'+"\n\n";
 

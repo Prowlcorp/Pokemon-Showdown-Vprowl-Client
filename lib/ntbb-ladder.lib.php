@@ -315,14 +315,7 @@ class NTBBLadder {
 						// user was inactive
 						$decay = 1 + intval(($elo-1400)/50);
 					}
-					switch ($this->formatid) {
-					case 'gen8randombattle':
-					case 'gen8ou':
-						break;
-					default:
-						$decay -= 2;
-						break;
-					}
+					$decay -= 2;
 					if ($decay > 0) $elo -= $decay;
 				}
 
