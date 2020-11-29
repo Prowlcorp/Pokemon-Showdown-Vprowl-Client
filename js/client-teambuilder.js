@@ -1936,6 +1936,7 @@
 				smogdexid += '/vgc15';
 			} else if (format === 'monotype' || format === 'mixandmega' || format === 'nfe' || format === 'stabmons' || format === '1v1' || format === 'almostanyability') {
 				smogdexid += '/' + format;
+			}
 			return 'http://smogon.com/dex/' + generation + '/pokemon/' + smogdexid + '/';
 		},
 		updateStatForm: function (setGuessed) {
