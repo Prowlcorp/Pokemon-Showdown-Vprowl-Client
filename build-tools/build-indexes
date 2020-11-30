@@ -9,7 +9,7 @@ const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
 
 if (!fs.existsSync('data/pokemon-showdown')) {
-	child_process.execSync('git clone https://github.com/Prowlcorp/Pokemon-Showdown-VProwl.git', {
+	child_process.execSync('git clone -b tournament https://github.com/Prowlcorp/Pokemon-Showdown-VProwl.git pokemon-showdown', {
 		cwd: 'data',
 	});
 }
