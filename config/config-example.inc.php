@@ -35,7 +35,7 @@ $psconfig = [
 		'/^http:\/\/logs\.psim\.us$/' => 'logs.psim.us_',
 		'/^http:\/\/logs\.psim\.us:8080$/' => 'logs.psim.us_',
 		'/^http:\/\/[a-z0-9]+\.psim\.us$/' => '',
-		'/^http:\/\/prowl\-showdown\.netlify\.app$/' => '',
+		'/^http:\/\/play\.pokemonshowdown\.com$/' => '',
 	],
 
 // key signing for SSO
