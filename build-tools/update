@@ -117,7 +117,7 @@ function updateURL(a, b, c, d) {
 	c = c.replace('/replay.pokemonshowdown.com/', '/' + routes.replays + '/');
 	c = c.replace('/dex.pokemonshowdown.com/', '/' + routes.dex + '/');
 	c = c.replace('/prowl-showdown.netlify.app/', '/' + routes.client + '/');
-	c = c.replace('/prowl-showdown.netlify.app/', '/' + routes.root + '/');
+	c = c.replace('/pokemonshowdown.com/', '/' + routes.root + '/');
 
 	if (d) {
 		let hash = Math.random(); // just in case creating the hash fails
