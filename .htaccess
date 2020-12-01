@@ -64,10 +64,6 @@ RewriteRule ^sprites\/bw(.*)?$ sprites/gen5$1 [L,QSA]
 RewriteRule ^sprites\/sm(.*)?$ sprites/gen7$1 [L,QSA]
 
 
-# FRLG only added new sprites for Kanto Pokemon
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^sprites\/gen3frlg(.*)?$ sprites/gen3$1 [L,QSA]
-
 RewriteRule ^replays?\/?$ https://replay.pokemonshowdown.com/ [R=302,L]
 
 RewriteCond %{HTTP_HOST} ^www\.play\.pokemonshowdown\.com$ [NC]
