@@ -76,9 +76,7 @@ class PSTeambuilder {
 			}
 
 			// shiny
-			if (set.shiny === "Albino") {
-				buf += '|A';
-			} else if (set.shiny === "Shiny") {
+			if (set.shiny) {
 				buf += '|S';
 			} else {
 				buf += '|';
@@ -98,9 +96,10 @@ class PSTeambuilder {
 				buf += '|';
 			}
 
-			if (set.pokeball || (set.hpType && toID(set.hpType) !== hasHP)) {
+			if (set.pokeball || (set.hpType && toID(set.hpType) !== hasHP) || set.gigantamax) {
 				buf += ',' + (set.hpType || '');
 				buf += ',' + toID(set.pokeball);
+				buf += ',' + (set.gigantamax ? 'G' : '');
 			}
 		}
 
@@ -180,7 +179,7 @@ class PSTeambuilder {
 			}
 
 			// shiny
-			if (parts[9]) set.shiny = parts[9];
+			if (parts[9]) set.shiny = true;
 
 			// level
 			if (parts[10]) set.level = parseInt(parts[9], 10);
@@ -191,6 +190,7 @@ class PSTeambuilder {
 				set.happiness = (misc[0] ? Number(misc[0]) : undefined);
 				set.hpType = misc[1];
 				set.pokeball = misc[2];
+				set.gigantamax = !!misc[3];
 			}
 		}
 
@@ -272,14 +272,14 @@ class PSTeambuilder {
 		if (set.level && set.level !== 100) {
 			text += `Level: ${set.level}  \n`;
 		}
-		if (set.shiny === "Albino") {
-			text += `Shiny: Albino  \n`;
-		}
-		if (set.shiny === "Shiny") {
-			text += `Shiny: Shiny  \n`;
+		if (set.shiny) {
+			text += `Shiny: Yes  \n`;
 		}
 		if (typeof set.happiness === 'number' && set.happiness !== 255 && !isNaN(set.happiness)) {
 			text += `Happiness: ${set.happiness}  \n`;
+		}
+		if (set.gigantamax) {
+			text += `Gigantamax: Yes  \n`;
 		}
 
 		text += `\n`;
@@ -333,10 +333,8 @@ class PSTeambuilder {
 		} else if (line.startsWith('Ability: ')) {
 			line = line.slice(9);
 			set.ability = line;
-		} else if (line === 'Shiny: Albino') {
-			set.shiny = "Albino";
-		} else if (line === 'Shiny: Shiny') {
-			set.shiny = "Shiny";
+		} else if (line === 'Shiny: Yes') {
+			set.shiny = true;
 		} else if (line.startsWith('Level: ')) {
 			line = line.slice(7);
 			set.level = +line;
@@ -349,6 +347,8 @@ class PSTeambuilder {
 		} else if (line.startsWith('Hidden Power: ')) {
 			line = line.slice(14);
 			set.hpType = line;
+		} else if (line === 'Gigantamax: Yes') {
+			set.gigantamax = true;
 		} else if (line.startsWith('EVs: ')) {
 			line = line.slice(5);
 			let evLines = line.split('/');

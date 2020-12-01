@@ -2,7 +2,7 @@
 
 include 'lib/ntbb-ladder.lib.php';
 
-$formatid = 'OU';//PROWL change?
+$formatid = 'OU';
 $prefix = null;
 
 if ($_REQUEST['format'] ?? null) $formatid = $_REQUEST['format'];

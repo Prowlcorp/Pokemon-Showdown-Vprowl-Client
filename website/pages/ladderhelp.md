@@ -34,7 +34,7 @@ Above 1400, we have rating decay. Every day at 9 AM GMT+0:
 * If you played 1-5 games, you lose 1 point for every 100 points above 1500 you are
 * If you played 0 games, you lose 1 point for every 50 points above 1400 you are
 
-This helps combat rating inflation.
+This helps combat rating inflation. Ratings of less popular formats (ie. not current gen OU or random battles) decay slightly slower - you lose 2 points less per day due to rating decay in these formats.
 
 Note that there's no "official" Elo standard. K-scaling and rating floors are common, rating decay somewhat common, and our dynamic K scaling seems to be unique.
 

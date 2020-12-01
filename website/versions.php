@@ -106,7 +106,7 @@ includeHeaderBottom();
 </tr>
 <?php foreach ($versions as &$version) { ?>
 <tr id="<?php echo htmlspecialchars($version['version']) ?>">
-	<td><a href="https://github.com/Prowlcorp/Pokemon-Showdown-VProwl/commit/<?php echo htmlspecialchars($version['commit']) ?>" target="_blank"><?php echo htmlspecialchars(substr($version['commit'], 0, 10)) ?></a></td>
+	<td><a href="https://github.com/Zarel/Pokemon-Showdown/commit/<?php echo htmlspecialchars($version['commit']) ?>" target="_blank"><?php echo htmlspecialchars(substr($version['commit'], 0, 10)) ?></a></td>
 	<td><?php echo htmlspecialchars($version['message']) ?></td>
 	<td><?php echo htmlspecialchars($version['version']) ?></td>
 </tr>

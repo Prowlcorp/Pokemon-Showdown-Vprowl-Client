@@ -17,14 +17,30 @@ if ($formatid && !ctype_alnum($formatid)) {
 }
 
 $formats = array(
+	'gen8randombattle' => 'Random Battle',
 	'gen8challengecup1v1' => 'Challenge Cup 1v1',
+	'gen8hackmonscup' => 'Hackmons Cup',
+	'gen8ou' => 'OverUsed',
+	'gen8ubers' => 'Ubers',
+	'gen8uu' => 'UnderUsed',
+	'gen8ru' => 'RarelyUsed',
+	'gen8nu' => 'NeverUsed',
+	'gen8pu' => 'PU',
+	'gen8lc' => 'Little Cup',
 	'gen8monotype' => 'Monotype',
+	'gen8anythinggoes' => 'Anything Goes',
+	'gen8zu' => 'ZU',
 	'gen81v1' => '1v1',
 	'gen8battlestadiumsingles' => 'Battle Stadium Singles',
+	'gen8randomdoublesbattle' => 'Random Doubles Battle',
+	'gen8doublesou' => 'Doubles OU',
+	'gen8vgc2020' => 'VGC 2020',
+	'gen8balancedhackmons' => 'Balanced Hackmons',
 	'gen8mixandmega' => 'Mix and Mega',
 	'gen8almostanyability' => 'Almost Any Ability',
 	'gen8stabmons' => 'STABmons',
 	'gen8nfe' => 'NFE',
+	'gen8cap' => 'CAP',
 );
 
 $format = $formatid;
@@ -80,19 +96,38 @@ if (!$formatid) {
 			Ladders
 		</h1>
 		<ul class="laddernav">
+			<li><a data-target="push" class="button nav-first" href="/ladder/gen8randombattle">Random Battle</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8challengecup1v1">Challenge Cup 1v1</a></li>
+			<li><a data-target="push" class="button nav-last" href="/ladder/gen8hackmonscup">Hackmons Cup</a></li>
+		</ul>
+		<ul class="laddernav">
+			<li><a data-target="push" class="button nav-first" href="/ladder/gen8ou">OverUsed</a></li>
+			<li><a data-target="push" class="button" href="/ladder/gen8ubers">Ubers</a></li>
+			<li><a data-target="push" class="button" href="/ladder/gen8uu">UnderUsed</a></li>
+			<li><a data-target="push" class="button" href="/ladder/gen8ru">RarelyUsed</a></li>
+			<li><a data-target="push" class="button" href="/ladder/gen8nu">NeverUsed</a></li>
+			<li><a data-target="push" class="button nav-last" href="/ladder/gen8pu">PU</a></li>
 		</ul>
 		<ul class="laddernav">
 			<li><a data-target="push" class="button nav-first" href="/ladder/gen8lc">Little Cup</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8monotype">Monotype</a></li>
+			<!--li><a data-target="push" class="button" href="/ladder/gen8anythinggoes">Anything Goes</a></li-->
+			<!--li><a data-target="push" class="button" href="/ladder/gen8zu">ZU</a></li-->
 			<li><a data-target="push" class="button" href="/ladder/gen81v1">1v1</a></li>
 			<li><a data-target="push" class="button nav-last" href="/ladder/gen8battlestadiumsingles">Battle Stadium Singles</a></li>
 		</ul>
 		<ul class="laddernav">
+			<li><a data-target="push" class="button nav-first" href="/ladder/gen8randomdoublesbattle">Random Doubles Battle</a></li>
+			<li><a data-target="push" class="button" href="/ladder/gen8doublesou">Doubles OU</a></li>
+			<li><a data-target="push" class="button nav-last" href="/ladder/gen8vgc2020">VGC 2020</a></li>
+		</ul>
+		<ul class="laddernav">
+			<li><a data-target="push" class="button nav-first" href="/ladder/gen8balancedhackmons">Balanced Hackmons</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8mixandmega">Mix and Mega</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8almostanyability">Almost Any Ability</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8stabmons">STABmons</a></li>
 			<li><a data-target="push" class="button" href="/ladder/gen8nfe">NFE</a></li>
+			<li><a data-target="push" class="button nav-last" href="/ladder/gen8cap">CAP</a></li>
 		</ul>
 		<h1>
 			Find user

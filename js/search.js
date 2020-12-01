@@ -225,6 +225,29 @@
 			}
 			var egggroup = {name: egName};
 			return this.renderEggGroupRow(egggroup, matchStart, matchLength, errorMessage);
+		case 'tier':
+			// very hardcode
+			var tierTable = {
+				uber: "Uber",
+				ou: "OU",
+				uu: "UU",
+				ru: "RU",
+				nu: "NU",
+				pu: "PU",
+				zu: "(PU)",
+				nfe: "NFE",
+				lcuber: "LC Uber",
+				lc: "LC",
+				cap: "CAP",
+				caplc: "CAP LC",
+				capnfe: "CAP NFE",
+				uubl: "UUBL",
+				rubl: "RUBL",
+				nubl: "NUBL",
+				publ: "PUBL"
+			};
+			var tier = {name: tierTable[id]};
+			return this.renderTierRow(tier, matchStart, matchLength, errorMessage);
 		case 'category':
 			var category = {name: id[0].toUpperCase() + id.substr(1), id: id};
 			return this.renderCategoryRow(category, matchStart, matchLength, errorMessage);
@@ -316,24 +339,29 @@
 		buf += '</span> ';
 
 		// abilities
-		var abilities = Dex.forGen(gen).getSpecies(id).abilities;
-		if (abilities['1']) {
-			buf += '<span class="col twoabilitycol">' + abilities['0'] + '<br />' +
-				abilities['1'] + '</span>';
-		} else {
-			buf += '<span class="col abilitycol">' + abilities['0'] + '</span>';
-		}
-		var unreleasedHidden = pokemon.unreleasedHidden;
-		if (abilities['S']) {
-			if (abilities['H']) {
-				buf += '<span class="col twoabilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
+		if (gen >= 3) {
+			var abilities = Dex.forGen(gen).getSpecies(id).abilities;
+			if (abilities['1']) {
+				buf += '<span class="col twoabilitycol">' + abilities['0'] + '<br />' +
+					abilities['1'] + '</span>';
 			} else {
-				buf += '<span class="col abilitycol">(' + abilities['S'] + ')</span>';
+				buf += '<span class="col abilitycol">' + abilities['0'] + '</span>';
 			}
-		} else if (abilities['H']) {
-			buf += '<span class="col abilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + abilities['H'] + '</span>';
-		} else {
-			buf += '<span class="col abilitycol"></span>';
+			if (gen >= 5) {
+				var unreleasedHidden = pokemon.unreleasedHidden;
+				if (unreleasedHidden === 'Past' && (this.mod === 'natdex' || gen < 8)) unreleasedHidden = false;
+				if (abilities['S']) {
+					if (abilities['H']) {
+						buf += '<span class="col twoabilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
+					} else {
+						buf += '<span class="col abilitycol">(' + abilities['S'] + ')</span>';
+					}
+				} else if (abilities['H']) {
+					buf += '<span class="col abilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + abilities['H'] + '</span>';
+				} else {
+					buf += '<span class="col abilitycol"></span>';
+				}
+			}
 		}
 
 		// base stats
@@ -341,8 +369,12 @@
 		buf += '<span class="col statcol"><em>HP</em><br />' + stats.hp + '</span> ';
 		buf += '<span class="col statcol"><em>Atk</em><br />' + stats.atk + '</span> ';
 		buf += '<span class="col statcol"><em>Def</em><br />' + stats.def + '</span> ';
-		buf += '<span class="col statcol"><em>SpA</em><br />' + stats.spa + '</span> ';
-		buf += '<span class="col statcol"><em>SpD</em><br />' + stats.spd + '</span> ';
+		if (gen >= 2) {
+			buf += '<span class="col statcol"><em>SpA</em><br />' + stats.spa + '</span> ';
+			buf += '<span class="col statcol"><em>SpD</em><br />' + stats.spd + '</span> ';
+		} else {
+			buf += '<span class="col statcol"><em>Spc</em><br />' + stats.spa + '</span> ';
+		}
 		buf += '<span class="col statcol"><em>Spe</em><br />' + stats.spe + '</span> ';
 		var bst = 0;
 		for (i in stats) bst += stats[i];
@@ -635,7 +667,7 @@
 	};
 	Search.prototype.renderCategoryRow = function (category, matchStart, matchLength, errorMessage) {
 		var attrs = '';
-		if (Search.urlRoot) attrs = ' href="' + Search.urlRoot + 'misc/' + category.id + '" data-target="push"';
+		if (Search.urlRoot) attrs = ' href="' + Search.urlRoot + 'categories/' + category.id + '" data-target="push"';
 		var buf = '<li class="result"><a' + attrs + ' data-entry="category|' + BattleLog.escapeHTML(category.name) + '">';
 
 		// name

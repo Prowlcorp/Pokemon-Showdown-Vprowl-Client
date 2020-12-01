@@ -224,6 +224,10 @@ const PSBackground = new class extends PSStreamModel {
 			bgUrl = (bgid === 'solidblue' ? '#344b6c' : PSURL + 'fx/client-bg-' + bgid + '.jpg');
 		}
 
+		// April Fool's 2016 - Digimon theme
+		// bgid = 'digimon';
+		// bgUrl = PSURL + 'sprites/afd/digimonbg.jpg';
+
 		this.changeCount++;
 
 		// menuColors, attrib
@@ -304,6 +308,15 @@ const PSBackground = new class extends PSStreamModel {
 				artist: 'Jessica Valencia',
 			};
 			break;
+		case 'digimon':
+			menuColors = [
+				"170.45454545454544,27.500000000000004%",
+				"84.70588235294119,13.821138211382115%",
+				"112.50000000000001,7.8431372549019605%",
+				"217.82608695652175,54.761904761904766%",
+				"0,1.6949152542372816%",
+				"",
+			];
 		}
 		if (!menuColors && bgUrl.charAt(0) === '#') {
 			const r = parseInt(bgUrl.slice(1, 3), 16) / 255;

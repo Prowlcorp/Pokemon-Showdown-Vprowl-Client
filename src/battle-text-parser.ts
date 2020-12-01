@@ -114,7 +114,7 @@ class BattleTextParser {
 			if ([
 				'ingrain', 'quickguard', 'wideguard', 'craftyshield', 'matblock', 'protect', 'mist', 'safeguard',
 				'electricterrain', 'mistyterrain', 'psychicterrain', 'telepathy', 'stickyhold', 'suctioncups', 'aromaveil',
-				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads',//PROWL change?
+				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads',
 			].includes(id)) {
 				if (target) {
 					kwArgs.of = pokemon;
@@ -144,7 +144,7 @@ class BattleTextParser {
 				kwArgs.ability = arg3;
 				kwArgs.ability2 = arg4;
 			} else if ([
-				'spite', 'grudge', 'forewarn', 'sketch', 'leppaberry',
+				'eeriespell', 'gmaxdepletion', 'spite', 'grudge', 'forewarn', 'sketch', 'leppaberry', 'mysteryberry',
 			].includes(id)) {
 				kwArgs.move = arg3;
 				kwArgs.number = arg4;
@@ -469,6 +469,8 @@ class BattleTextParser {
 				case 'necrozmaultra': id = 'ultranecroziumz'; break;
 				case 'darmanitanzen': id = 'zenmode'; break;
 				case 'darmanitan': id = 'zenmode'; templateName = 'transformEnd'; break;
+				case 'darmanitangalarzen': id = 'zenmode'; break;
+				case 'darmanitangalar': id = 'zenmode'; templateName = 'transformEnd'; break;
 				case 'aegislashblade': id = 'stancechange'; break;
 				case 'aegislash': id = 'stancechange'; templateName = 'transformEnd'; break;
 				case 'wishiwashischool': id = 'schooling'; break;
@@ -891,6 +893,7 @@ class BattleTextParser {
 
 		case '-boost': case '-unboost': {
 			let [, pokemon, stat, num] = args;
+			if (stat === 'spa' && this.gen === 1) stat = 'spc';
 			const amount = parseInt(num, 10);
 			const line1 = this.maybeAbility(kwArgs.from, kwArgs.of || pokemon);
 			let templateId = cmd.slice(1);
@@ -992,7 +995,7 @@ class BattleTextParser {
 			}
 
 			templateId = 'fail';
-			if (['bld', 'brn', 'frz', 'par', 'psn', 'slp', 'substitute'].includes(id)) {
+			if (['brn', 'frz', 'par', 'psn', 'slp', 'substitute'].includes(id)) {
 				templateId = 'alreadyStarted';
 			}
 			if (kwArgs.heavy) templateId = 'failTooHeavy';
@@ -1038,10 +1041,6 @@ class BattleTextParser {
 			let templateId = cmd.slice(1);
 			if (species === 'Rayquaza') {
 				id = 'dragonascent';
-				templateId = 'megaNoItem';
-			}
-			if (species === 'Mew') {
-				id = 'angelwings';
 				templateId = 'megaNoItem';
 			}
 			if (!id && cmd === '-mega' && this.gen < 7) templateId = 'megaGen6';

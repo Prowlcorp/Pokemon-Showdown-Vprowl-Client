@@ -77,7 +77,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	maxhp = 1000;
 	level = 100;
 	gender: GenderName = 'N';
-	shiny = null;
+	shiny = false;
 
 	hpcolor: HPColor = 'g';
 	moves: string[] = [];
@@ -258,8 +258,6 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		if (this.searchid) return false;
 		if (details.indexOf(', shiny') >= 0) {
 			if (this.checkDetails(details.replace(', shiny', ''))) return true;
-		} else if (details.indexOf(', albino') >= 0) {
-			if (this.checkDetails(details.replace(', albino', ''))) return true;
 		}
 		// the actual forme was hidden on Team Preview
 		details = details.replace(/(-[A-Za-z0-9-]+)?(, |$)/, '-*$2');
@@ -365,13 +363,15 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 			spe: 'Spe',
 			accuracy: 'Accuracy',
 			evasion: 'Evasion',
+			spc: 'Spc',
 		};
 		if (!this.boosts[boostStat]) {
 			return '1&times;&nbsp;' + boostStatTable[boostStat];
 		}
 		if (this.boosts[boostStat] > 6) this.boosts[boostStat] = 6;
 		if (this.boosts[boostStat] < -6) this.boosts[boostStat] = -6;
-		if ((boostStat === 'accuracy' || boostStat === 'evasion')) {
+		const isRBY = this.side.battle.gen <= 1 && !this.side.battle.tier.includes('Stadium');
+		if (!isRBY && (boostStat === 'accuracy' || boostStat === 'evasion')) {
 			if (this.boosts[boostStat] > 0) {
 				let goodBoostTable = [
 					'1&times;', '1.33&times;', '1.67&times;', '2&times;', '2.33&times;', '2.67&times;', '3&times;',
@@ -420,6 +420,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		// this.lastMove = '';
 		this.statusStage = 0;
 		this.statusData.toxicTurns = 0;
+		if (this.side.battle.gen === 5) this.statusData.sleepTurns = 0;
 	}
 	/**
 	 * copyAll = false means Baton Pass,
@@ -485,7 +486,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		const battle = this.side.battle;
 		if (battle.hasPseudoWeather('Gravity')) {
 			return true;
-		} else if (this.volatiles['ingrain']) {
+		} else if (this.volatiles['ingrain'] && battle.gen >= 4) {
 			return true;
 		} else if (this.volatiles['smackdown']) {
 			return true;
@@ -663,19 +664,19 @@ class Side {
 			this.sideConditions[condition] = [effect.name, 1, 5, 8];
 			break;
 		case 'reflect':
-			this.sideConditions[condition] = [effect.name, 1, 5, 8];
+			this.sideConditions[condition] = [effect.name, 1, 5, this.battle.gen >= 4 ? 8 : 0];
 			break;
 		case 'safeguard':
 			this.sideConditions[condition] = [effect.name, 1, 5, 0];
 			break;
 		case 'lightscreen':
-			this.sideConditions[condition] = [effect.name, 1, 5, 8];
+			this.sideConditions[condition] = [effect.name, 1, 5, this.battle.gen >= 4 ? 8 : 0];
 			break;
 		case 'mist':
 			this.sideConditions[condition] = [effect.name, 1, 5, 0];
 			break;
 		case 'tailwind':
-			this.sideConditions[condition] = [effect.name, 1, 4, 0];
+			this.sideConditions[condition] = [effect.name, 1, this.battle.gen >= 5 ? 4 : 3, 0];
 			break;
 		case 'luckychant':
 			this.sideConditions[condition] = [effect.name, 1, 5, 0];
@@ -685,6 +686,12 @@ class Side {
 		case 'toxicspikes':
 		case 'stickyweb':
 			this.sideConditions[condition] = [effect.name, 1, 0, 0];
+			break;
+		case 'gmaxwildfire':
+		case 'gmaxvolcalith':
+		case 'gmaxvinelash':
+		case 'gmaxcannonade':
+			this.sideConditions[condition] = [effect.name, 1, 4, 0];
 			break;
 		case 'grasspledge':
 			this.sideConditions[condition] = ['Swamp', 1, 4, 0];
@@ -864,6 +871,7 @@ class Side {
 			this.battle.log(['switchout', pokemon.ident]);
 		}
 		pokemon.statusData.toxicTurns = 0;
+		if (this.battle.gen === 5) pokemon.statusData.sleepTurns = 0;
 		this.lastPokemon = pokemon;
 		this.active[slot] = null;
 
@@ -961,7 +969,7 @@ interface PokemonDetails {
 	name: string;
 	speciesForme: string;
 	level: number;
-	shiny: string | null;
+	shiny: boolean;
 	gender: GenderName | '';
 	ident: string;
 	searchid: string;
@@ -1076,6 +1084,7 @@ class Battle {
 	// options
 	id = '';
 	roomid = '';
+	hardcoreMode = false;
 	ignoreNicks = !!Dex.prefs('ignorenicks');
 	ignoreOpponent = !!Dex.prefs('ignoreopp');
 	ignoreSpects = !!Dex.prefs('ignorespects');
@@ -1245,6 +1254,11 @@ class Battle {
 			this.scene.updateStatbars();
 		}
 	}
+	setHardcoreMode(mode: boolean) {
+		this.hardcoreMode = mode;
+		this.scene.updateSidebars();
+		this.scene.updateWeather(true);
+	}
 	setTurn(turnNum: string | number) {
 		turnNum = parseInt(turnNum as string, 10);
 		if (turnNum === this.turn + 1) {
@@ -1288,19 +1302,19 @@ class Battle {
 			return;
 		}
 		if (weather) {
-			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea' || weather === 'ragingsandstorm');
+			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
 			if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
-				this.weatherTimeLeft = (isExtremeWeather) ? 0 : 8;
-				this.weatherMinTimeLeft = (isExtremeWeather) ? 0 : 5;
+				this.weatherTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 8;
+				this.weatherMinTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 5;
 			} else if (isExtremeWeather) {
 				this.weatherTimeLeft = 0;
 				this.weatherMinTimeLeft = 0;
 			} else {
-				this.weatherTimeLeft = 8;
-				this.weatherMinTimeLeft = 5;
+				this.weatherTimeLeft = (this.gen <= 3 ? 5 : 8);
+				this.weatherMinTimeLeft = (this.gen <= 3 ? 0 : 5);
 			}
 		}
 		this.weather = weather;
@@ -1526,9 +1540,6 @@ class Battle {
 				case 'brn':
 					this.scene.runStatusAnim('brn' as ID, [poke]);
 					break;
-				case 'bld':
-					this.scene.runStatusAnim('bld' as ID, [poke]);
-					break;
 				case 'psn':
 					this.scene.runStatusAnim('psn' as ID, [poke]);
 					break;
@@ -1620,6 +1631,8 @@ class Battle {
 		case '-boost': {
 			let poke = this.getPokemon(args[1])!;
 			let stat = args[2] as BoostStatName;
+			if (this.gen === 1 && stat === 'spd') break;
+			if (this.gen === 1 && stat === 'spa') stat = 'spc';
 			let amount = parseInt(args[3], 10);
 			if (amount === 0) {
 				this.scene.resultAnim(poke, 'already ' + poke.getBoost(stat), 'neutral');
@@ -1645,6 +1658,8 @@ class Battle {
 		case '-unboost': {
 			let poke = this.getPokemon(args[1])!;
 			let stat = args[2] as BoostStatName;
+			if (this.gen === 1 && stat === 'spd') break;
+			if (this.gen === 1 && stat === 'spa') stat = 'spc';
 			let amount = parseInt(args[3], 10);
 			if (amount === 0) {
 				this.scene.resultAnim(poke, 'already ' + poke.getBoost(stat), 'neutral');
@@ -1729,12 +1744,14 @@ class Battle {
 				poke.boosts[stat] = frompoke.boosts[stat];
 				if (!poke.boosts[stat]) delete poke.boosts[stat];
 			}
-			const volatilesToCopy = ['focusenergy', 'laserfocus'];
-			for (const volatile of volatilesToCopy) {
-				if (frompoke.volatiles[volatile]) {
-					poke.addVolatile(volatile as ID);
-				} else {
-					poke.removeVolatile(volatile as ID);
+			if (this.gen >= 6) {
+				const volatilesToCopy = ['focusenergy', 'laserfocus'];
+				for (const volatile of volatilesToCopy) {
+					if (frompoke.volatiles[volatile]) {
+						poke.addVolatile(volatile as ID);
+					} else {
+						poke.removeVolatile(volatile as ID);
+					}
 				}
 			}
 			this.scene.resultAnim(poke, 'Stats copied', 'neutral');
@@ -1831,9 +1848,6 @@ class Battle {
 			switch (effect.id) {
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
-				break;
-			case 'bld':
-				this.scene.resultAnim(poke, 'Already wounded', 'neutral');
 				break;
 			case 'tox':
 			case 'psn':
@@ -1939,10 +1953,6 @@ class Battle {
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
 				break;
-			case 'bld':
-				this.scene.resultAnim(poke, 'Wounded', 'bld');
-				this.scene.runStatusAnim('bld' as ID, [poke]);
-				break;
 			case 'tox':
 				this.scene.resultAnim(poke, 'Toxic poison', 'psn');
 				this.scene.runStatusAnim('psn' as ID, [poke]);
@@ -1994,9 +2004,6 @@ class Battle {
 				switch (args[2]) {
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
-					break;
-				case 'bld':
-					this.scene.resultAnim(poke, 'Bleed cured', 'good');
 					break;
 				case 'tox':
 				case 'psn':
@@ -2282,7 +2289,7 @@ class Battle {
 			let isCustomAnim = false;
 			poke.removeVolatile('typeadd' as ID);
 			poke.removeVolatile('typechange' as ID);
-			poke.removeVolatile('autotomize' as ID);
+			if (this.gen >= 7) poke.removeVolatile('autotomize' as ID);
 
 			if (!kwArgs.silent) {
 				this.activateAbility(poke, fromeffect);
@@ -2332,6 +2339,10 @@ class Battle {
 				poke.addVolatile('typeadd' as ID, type);
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, type);
+				break;
+			case 'dynamax':
+				poke.addVolatile('dynamax' as ID);
+				this.scene.animTransform(poke, true);
 				break;
 			case 'powertrick':
 				this.scene.resultAnim(poke, 'Power Trick', 'neutral');
@@ -2470,6 +2481,9 @@ class Battle {
 				// do nothing
 			} else {
 				switch (effect.id) {
+				case 'dynamax':
+					this.scene.animTransform(poke);
+					break;
 				case 'powertrick':
 					this.scene.resultAnim(poke, 'Power Trick', 'neutral');
 					break;
@@ -2664,6 +2678,8 @@ class Battle {
 					this.scene.updateStatbar(curTarget);
 				}
 				break;
+			case 'eeriespell':
+			case 'gmaxdepletion':
 			case 'spite':
 				let move = Dex.getMove(kwArgs.move).name;
 				let pp = Number(kwArgs.number);
@@ -2676,6 +2692,7 @@ class Battle {
 				this.scene.anim(poke, {time: 100});
 				break;
 			case 'skillswap': case 'wanderingspirit':
+				if (this.gen <= 4) break;
 				let pokeability = Dex.sanitizeName(kwArgs.ability) || target!.ability;
 				let targetability = Dex.sanitizeName(kwArgs.ability2) || poke.ability;
 				if (pokeability) {
@@ -2717,6 +2734,7 @@ class Battle {
 
 			// item activations
 			case 'leppaberry':
+			case 'mysteryberry':
 				poke.rememberMove(kwArgs.move, effect.id === 'leppaberry' ? -10 : -5);
 				break;
 			case 'focusband':
@@ -2742,6 +2760,10 @@ class Battle {
 			case 'lightscreen':
 			case 'safeguard':
 			case 'mist':
+			case 'gmaxwildfire':
+			case 'gmaxvolcalith':
+			case 'gmaxvinelash':
+			case 'gmaxcannonade':
 			case 'grasspledge':
 			case 'firepledge':
 			case 'waterpledge':
@@ -2785,7 +2807,7 @@ class Battle {
 						continue;
 					}
 				}
-				maxTimeLeft = 8;
+				if (this.gen > 6) maxTimeLeft = 8;
 			}
 			this.addPseudoWeather(effect.name, 5, maxTimeLeft);
 
@@ -2882,16 +2904,13 @@ class Battle {
 		output.name = name;
 		output.speciesForme = name;
 		output.level = 100;
-		output.shiny = null;
+		output.shiny = false;
 		output.gender = '';
 		output.ident = (!isTeamPreview ? pokemonid : '');
 		output.searchid = (!isTeamPreview ? `${pokemonid}|${details}` : '');
 		let splitDetails = details.split(', ');
-		if (splitDetails[splitDetails.length - 1] === 'albino') {
-			output.shiny = "Albino";
-			splitDetails.pop();
-		} else if (splitDetails[splitDetails.length - 1] === 'shiny') {
-			output.shiny = "Shiny";
+		if (splitDetails[splitDetails.length - 1] === 'shiny') {
+			output.shiny = true;
 			splitDetails.pop();
 		}
 		if (splitDetails[splitDetails.length - 1] === 'M' || splitDetails[splitDetails.length - 1] === 'F') {
@@ -3106,6 +3125,13 @@ class Battle {
 		}
 		case 'tier': {
 			this.tier = args[1];
+			if (this.tier.slice(-13) === 'Random Battle') {
+				this.speciesClause = true;
+			}
+			if (this.tier.slice(-8) === ' (Blitz)') {
+				this.messageFadeTime = 40;
+				this.isBlitz = true;
+			}
 			this.log(args);
 			break;
 		}

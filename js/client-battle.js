@@ -53,6 +53,7 @@
 		events: {
 			'click .replayDownloadButton': 'clickReplayDownloadButton',
 			'change input[name=zmove]': 'updateZMove',
+			'change input[name=dynamax]': 'updateMaxMove'
 		},
 		battleEnded: false,
 		join: function () {
@@ -79,7 +80,7 @@
 		},
 		updateLayout: function () {
 			var width = this.$el.width();
-			if (width < 950) {
+			if (width < 950 || this.battle.hardcoreMode) {
 				this.battle.messageShownTime = 500;
 			} else {
 				this.battle.messageShownTime = 1;
@@ -230,6 +231,16 @@
 				$button.html('<small>(Hide ' + ($messages.length) + ' line' + ($messages.length > 1 ? 's' : '') + ' from ' + user + ')</small>');
 				$button.parent().removeClass('revealed');
 				$messages.show();
+			}
+		},
+		setHardcoreMode: function (mode) {
+			this.battle.setHardcoreMode(mode);
+			var id = '#' + this.el.id + ' ';
+			this.$('.hcmode-style').remove();
+			this.updateLayout(); // set animation delay
+			if (mode) this.$el.prepend('<style class="hcmode-style">' + id + '.battle .turn,' + id + '.battle-history{display:none !important;}</style>');
+			if (this.choice && this.choice.waiting) {
+				this.updateControlsForPlayer();
 			}
 		},
 
@@ -467,6 +478,16 @@
 			}
 			return '<button name="openTimer" class="button timerbutton' + timerTicking + '"><i class="fa fa-hourglass-start"></i> ' + time + '</button>';
 		},
+		updateMaxMove: function () {
+			var dynaChecked = this.$('input[name=dynamax]')[0].checked;
+			if (dynaChecked) {
+				this.$('.movebuttons-nomax').hide();
+				this.$('.movebuttons-max').show();
+			} else {
+				this.$('.movebuttons-nomax').show();
+				this.$('.movebuttons-max').hide();
+			}
+		},
 		updateZMove: function () {
 			var zChecked = this.$('input[name=zmove]')[0].checked;
 			if (zChecked) {
@@ -503,6 +524,8 @@
 			var canMegaEvo = curActive.canMegaEvo || switchables[pos].canMegaEvo;
 			var canZMove = curActive.canZMove || switchables[pos].canZMove;
 			var canUltraBurst = curActive.canUltraBurst || switchables[pos].canUltraBurst;
+			var canDynamax = curActive.canDynamax || switchables[pos].canDynamax;
+			var maxMoves = curActive.maxMoves || switchables[pos].maxMoves;
 			if (canZMove && typeof canZMove[0] === 'string') {
 				canZMove = _.map(canZMove, function (move) {
 					return {move: move, target: Dex.getMove(move).target};
@@ -589,6 +612,7 @@
 				var moveMenu = '';
 				var movebuttons = '';
 				var typeValueTracker = new ModifiableValue(this.battle, this.battle.mySide.active[pos], this.battle.myPokemon[pos]);
+				var currentlyDynamaxed = (!canDynamax && maxMoves);
 				for (var i = 0; i < curActive.moves.length; i++) {
 					var moveData = curActive.moves[i];
 					var move = this.battle.dex.getMove(moveData.move);
@@ -611,10 +635,14 @@
 				if (!hasMoves) {
 					moveMenu += '<button class="movebutton" name="chooseMove" value="0" data-move="Struggle" data-target="randomNormal">Struggle<br /><small class="type">Normal</small> <small class="pp">&ndash;</small>&nbsp;</button> ';
 				} else {
-					if (canZMove) {
-						var classType = 'z';
-						movebuttons = '<div class="movebuttons-no' + classType + '">' + movebuttons + '</div><div class="movebuttons-' + classType + '" style="display:none">';
-						var specialMoves = canZMove;
+					if (canZMove || canDynamax || currentlyDynamaxed) {
+						var classType = canZMove ? 'z' : 'max';
+						if (currentlyDynamaxed) {
+							movebuttons = '';
+						} else {
+							movebuttons = '<div class="movebuttons-no' + classType + '">' + movebuttons + '</div><div class="movebuttons-' + classType + '" style="display:none">';
+						}
+						var specialMoves = canZMove ? canZMove : maxMoves.maxMoves;
 						for (var i = 0; i < curActive.moves.length; i++) {
 							if (specialMoves[i]) {
 								// when possible, use Z move to decide type, for cases like Z-Hidden Power
@@ -623,6 +651,7 @@
 								var specialMove = this.battle.dex.getMove(specialMoves[i].move);
 								var moveType = this.tooltips.getMoveType(specialMove.exists ? specialMove : baseMove, typeValueTracker)[0];
 								var tooltipArgs = classType + 'move|' + baseMove.id + '|' + pos;
+								if (specialMove.id.startsWith('gmax')) tooltipArgs += '|' + specialMove.id;
 								movebuttons += '<button class="type-' + moveType + ' has-tooltip" name="chooseMove" value="' + (i + 1) + '" data-move="' + BattleLog.escapeHTML(specialMoves[i].move) + '" data-target="' + BattleLog.escapeHTML(specialMoves[i].target) + '" data-tooltip="' + BattleLog.escapeHTML(tooltipArgs) + '">';
 								var pp = curActive.moves[i].pp + '/' + curActive.moves[i].maxpp;
 								if (canZMove) {
@@ -635,7 +664,7 @@
 								movebuttons += '<button disabled="disabled">&nbsp;</button>';
 							}
 						}
-						movebuttons += '</div>';
+						if (!currentlyDynamaxed) movebuttons += '</div>';
 					}
 					moveMenu += movebuttons;
 				}
@@ -645,6 +674,8 @@
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="zmove" />&nbsp;Z-Power</label>';
 				} else if (canUltraBurst) {
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="ultraburst" />&nbsp;Ultra Burst</label>';
+				} else if (canDynamax) {
+					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="dynamax" />&nbsp;Dynamax</label>';
 				}
 				if (this.finalDecisionMove) {
 					moveMenu += '<em style="display:block;clear:both">You <strong>might</strong> have some moves disabled, so you won\'t be able to cancel an attack!</em><br/>';
@@ -669,7 +700,7 @@
 					switchMenu += this.displayParty(switchables, trapped);
 				} else {
 					switchMenu += this.displayParty(switchables, trapped);
-					if (this.finalDecisionSwitch) {
+					if (this.finalDecisionSwitch && this.battle.gen > 2) {
 						switchMenu += '<em style="display:block;clear:both">You <strong>might</strong> be trapped, so you won\'t be able to cancel a switch!</em><br/>';
 					}
 				}
@@ -847,7 +878,11 @@
 					switch (parts[0]) {
 					case 'move':
 						var move;
-						move = this.request.active[i].moves[parseInt(parts[1], 10) - 1].move;
+						if (this.request.active[i].maxMoves && !this.request.active[i].canDynamax) { // it's a max move
+							move = this.request.active[i].maxMoves.maxMoves[parseInt(parts[1], 10) - 1].move;
+						} else { // it's a normal move
+							move = this.request.active[i].moves[parseInt(parts[1], 10) - 1].move;
+						}
 						var target = '';
 						buf += myActive[i].speciesForme + ' will ';
 						if (parts.length > 2) {
@@ -858,6 +893,11 @@
 							}
 							if (targetPos === 'zmove') {
 								move = this.request.active[i].canZMove[parseInt(parts[1], 10) - 1].move;
+								targetPos = parts[3];
+							}
+							if (targetPos === 'dynamax') {
+								move = this.request.active[i].maxMoves.maxMoves[parseInt(parts[1], 10) - 1].move;
+								buf += 'Dynamax, then ';
 								targetPos = parts[3];
 							}
 							if (targetPos) {
@@ -891,7 +931,7 @@
 				}
 			}
 			buf += '</small></p>';
-			if (!this.finalDecision) {
+			if (!this.finalDecision && !this.battle.hardcoreMode) {
 				buf += '<p><small><em>Waiting for opponent...</em></small> <button class="button" name="undoChoice">Cancel</button></p>';
 			}
 			return buf;
@@ -1072,11 +1112,12 @@
 				var isMega = !!(this.$('input[name=megaevo]')[0] || '').checked;
 				var isZMove = !!(this.$('input[name=zmove]')[0] || '').checked;
 				var isUltraBurst = !!(this.$('input[name=ultraburst]')[0] || '').checked;
+				var isDynamax = !!(this.$('input[name=dynamax]')[0] || '').checked;
 
 				var target = e.getAttribute('data-target');
 				var choosableTargets = {normal: 1, any: 1, adjacentAlly: 1, adjacentAllyOrSelf: 1, adjacentFoe: 1};
 
-				this.choice.choices.push('move ' + pos + (isMega ? ' mega' : '') + (isZMove ? ' zmove' : '') + (isUltraBurst ? ' ultra' : ''));
+				this.choice.choices.push('move ' + pos + (isMega ? ' mega' : '') + (isZMove ? ' zmove' : '') + (isUltraBurst ? ' ultra' : '') + (isDynamax ? ' dynamax' : ''));
 				if (myActive.length > 1 && target in choosableTargets) {
 					this.choice.type = 'movetarget';
 					this.choice.moveTarget = target;
@@ -1361,6 +1402,7 @@
 			this.room = data.room;
 			var rightPanelBattlesPossible = (MainMenuRoom.prototype.bestWidth + BattleRoom.prototype.minWidth < $(window).width());
 			var buf = '<p><strong>In this battle</strong></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="hardcoremode"' + (this.battle.hardcoreMode ? ' checked' : '') + '/> Hardcore mode (hide info not shown in-game) (beta)</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="ignorespects"' + (this.battle.ignoreSpects ? ' checked' : '') + '/> Ignore spectators</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="ignoreopp"' + (this.battle.ignoreOpponent ? ' checked' : '') + '/> Ignore opponent</label></p>';
 			buf += '<p><strong>All battles</strong></p>';
@@ -1376,10 +1418,19 @@
 			'change input[name=ignorespects]': 'toggleIgnoreSpects',
 			'change input[name=ignorenicks]': 'toggleIgnoreNicks',
 			'change input[name=ignoreopp]': 'toggleIgnoreOpponent',
+			'change input[name=hardcoremode]': 'toggleHardcoreMode',
 			'change input[name=allignorespects]': 'toggleAllIgnoreSpects',
 			'change input[name=allignoreopp]': 'toggleAllIgnoreOpponent',
 			'change input[name=autotimer]': 'toggleAutoTimer',
 			'change input[name=rightpanelbattles]': 'toggleRightPanelBattles'
+		},
+		toggleHardcoreMode: function (e) {
+			this.room.setHardcoreMode(!!e.currentTarget.checked);
+			if (this.battle.hardcoreMode) {
+				this.battle.add('Hardcore mode ON: Information not available in-game is now hidden.');
+			} else {
+				this.battle.add('Hardcore mode OFF: Information not available in-game is now shown.');
+			}
 		},
 		toggleIgnoreSpects: function (e) {
 			this.battle.ignoreSpects = !!e.currentTarget.checked;

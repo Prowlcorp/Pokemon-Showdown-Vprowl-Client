@@ -364,7 +364,7 @@ class MainMenuPanel extends PSRoomPanel<MainMenuRoom> {
 class FormatDropdown extends preact.Component<{format?: string, onChange?: JSX.EventHandler<Event>}> {
 	base?: HTMLButtonElement;
 	getFormat() {
-		return this.base?.value;
+		return this.base?.value || '[Gen 7] Random Battle';
 	}
 	componentDidMount() {
 		this.base!.value = this.getFormat();

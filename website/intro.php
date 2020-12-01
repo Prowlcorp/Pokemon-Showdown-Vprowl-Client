@@ -47,8 +47,8 @@ includeHeader();
 				All attacking moves are either Physical or Special moves. Physical moves use your attacker's Attack stat against your target's Defense stat, while Special moves use your attacker's Special Attack stat against the target's Special Defense stat.
 			</p>
 			<blockquote><p>
-				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/misc/Physical.png" alt="[Physical]" /> Physical<br />
-				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/misc/Special.png" alt="[Special]" /> Special<br />
+				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/categories/Physical.png" alt="[Physical]" /> Physical<br />
+				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/categories/Special.png" alt="[Special]" /> Special<br />
 			</p></blockquote>
 			<p>
 				In game and online, these icons will remind you of whether a move is Physical or Special. Remember that a Pokémon with high Attack and low Special Attack should usually be using only Physical moves, and vice versa.
@@ -103,9 +103,29 @@ includeHeader();
 			<p>
 				VGC is Nintendo's official tournament. VGC rules change every year; in 2014, its rules are the same as Battle Spot Doubles, except only Pokémon that are Kalos-native and appear in the Kalos Pokédex are allowed.
 			</p>
+			<h3>Official Smogon formats</h3>
+			<p>
+				The Smogon singles formats are Ubers, OU (Overused), UU (Underused), RU (Rarely-used), NU (Neverused), LC (Little Cup). These formats are all singles bring-6-choose-6. They're named after their corresponding Smogon tier (except LC).
+			</p>
+			<p>
+				Smogon also has a bring-6-choose-6 doubles format, named Smogon Doubles. Its rules are fairly similar to OU.
+			</p>
+			<h3>The Smogon tier system</h3>
+			<p>
+				Smogon has a usage-based tier system. Basically, a few Pokémon are considered too strong and considered Uber. After that, all other Pokémon are allowed to be used in OU (Overused). Any Pokémon used on average more than once every 20 battles in OU is considered in the OU tier, and the rest are allowed in UU. Any Pokémon used on average more than once every 20 battles is considered UU, and the rest are allowed in RU.
+			</p>
+			<p>
+				This tiering system orders Pokémon roughly from best to worst, and makes it so that even if you want to use an underpowered Pokémon, there's a Smogon tier that allows it to go up against Pokémon that are approximately as strong as it.
+			</p>
+			<p>
+				Little Cup is separate from the Smogon tier system, and is a format where only the lowest evolution stage of Pokémon that can evolve are allowed.
+			</p>
+			<p>
+				<a href="http://www.smogon.com/xyhub/tiers" target="_blank">Smogon's XY Tiers page</a> contains additional information about Smogon formats.
+			</p>
 			<h3>Other metagames</h3>
 			<p>
-				In addition to the official Nintendo and Smogon formats, fans commonly try to invent their own rules for playing. It feels very different from regular Pokémon!
+				In addition to the official Nintendo and Smogon formats, fans commonly try to invent their own rules for playing. The most popular is Balanced Hackmons, which is a format where hacked Pokémon are allowed. It feels very different from regular Pokémon!
 			</p>
 
 			<h2>Basic strategy</h2>

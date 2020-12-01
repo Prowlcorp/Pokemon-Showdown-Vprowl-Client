@@ -249,6 +249,9 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 		case 'z':
 			choices.current.z = checkbox.checked;
 			break;
+		case 'max':
+			choices.current.max = checkbox.checked;
+			break;
 		}
 		this.props.room.update(null);
 	};
@@ -338,6 +341,21 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 		const pokemonIndex = choices.index();
 		const active = choices.currentMoveRequest();
 		if (!active) return <div class="message-error">Invalid pokemon</div>;
+
+		if (choices.current.max || (active.maxMoves && !active.canDynamax)) {
+			if (!active.maxMoves) {
+				return <div class="message-error">Maxed with no max moves</div>;
+			}
+			return active.moves.map((moveData, i) => {
+				const move = dex.getMove(moveData.name);
+				const maxMoveData = active.maxMoves![i];
+				const gmaxTooltip = maxMoveData.id.startsWith('gmax') ? `|${maxMoveData.id}` : ``;
+				const tooltip = `maxmove|${moveData.name}|${pokemonIndex}${gmaxTooltip}`;
+				return <MoveButton cmd={`/move ${i + 1} max`} type={move.type} tooltip={tooltip} moveData={moveData}>
+					{maxMoveData.name}
+				</MoveButton>;
+			});
+		}
 
 		if (choices.current.z) {
 			if (!active.zMoves) {
@@ -470,6 +488,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 				buf.push(`${pokemon.name} will `);
 				if (choice.mega) buf.push(`Mega Evolve and `);
 				if (choice.ultra) buf.push(`Ultra Burst and `);
+				if (choice.max && active?.canDynamax) buf.push(active?.canGigantamax ? `Gigantamax and ` : `Dynamax and `);
 				buf.push(`use `, <strong>{choices.getChosenMove(choice, i).name}</strong>);
 				if (choice.targetLoc > 0) {
 					const target = battle.yourSide.active[choice.targetLoc - 1];
@@ -526,6 +545,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			const pokemon = request.side.pokemon[index];
 			const moveRequest = choices.currentMoveRequest()!;
 
+			const canDynamax = moveRequest.canDynamax && !choices.alreadyMax;
 			const canMegaEvo = moveRequest.canMegaEvo && !choices.alreadyMega;
 			const canZMove = moveRequest.zMoves && !choices.alreadyZ;
 
@@ -558,6 +578,10 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 					<div class="movemenu">
 						{this.renderMoveControls(request, choices)}
 						<div style="clear:left"></div>
+						{canDynamax && <label class={`megaevo${choices.current.max ? ' cur' : ''}`}>
+							<input type="checkbox" name="max" checked={choices.current.max} onChange={this.toggleBoostedMove} /> {}
+							{moveRequest.canGigantamax ? 'Gigantamax' : 'Dynamax'}
+						</label>}
 						{canMegaEvo && <label class={`megaevo${choices.current.mega ? ' cur' : ''}`}>
 							<input type="checkbox" name="mega" checked={choices.current.mega} onChange={this.toggleBoostedMove} /> {}
 							Mega Evolution

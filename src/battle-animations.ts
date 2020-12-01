@@ -109,6 +109,7 @@ class BattleScene {
 		let numericId = 0;
 		if (battle.id) {
 			numericId = parseInt(battle.id.slice(battle.id.lastIndexOf('-') + 1), 10);
+			if (this.battle.id.includes('digimon')) this.mod = 'digimon';
 		}
 		if (!numericId) {
 			numericId = Math.floor(Math.random() * 1000000);
@@ -468,6 +469,9 @@ class BattleScene {
 				}, this.battle.messageFadeTime / this.acceleration);
 			}
 		}
+		if (this.battle.hardcoreMode && message.slice(0, 8) === '<small>(') {
+			message = '';
+		}
 		if (message && this.animating) {
 			this.$hiddenMessage.append('<p></p>');
 			let $message = this.$hiddenMessage.children().last();
@@ -523,7 +527,7 @@ class BattleScene {
 			const isSpecial = !targetsSelf && this.battle.dex.getMove(moveid).category === 'Special';
 			animEntry = BattleOtherAnims[targetsSelf ? 'fastanimself' : isSpecial ? 'fastanimspecial' : 'fastanimattack'];
 		} else if (!animEntry) {
-			animEntry = BattleMoveAnims['pound'];
+			animEntry = BattleMoveAnims['tackle'];
 		}
 		animEntry.anim(this, participants.map(p => p.sprite));
 	}
@@ -560,10 +564,19 @@ class BattleScene {
 		const isSPL = (typeof this.battle.rated === 'string' && this.battle.rated.startsWith("Smogon Premier League"));
 		let bg: string;
 		if (isSPL) {
-			bg = 'fx/bg-spl.png';
+			if (gen <= 1) bg = 'fx/bg-gen1-spl.png';
+			else if (gen <= 2) bg = 'fx/bg-gen2-spl.png';
+			else if (gen <= 3) bg = 'fx/bg-gen3-spl.png';
+			else if (gen <= 4) bg = 'fx/bg-gen4-spl.png';
+			else bg = 'fx/bg-spl.png';
 			this.setBgm(-101);
 		} else {
-			bg = 'sprites/gen6bgs/' + BattleBackdrops[this.numericId % BattleBackdrops.length];
+			if (gen <= 1) bg = 'fx/bg-gen1.png?';
+			else if (gen <= 2) bg = 'fx/bg-gen2.png?';
+			else if (gen <= 3) bg = 'fx/' + BattleBackdropsThree[this.numericId % BattleBackdropsThree.length] + '?';
+			else if (gen <= 4) bg = 'fx/' + BattleBackdropsFour[this.numericId % BattleBackdropsFour.length];
+			else if (gen <= 5) bg = 'fx/' + BattleBackdropsFive[this.numericId % BattleBackdropsFive.length];
+			else bg = 'sprites/gen6bgs/' + BattleBackdrops[this.numericId % BattleBackdrops.length];
 		}
 
 		this.backdropImage = bg;
@@ -600,6 +613,7 @@ class BattleScene {
 
 	updateSidebar(side: Side) {
 		if (!this.animating) return;
+		let noShow = this.battle.hardcoreMode && this.battle.gen < 7;
 
 		let speciesOverage = this.battle.speciesClause ? Infinity : Math.max(side.pokemon.length - side.totalPokemon, 0);
 		const sidebarIcons: (
@@ -649,6 +663,14 @@ class BattleScene {
 			const tooltipCode = ` class="picon has-tooltip" data-tooltip="pokemon|${side.n}|${pokeIndex}${iconType === 'pokemon-illusion' ? '|illusion' : ''}"`;
 			if (iconType === 'empty') {
 				pokemonhtml += `<span class="picon" style="` + Dex.getPokemonIcon('pokeball-none') + `"></span>`;
+			} else if (noShow) {
+				if (poke?.fainted) {
+					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball-fainted') + `" aria-label="Fainted"></span>`;
+				} else if (poke?.status) {
+					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball-statused') + `" aria-label="Statused"></span>`;
+				} else {
+					pokemonhtml += `<span${tooltipCode} style="` + Dex.getPokemonIcon('pokeball') + `" aria-label="Non-statused"></span>`;
+				}
 			} else if (iconType === 'pseudo-zoroark') {
 				pokemonhtml += `<span class="picon" style="` + Dex.getPokemonIcon('zoroark') + `" title="Unrevealed Illusion user" aria-label="Unrevealed Illusion user"></span>`;
 			} else if (!poke) {
@@ -783,6 +805,7 @@ class BattleScene {
 			pWeather[1] = pWeather[2];
 			pWeather[2] = 0;
 		}
+		if (this.battle.gen < 7 && this.battle.hardcoreMode) return buf;
 		if (pWeather[2]) {
 			return buf + ' <small>(' + pWeather[1] + ' or ' + pWeather[2] + ' turns)</small>';
 		}
@@ -794,6 +817,7 @@ class BattleScene {
 	sideConditionLeft(cond: [string, number, number, number], siden: number, all?: boolean) {
 		if (!cond[2] && !cond[3] && !all) return '';
 		let buf = `<br />${siden && !all ? "Foe's " : ""}${Dex.getMove(cond[0]).name}`;
+		if (this.battle.gen < 7 && this.battle.hardcoreMode) return buf;
 
 		if (!cond[2] && !cond[3]) return buf;
 		if (!cond[2] && cond[3]) {
@@ -806,6 +830,8 @@ class BattleScene {
 		return buf + ' <small>(' + cond[2] + ' or ' + cond[3] + ' turns)</small>';
 	}
 	weatherLeft() {
+		if (this.battle.gen < 7 && this.battle.hardcoreMode) return '';
+
 		let weatherhtml = ``;
 
 		if (this.battle.weather) {
@@ -815,7 +841,6 @@ class BattleScene {
 				raindance: 'Rain',
 				primordialsea: 'Heavy Rain',
 				sandstorm: 'Sandstorm',
-				ragingsandstorm: 'Raging Sandstorm',
 				hail: 'Hail',
 				deltastream: 'Strong Winds',
 			};
@@ -841,7 +866,7 @@ class BattleScene {
 		return buf;
 	}
 	upkeepWeather() {
-		const isIntense = ['desolateland', 'primordialsea', 'deltastream', 'ragingsandstorm'].includes(this.curWeather);
+		const isIntense = ['desolateland', 'primordialsea', 'deltastream'].includes(this.curWeather);
 		this.$weather.animate({
 			opacity: 1.0,
 		}, 300).animate({
@@ -860,7 +885,6 @@ class BattleScene {
 			case 'grassyterrain':
 			case 'mistyterrain':
 			case 'psychicterrain':
-			case 'hellfire':
 				terrain = pwid;
 				break;
 			default:
@@ -868,7 +892,7 @@ class BattleScene {
 				break;
 			}
 		}
-		if (weather === 'desolateland' || weather === 'primordialsea' || weather === 'deltastream' || weather === 'ragingsandstorm') {
+		if (weather === 'desolateland' || weather === 'primordialsea' || weather === 'deltastream') {
 			isIntense = true;
 		}
 
@@ -1118,6 +1142,37 @@ class BattleScene {
 			this.$spritesFront[siden].append(rock4.$el!);
 			this.sideConditions[siden][id] = [rock1, rock2, rock3, rock4];
 			break;
+		case 'gmaxsteelsurge':
+			const surge1 = new Sprite(BattleEffects.greenmetal1, {
+				display: 'block',
+				x: side.leftof(-30),
+				y: side.y - 20,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.8,
+			}, this);
+			const surge2 = new Sprite(BattleEffects.greenmetal2, {
+				display: 'block',
+				x: side.leftof(35),
+				y: side.y - 15,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.8,
+			}, this);
+			const surge3 = new Sprite(BattleEffects.greenmetal1, {
+				display: 'block',
+				x: side.leftof(50),
+				y: side.y - 10,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.8,
+			}, this);
+
+			this.$spritesFront[siden].append(surge1.$el!);
+			this.$spritesFront[siden].append(surge2.$el!);
+			this.$spritesFront[siden].append(surge3.$el!);
+			this.sideConditions[siden][id] = [surge1, surge2, surge3];
+			break;
 		case 'spikes':
 			let spikeArray = this.sideConditions[siden]['spikes'];
 			if (!spikeArray) {
@@ -1282,7 +1337,7 @@ class BattleScene {
 			callback = () => { $hp.addClass('hp-yellow hp-red'); };
 		}
 
-		this.resultAnim(pokemon, '&minus;' + damage, 'bad');
+		this.resultAnim(pokemon, this.battle.hardcoreMode ? 'Damage' : '&minus;' + damage, 'bad');
 
 		$hp.animate({
 			width: w,
@@ -1305,7 +1360,7 @@ class BattleScene {
 			callback = () => { $hp.removeClass('hp-red'); };
 		}
 
-		this.resultAnim(pokemon, '+' + damage, 'good');
+		this.resultAnim(pokemon, this.battle.hardcoreMode ? 'Heal' : '+' + damage, 'good');
 
 		$hp.animate({
 			width: w,
@@ -1615,6 +1670,7 @@ class PokemonSprite extends Sprite {
 		formechange: null,
 		typechange: null,
 		typeadd: null,
+		dynamax: ['Dynamaxed', 'good'],
 		trapped: null, // linked volatiles are not implemented yet
 		throatchop: ['Throat Chop', 'bad'],
 		confusion: ['Confused', 'bad'],
@@ -1654,6 +1710,7 @@ class PokemonSprite extends Sprite {
 		focusenergy: ['Critical Hit Boost', 'good'],
 		slowstart: ['Slow Start', 'bad'],
 		noretreat: ['No Retreat', 'bad'],
+		octolock: ['Octolock', 'bad'],
 		tarshot: ['Tar Shot', 'bad'],
 		doomdesire: null,
 		futuresight: null,
@@ -1670,6 +1727,7 @@ class PokemonSprite extends Sprite {
 		wideguard: ['Wide Guard', 'good'],
 		craftyshield: ['Crafty Shield', 'good'],
 		matblock: ['Mat Block', 'good'],
+		maxguard: ['Max Guard', 'good'],
 		helpinghand: ['Helping Hand', 'good'],
 		magiccoat: ['Magic Coat', 'good'],
 		destinybond: ['Destiny Bond', 'good'],
@@ -1909,7 +1967,7 @@ class PokemonSprite extends Sprite {
 	reset(pokemon: Pokemon) {
 		this.clearEffects();
 
-		if (pokemon.volatiles.formechange) {
+		if (pokemon.volatiles.formechange || pokemon.volatiles.dynamax) {
 			if (!this.oldsp) this.oldsp = this.sp;
 			this.sp = Dex.getSpriteData(pokemon, this.isBackSprite ? 0 : 1, {
 				gen: this.scene.gen,
@@ -2565,8 +2623,6 @@ class PokemonSprite extends Sprite {
 		let status = '';
 		if (pokemon.status === 'brn') {
 			status += '<span class="brn">BRN</span> ';
-		} else if (pokemon.status === 'bld') {
-			status += '<span class="bld">BLD</span> ';
 		} else if (pokemon.status === 'psn') {
 			status += '<span class="psn">PSN</span> ';
 		} else if (pokemon.status === 'tox') {
@@ -2621,9 +2677,13 @@ class PokemonSprite extends Sprite {
 		if (!this.$statbar) return;
 		let $hptext = this.$statbar.find('.hptext');
 		let $hptextborder = this.$statbar.find('.hptextborder');
-		if (pokemon.maxhp === 48) {
+		if (pokemon.maxhp === 48 || this.scene.battle.hardcoreMode && pokemon.maxhp === 100) {
 			$hptext.hide();
 			$hptextborder.hide();
+		} else if (this.scene.battle.hardcoreMode) {
+			$hptext.html(pokemon.hp + '/');
+			$hptext.show();
+			$hptextborder.show();
 		} else {
 			$hptext.html(pokemon.hpWidth(100) + '%');
 			$hptext.show();
@@ -2925,6 +2985,21 @@ const BattleEffects: {[k: string]: SpriteData} = {
 		BattleEffects[id].url = Dex.fxPrefix + BattleEffects[id].url;
 	}
 })();
+const BattleBackdropsThree = [
+	'bg-gen3.png',
+	'bg-gen3-cave.png',
+	'bg-gen3-ocean.png',
+	'bg-gen3-sand.png',
+	'bg-gen3-forest.png',
+	'bg-gen3-arena.png',
+];
+const BattleBackdropsFour = [
+	'bg-gen4.png',
+	'bg-gen4-cave.png',
+	'bg-gen4-snow.png',
+	'bg-gen4-indoors.png',
+	'bg-gen4-water.png',
+];
 const BattleBackdropsFive = [
 	'bg-beach.png',
 	'bg-beachshore.png',
@@ -5554,24 +5629,6 @@ const BattleStatusAnims: AnimTable = {
 	brn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('fireball', {
-				x: attacker.x - 20,
-				y: attacker.y - 15,
-				z: attacker.z,
-				scale: 0.2,
-				opacity: 0.3,
-			}, {
-				x: attacker.x + 40,
-				y: attacker.y + 15,
-				z: attacker.z,
-				scale: 1,
-				opacity: 1,
-				time: 300,
-			}, 'swing', 'fade');
-		},
-	},
-	bld: {
-		anim(scene, [attacker]) {
-			scene.showEffect('rightslash', {
 				x: attacker.x - 20,
 				y: attacker.y - 15,
 				z: attacker.z,

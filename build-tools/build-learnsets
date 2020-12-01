@@ -26,7 +26,7 @@ function updateLearnsets(callback) {
 	const reservedRegExp = /^(return|\d.*)$/g; // `return` is the only ES3+ reserved keyword that (currently) raises conflicts
 	const alphabetize = (a, b) => a.localeCompare(b);
 
-	const formatLset = function (lset) {//PROWL change?
+	const formatLset = function (lset) {
 		const secondChar = lset.charAt(1);
 		if (secondChar !== 'L') return lset;
 		const firstFragment = lset.substr(0, 2);
@@ -58,7 +58,7 @@ function updateLearnsets(callback) {
 
 	const buf = [];
 	const pokemonList = Object.keys(Pokedex).map(speciesId => Pokedex[speciesId]).sort(function (a, b) {
-		// Missingno. goes first (zeroth);
+		// Missingno. goes first (zeroth); afterwards, CAP in descending dex order (increasingly negative)
 		// Finally, standard Pokémon in ascending dex order
 		if (a.num <= 0 && b.num > 0) return -1;
 		if (b.num <= 0 && a.num > 0) return 1;

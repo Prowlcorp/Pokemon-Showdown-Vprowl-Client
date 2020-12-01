@@ -435,6 +435,9 @@
 			case 'hl': case 'highlight':
 			case 'buttonban': case 'buttonmute': case 'buttonunmute': case 'buttonkick': case 'buttonwarn':
 			case 'part': case 'leave':
+			case 'afd':
+				$chat.append('<div class="chat">Use this command in a proper chat room.</div>');
+				break;
 			default:
 				if (!userid) userid = '~';
 				if (text.startsWith('\n')) text = text.slice(1);
@@ -895,7 +898,9 @@
 			if (!noChoice) {
 				this.curFormat = formatid;
 				if (!this.curFormat) {
-					for (var i in BattleFormats) {
+					if (BattleFormats['gen8randombattle']) {
+						this.curFormat = 'gen8randombattle';
+					} else for (var i in BattleFormats) {
 						if (!BattleFormats[i].searchShow || !BattleFormats[i].challengeShow) continue;
 						this.curFormat = i;
 						break;

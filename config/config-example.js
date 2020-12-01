@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'pokemon-showdown-custom.herokuapp.com', //PROWL change
+	host: 'sim3.psim.us',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
