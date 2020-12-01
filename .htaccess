@@ -140,8 +140,8 @@ RewriteRule ^\.gitignore$ - [F]
 RewriteRule ^README\.md$ - [F]
 RewriteRule ^index\.template\.html$ - [F]
 RewriteRule ^preactalpha\.template\.html$ - [F]
-RewriteRule ^index\.html$ - [F]
-RewriteRule ^index-beta\.html$ - [F]
+RewriteRule ^testclient\.html$ - [F]
+RewriteRule ^testclient-beta\.html$ - [F]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(apple-touch-icon-precomposed\.png)$ - [R=404,L]
