@@ -1016,124 +1016,91 @@
 				}
 				Storage.prefs('avatar', avatar);
 				return '/avatar ' + avatar; // Send the command through to the server.
-
-			case 'afd':
-				if (this.checkBroadcast(cmd, text)) return false;
-				var cleanedTarget = toID(target);
-				if (cleanedTarget === 'off' || cleanedTarget === 'disable') {
-					Config.server.afd = false;
-					if (typeof BattleTextNotAFD !== 'undefined') BattleText = BattleTextNotAFD;
-					this.add('April Fools\' day mode disabled.');
-				} else {
-					Config.server.afd = true;
-					if (typeof BattleTextAFD !== 'undefined') BattleText = BattleTextAFD;
-					this.add('April Fools\' day mode enabled.');
-				}
-				for (var roomid in app.rooms) {
-					var battle = app.rooms[roomid] && app.rooms[roomid].battle;
-					if (!battle) continue;
-					var turn = battle.turn;
-					var oldState = battle.playbackState;
-					if (oldState === 4) turn = -1;
-					battle.reset(true);
-					battle.fastForwardTo(turn);
-					if (oldState !== 3) {
-						battle.play();
-					} else {
-						battle.pause();
-					}
-				}
-				return false;
-
 			// documentation of client commands
 			case 'help':
 				if (this.checkBroadcast(cmd, text)) return false;
 				switch (toID(target)) {
-				case 'chal':
-				case 'chall':
-				case 'challenge':
-					this.add('/challenge - Open a prompt to challenge a user to a battle.');
-					this.add('/challenge [user] - Challenge the user [user] to a battle.');
-					this.add('/challenge [user], [format] - Challenge the user [user] to a battle in the specified [format].');
-					this.add('/challenge [user], [format] @@@ [Added Rule], [!Removed Rule], [-Banned thing], [*Restricted thing], [+Unbanned/unrestricted thing] - Challenge the user [user] to a battle in the specified [format] with the custom rules added on.');
-					return false;
-				case 'accept':
-					this.add('/accept - Accept a challenge if only one is pending.');
-					this.add('/accept [user] - Accept a challenge from the specified user.');
-					return false;
-				case 'reject':
-					this.add('/reject - Reject a challenge if only one is pending.');
-					this.add('/reject [user] - Reject a challenge from the specified user.');
-					return false;
-				case 'user':
-				case 'open':
-					this.add('/user [user] - Open a popup containing the user [user]\'s avatar, name, rank, and chatroom list.');
-					return false;
-				case 'news':
-					this.add('/news - Opens a popup containing the news.');
-					return false;
-				case 'ignore':
-				case 'unignore':
-					this.add('/ignore [user] - Ignore all messages from the user [user].');
-					this.add('/unignore [user] - Remove the user [user] from your ignore list.');
-					this.add('/ignorelist - List all the users that you currently ignore.');
-					this.add('Note that staff messages cannot be ignored.');
-					return false;
-				case 'nick':
-					this.add('/nick [new username] - Change your username.');
-					return false;
-				case 'clear':
-					this.add('/clear - Clear the room\'s chat log.');
-					return false;
-				case 'showdebug':
-				case 'hidedebug':
-					this.add('/showdebug - Receive debug messages from battle events.');
-					this.add('/hidedebug - Ignore debug messages from battle events.');
-					return false;
-				case 'showjoins':
-				case 'hidejoins':
-					this.add('/showjoins [room] - Receive users\' join/leave messages. Optionally for only specified room.');
-					this.add('/hidejoins [room] - Ignore users\' join/leave messages. Optionally for only specified room.');
-					return false;
-				case 'showbattles':
-				case 'hidebattles':
-					this.add('/showbattles - Receive links to new battles in Lobby.');
-					this.add('/hidebattles - Ignore links to new battles in Lobby.');
-					return false;
-				case 'unpackhidden':
-				case 'packhidden':
-					this.add('/unpackhidden - Suppress hiding locked or banned users\' chat messages after the fact.');
-					this.add('/packhidden - Hide locked or banned users\' chat messages after the fact.');
-					this.add('Hidden messages from a user can be restored by clicking the button underneath their lock/ban reason.');
-					return false;
-				case 'timestamps':
-					this.add('Set your timestamps preference:');
-					this.add('/timestamps [all|lobby|pms], [minutes|seconds|off]');
-					this.add('all - Change all timestamps preferences, lobby - Change only lobby chat preferences, pms - Change only PM preferences.');
-					this.add('off - Set timestamps off, minutes - Show timestamps of the form [hh:mm], seconds - Show timestamps of the form [hh:mm:ss].');
-					return false;
-				case 'highlight':
-				case 'hl':
-					this.add('Set up highlights:');
-					this.add('/highlight add, [word] - Add the word [word] to the highlight list.');
-					this.add('/highlight roomadd, [word] - Add the word [word] to the highlight list of whichever room you used the command in.');
-					this.add('/highlight list - List all words that currently highlight you.');
-					this.add('/highlight roomlist - List all words that currently highlight you in whichever room you used the command in.');
-					this.add('/highlight delete, [word] - Delete the word [word] from your entire highlight list.');
-					this.add('/highlight roomdelete, [word] - Delete the word [word] from the highlight list of whichever room you used the command in.');
-					this.add('/highlight delete - Clear the highlight list.');
-					return false;
-				case 'rank':
-				case 'ranking':
-				case 'rating':
-				case 'ladder':
-					this.add('/rating - Get your own rating.');
-					this.add('/rating [username] - Get user [username]\'s rating.');
-					return false;
-				case 'afd':
-					this.add('/afd - Enable April Fools\' Day sprites.');
-					this.add('/afd disable - Disable April Fools\' Day sprites.');
-					return false;
+					case 'chal':
+					case 'chall':
+					case 'challenge':
+						this.add('/challenge - Open a prompt to challenge a user to a battle.');
+						this.add('/challenge [user] - Challenge the user [user] to a battle.');
+						this.add('/challenge [user], [format] - Challenge the user [user] to a battle in the specified [format].');
+						this.add('/challenge [user], [format] @@@ [Added Rule], [!Removed Rule], [-Banned thing], [*Restricted thing], [+Unbanned/unrestricted thing] - Challenge the user [user] to a battle in the specified [format] with the custom rules added on.');
+						return false;
+					case 'accept':
+						this.add('/accept - Accept a challenge if only one is pending.');
+						this.add('/accept [user] - Accept a challenge from the specified user.');
+						return false;
+					case 'reject':
+						this.add('/reject - Reject a challenge if only one is pending.');
+						this.add('/reject [user] - Reject a challenge from the specified user.');
+						return false;
+					case 'user':
+					case 'open':
+						this.add('/user [user] - Open a popup containing the user [user]\'s avatar, name, rank, and chatroom list.');
+						return false;
+					case 'news':
+						this.add('/news - Opens a popup containing the news.');
+						return false;
+					case 'ignore':
+					case 'unignore':
+						this.add('/ignore [user] - Ignore all messages from the user [user].');
+						this.add('/unignore [user] - Remove the user [user] from your ignore list.');
+						this.add('/ignorelist - List all the users that you currently ignore.');
+						this.add('Note that staff messages cannot be ignored.');
+						return false;
+					case 'nick':
+						this.add('/nick [new username] - Change your username.');
+						return false;
+					case 'clear':
+						this.add('/clear - Clear the room\'s chat log.');
+						return false;
+					case 'showdebug':
+					case 'hidedebug':
+						this.add('/showdebug - Receive debug messages from battle events.');
+						this.add('/hidedebug - Ignore debug messages from battle events.');
+						return false;
+					case 'showjoins':
+					case 'hidejoins':
+						this.add('/showjoins [room] - Receive users\' join/leave messages. Optionally for only specified room.');
+						this.add('/hidejoins [room] - Ignore users\' join/leave messages. Optionally for only specified room.');
+						return false;
+					case 'showbattles':
+					case 'hidebattles':
+						this.add('/showbattles - Receive links to new battles in Lobby.');
+						this.add('/hidebattles - Ignore links to new battles in Lobby.');
+						return false;
+					case 'unpackhidden':
+					case 'packhidden':
+						this.add('/unpackhidden - Suppress hiding locked or banned users\' chat messages after the fact.');
+						this.add('/packhidden - Hide locked or banned users\' chat messages after the fact.');
+						this.add('Hidden messages from a user can be restored by clicking the button underneath their lock/ban reason.');
+						return false;
+					case 'timestamps':
+						this.add('Set your timestamps preference:');
+						this.add('/timestamps [all|lobby|pms], [minutes|seconds|off]');
+						this.add('all - Change all timestamps preferences, lobby - Change only lobby chat preferences, pms - Change only PM preferences.');
+						this.add('off - Set timestamps off, minutes - Show timestamps of the form [hh:mm], seconds - Show timestamps of the form [hh:mm:ss].');
+						return false;
+					case 'highlight':
+					case 'hl':
+						this.add('Set up highlights:');
+						this.add('/highlight add, [word] - Add the word [word] to the highlight list.');
+						this.add('/highlight roomadd, [word] - Add the word [word] to the highlight list of whichever room you used the command in.');
+						this.add('/highlight list - List all words that currently highlight you.');
+						this.add('/highlight roomlist - List all words that currently highlight you in whichever room you used the command in.');
+						this.add('/highlight delete, [word] - Delete the word [word] from your entire highlight list.');
+						this.add('/highlight roomdelete, [word] - Delete the word [word] from the highlight list of whichever room you used the command in.');
+						this.add('/highlight delete - Clear the highlight list.');
+						return false;
+					case 'rank':
+					case 'ranking':
+					case 'rating':
+					case 'ladder':
+						this.add('/rating - Get your own rating.');
+						this.add('/rating [username] - Get user [username]\'s rating.');
+						return false;
 				}
 			}
 
@@ -1384,7 +1351,6 @@
 					var battletype = 'Battle';
 					if (format) {
 						battletype = format + ' battle';
-						if (format === 'Random Battle') battletype = 'Random Battle';
 					}
 					this.$chat.append('<div class="notice"><a href="' + app.root + id + '" class="ilink">' + battletype + ' started between <strong style="' + BattleLog.hashColor(toUserid(name)) + '">' + BattleLog.escapeHTML(name) + '</strong> and <strong style="' + BattleLog.hashColor(toUserid(name2)) + '">' + BattleLog.escapeHTML(name2) + '</strong>.</a></div>');
 					break;

@@ -117,8 +117,6 @@ const BattleStatIDs: {[k: string]: StatName | undefined} = {
 	SAtk: 'spa',
 	SpAtk: 'spa',
 	spa: 'spa',
-	spc: 'spa',
-	Spc: 'spa',
 	SpD: 'spd',
 	SDef: 'spd',
 	SpDef: 'spd',
@@ -138,7 +136,7 @@ const BattleStatNames = {
 } as const;
 
 const BattleBaseSpeciesChart = [
-	"unown", "burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie", "pokestarufo", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestartransport", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit", "pokestarblackdoor", "pokestarwhitedoor", "pokestarblackbelt",
+	"burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie",
 ] as ID[];
 
 const BattlePokemonIconIndexes: {[id: string]: number} = {
@@ -149,33 +147,6 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	pikachupopstar: 900 + 5,
 	pikachurockstar: 900 + 6,
 	pikachucosplay: 900 + 7,
-	unownexclamation: 900 + 8,
-	unownquestion: 900 + 9,
-	unownb: 900 + 10,
-	unownc: 900 + 11,
-	unownd: 900 + 12,
-	unowne: 900 + 13,
-	unownf: 900 + 14,
-	unowng: 900 + 15,
-	unownh: 900 + 16,
-	unowni: 900 + 17,
-	unownj: 900 + 18,
-	unownk: 900 + 19,
-	unownl: 900 + 20,
-	unownm: 900 + 21,
-	unownn: 900 + 22,
-	unowno: 900 + 23,
-	unownp: 900 + 24,
-	unownq: 900 + 25,
-	unownr: 900 + 26,
-	unowns: 900 + 27,
-	unownt: 900 + 28,
-	unownu: 900 + 29,
-	unownv: 900 + 30,
-	unownw: 900 + 31,
-	unownx: 900 + 32,
-	unowny: 900 + 33,
-	unownz: 900 + 34,
 	castformrainy: 900 + 35,
 	castformsnowy: 900 + 36,
 	castformsunny: 900 + 37,
@@ -217,7 +188,6 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	vivillonarchipelago: 900 + 73,
 	vivilloncontinental: 900 + 74,
 	vivillonelegant: 900 + 75,
-	vivillonfancy: 900 + 76,
 	vivillongarden: 900 + 77,
 	vivillonhighplains: 900 + 78,
 	vivillonicysnow: 900 + 79,
@@ -226,7 +196,6 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	vivillonmodern: 900 + 82,
 	vivillonmonsoon: 900 + 83,
 	vivillonocean: 900 + 84,
-	vivillonpokeball: 900 + 85,
 	vivillonpolar: 900 + 86,
 	vivillonriver: 900 + 87,
 	vivillonsandstorm: 900 + 88,
@@ -293,33 +262,15 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	miniorindigo: 900 + 150,
 	miniorviolet: 900 + 151,
 	magearnaoriginal: 900 + 152,
-	pikachuoriginal: 900 + 153,
-	pikachuhoenn: 900 + 154,
-	pikachusinnoh: 900 + 155,
-	pikachuunova: 900 + 156,
-	pikachukalos: 900 + 157,
-	pikachualola: 900 + 158,
-	pikachupartner: 900 + 159,
 	lycanrocdusk: 900 + 160,
 	necrozmaduskmane: 900 + 161,
 	necrozmadawnwings: 900 + 162,
 	necrozmaultra: 900 + 163,
-	pikachustarter: 900 + 164,
-	eeveestarter: 900 + 165,
-	meowthgalar: 900 + 166,
-	ponytagalar: 900 + 167,
-	rapidashgalar: 900 + 168,
-	farfetchdgalar: 900 + 169,
-	weezinggalar: 900 + 170,
-	mrmimegalar: 900 + 171,
-	corsolagalar: 900 + 172,
-	zigzagoongalar: 900 + 173,
-	linoonegalar: 900 + 174,
-	darumakagalar: 900 + 175,
-	darmanitangalar: 900 + 176,
-	darmanitangalarzen: 900 + 177,
-	yamaskgalar: 900 + 178,
-	stunfiskgalar: 900 + 179,
+	ponytakonor: 900 + 167,
+	rapidashkonor: 900 + 168,
+	zigzagoonkonor: 900 + 173,
+	linoonekonor: 900 + 174,
+	yamaskkonor: 900 + 178,
 	cramorantgulping: 900 + 180,
 	cramorantgorging: 900 + 181,
 	toxtricitylowkey: 900 + 182,
@@ -334,20 +285,12 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	alcremiecaramelswirl: 900 + 189,
 	alcremierainbowswirl: 900 + 190,
 	eiscuenoice: 900 + 191,
-	indeedeef: 900 + 192,
-	morpekohangry: 900 + 193,
 	zaciancrowned: 900 + 194,
 	zamazentacrowned: 900 + 195,
-	slowpokegalar: 900 + 196,
-	slowbrogalar: 900 + 197,
-	zarudedada: 900 + 198,
 	pikachuworld: 900 + 199,
-	articunogalar: 900 + 200,
-	zapdosgalar: 900 + 201,
-	moltresgalar: 900 + 202,
-	slowkinggalar: 900 + 203,
-	calyrexice: 900 + 204,
-	calyrexshadow: 900 + 205,
+	articunokonor: 900 + 200,
+	zapdoskonor: 900 + 201,
+	moltreskonor: 900 + 202,
 
 	gumshoostotem: 735,
 	raticatealolatotem: 900 + 120,
@@ -412,106 +355,6 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	gallademega: 1116 + 47,
 	audinomega: 1116 + 48,
 	dianciemega: 1116 + 49,
-	charizardgmax: 1116 + 50,
-	butterfreegmax: 1116 + 51,
-	pikachugmax: 1116 + 52,
-	meowthgmax: 1116 + 53,
-	machampgmax: 1116 + 54,
-	gengargmax: 1116 + 55,
-	kinglergmax: 1116 + 56,
-	laprasgmax: 1116 + 57,
-	eeveegmax: 1116 + 58,
-	snorlaxgmax: 1116 + 59,
-	garbodorgmax: 1116 + 60,
-	melmetalgmax: 1116 + 61,
-	corviknightgmax: 1116 + 62,
-	orbeetlegmax: 1116 + 63,
-	drednawgmax: 1116 + 64,
-	coalossalgmax: 1116 + 65,
-	flapplegmax: 1116 + 66,
-	appletungmax: 1116 + 67,
-	sandacondagmax: 1116 + 68,
-	toxtricitygmax: 1116 + 69,
-	toxtricitylowkeygmax: 1116 + 69,
-	centiskorchgmax: 1116 + 70,
-	hatterenegmax: 1116 + 71,
-	grimmsnarlgmax: 1116 + 72,
-	alcremiegmax: 1116 + 73,
-	copperajahgmax: 1116 + 74,
-	duraludongmax: 1116 + 75,
-	eternatuseternamax: 1116 + 76,
-	venusaurgmax: 1116 + 77,
-	blastoisegmax: 1116 + 78,
-	rillaboomgmax: 1116 + 79,
-	cinderacegmax: 1116 + 80,
-	inteleongmax: 1116 + 81,
-	urshifugmax: 1116 + 82,
-	urshifurapidstrikegmax: 1116 + 83,
-
-	syclant: 1308 + 0,
-	revenankh: 1308 + 1,
-	pyroak: 1308 + 2,
-	fidgit: 1308 + 3,
-	stratagem: 1308 + 4,
-	arghonaut: 1308 + 5,
-	kitsunoh: 1308 + 6,
-	cyclohm: 1308 + 7,
-	colossoil: 1308 + 8,
-	krilowatt: 1308 + 9,
-	voodoom: 1308 + 10,
-	tomohawk: 1308 + 11,
-	necturna: 1308 + 12,
-	mollux: 1308 + 13,
-	aurumoth: 1308 + 14,
-	malaconda: 1308 + 15,
-	cawmodore: 1308 + 16,
-	volkraken: 1308 + 17,
-	plasmanta: 1308 + 18,
-	naviathan: 1308 + 19,
-	crucibelle: 1308 + 20,
-	crucibellemega: 1308 + 21,
-	kerfluffle: 1308 + 22,
-	pajantom: 1308 + 23,
-	jumbao: 1308 + 24,
-	caribolt: 1308 + 25,
-	smokomodo: 1308 + 26,
-	snaelstrom: 1308 + 27,
-	equilibra: 1308 + 28,
-	astrolotl: 1308 + 29,
-	miasmaw: 1308 + 30,
-
-	syclar: 1344 + 0,
-	embirch: 1344 + 1,
-	flarelm: 1344 + 2,
-	breezi: 1344 + 3,
-	scratchet: 1344 + 4,
-	necturine: 1344 + 5,
-	cupra: 1344 + 6,
-	argalis: 1344 + 7,
-	brattler: 1344 + 8,
-	cawdet: 1344 + 9,
-	volkritter: 1344 + 10,
-	snugglow: 1344 + 11,
-	floatoy: 1344 + 12,
-	caimanoe: 1344 + 13,
-	pluffle: 1344 + 14,
-	rebble: 1344 + 15,
-	tactite: 1344 + 16,
-	privatyke: 1344 + 17,
-	nohface: 1344 + 18,
-	monohm: 1344 + 19,
-	duohm: 1344 + 20,
-	// protowatt: 1344 + 21,
-	voodoll: 1344 + 22,
-	mumbao: 1344 + 23,
-	fawnifer: 1344 + 24,
-	electrelk: 1344 + 25,
-	smogecko: 1344 + 26,
-	smoguana: 1344 + 27,
-	swirlpool: 1344 + 28,
-	coribalis: 1344 + 29,
-	justyke: 1344 + 30,
-	solotl: 1344 + 31,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
@@ -530,26 +373,6 @@ const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	cleffa: 1200 + 12,
 	igglybuff: 1200 + 13,
 	politoed: 1200 + 14,
-	unownb: 1200 + 15,
-	unownc: 1200 + 16,
-	unownd: 1200 + 17,
-	unowne: 1200 + 18,
-	unownf: 1200 + 19,
-	unowng: 1200 + 20,
-	unownh: 1200 + 21,
-	unownj: 1200 + 22,
-	unownk: 1200 + 23,
-	unownl: 1200 + 24,
-	unownm: 1200 + 25,
-	unownn: 1200 + 26,
-	unownp: 1200 + 27,
-	unownq: 1200 + 28,
-	unownquestion: 1200 + 29,
-	unownr: 1200 + 30,
-	unowns: 1200 + 31,
-	unownt: 1200 + 32,
-	unownv: 1200 + 33,
-	unownz: 1200 + 34,
 	sneasel: 1200 + 35,
 	teddiursa: 1200 + 36,
 	roselia: 1200 + 37,
@@ -614,8 +437,6 @@ const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	dhelmise: 1200 + 96,
 	necrozma: 1200 + 97,
 	marshadow: 1200 + 98,
-	pikachuoriginal: 1200 + 99,
-	pikachupartner: 1200 + 100,
 	necrozmaduskmane: 1200 + 101,
 	necrozmadawnwings: 1200 + 102,
 	necrozmaultra: 1200 + 103,
@@ -941,14 +762,13 @@ type NatureName = 'Adamant' | 'Bashful' | 'Bold' | 'Brave' | 'Calm' | 'Careful' 
 type StatNameExceptHP = 'atk' | 'def' | 'spa' | 'spd' | 'spe';
 type TypeName = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' |
 	'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Dark' | 'Fairy' | '???';
-type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn';
-type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy' | 'spc';
+type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn' | 'bld';
+type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy';
 type GenderName = 'M' | 'F' | 'N';
 
 interface Effect {
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly effectType: 'Item' | 'Move' | 'Ability' | 'Species' | 'PureEffect';
 	/**
 	 * Do we have data on this item/move/ability/species?
@@ -976,10 +796,8 @@ class Item implements Effect {
 	readonly effectType = 'Item';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
-	readonly num: number;
 	readonly spritenum: number;
 	readonly desc: string;
 	readonly shortDesc: string;
@@ -1003,10 +821,8 @@ class Item implements Effect {
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 
-		this.num = data.num || 0;
 		this.spritenum = data.spritenum || 0;
 		this.desc = data.desc || data.shortDesc || '';
 		this.shortDesc = data.shortDesc || this.desc;
@@ -1024,18 +840,6 @@ class Item implements Effect {
 		this.naturalGift = data.naturalGift || null;
 		this.isPokeball = !!data.isPokeball;
 		this.itemUser = data.itemUser;
-
-		if (!this.gen) {
-			if (this.num >= 577) {
-				this.gen = 6;
-			} else if (this.num >= 537) {
-				this.gen = 5;
-			} else if (this.num >= 377) {
-				this.gen = 4;
-			} else {
-				this.gen = 3;
-			}
-		}
 	}
 }
 
@@ -1082,6 +886,8 @@ interface MoveFlags {
 	snatch?: 1 | 0;
 	/** Has no effect on Pokemon with the Soundproof Ability. */
 	sound?: 1 | 0;
+	/** Power is multiplied by 1.5 when used by a Pokemon with the Unbending Blade Ability. */
+	sword?: 1 | 0;
 }
 
 type MoveTarget = 'normal' | 'any' | 'adjacentAlly' | 'adjacentFoe' | 'adjacentAllyOrSelf' | // single-target
@@ -1094,7 +900,6 @@ class Move implements Effect {
 	readonly effectType = 'Move';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
 	readonly basePower: number;
@@ -1109,15 +914,12 @@ class Move implements Effect {
 
 	readonly desc: string;
 	readonly shortDesc: string;
-	readonly isNonstandard: string | null;
 	readonly isZ: ID;
 	readonly zMove?: {
 		basePower?: number,
 		effect?: string,
 		boost?: {[stat in StatName]?: number},
 	};
-	readonly isMax: boolean | string;
-	readonly maxMove: {basePower: number};
 	readonly ohko: true | 'Ice' | null;
 	readonly recoil: number[] | null;
 	readonly heal: number[] | null;
@@ -1125,14 +927,12 @@ class Move implements Effect {
 	readonly hasCustomRecoil: boolean;
 	readonly noPPBoosts: boolean;
 	readonly secondaries: ReadonlyArray<any> | null;
-	readonly num: number;
 
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 
 		this.basePower = data.basePower || 0;
@@ -1148,7 +948,6 @@ class Move implements Effect {
 		// TODO: move to text.js
 		this.desc = data.desc;
 		this.shortDesc = data.shortDesc;
-		this.isNonstandard = data.isNonstandard || null;
 		this.isZ = data.isZ || '';
 		this.zMove = data.zMove || {};
 		this.ohko = data.ohko || null;
@@ -1159,49 +958,7 @@ class Move implements Effect {
 		this.noPPBoosts = data.noPPBoosts || false;
 		this.secondaries = data.secondaries || (data.secondary ? [data.secondary] : null);
 
-		this.isMax = data.isMax || false;
-		this.maxMove = data.maxMove || {basePower: 0};
-		if (this.category !== 'Status' && !this.maxMove?.basePower) {
-			if (this.isZ || this.isMax) {
-				this.maxMove = {basePower: 1};
-			} else if (!this.basePower) {
-				this.maxMove = {basePower: 100};
-			} else if (['Fighting', 'Poison'].includes(this.type)) {
-				if (this.basePower >= 150) {
-					this.maxMove = {basePower: 100};
-				} else if (this.basePower >= 110) {
-					this.maxMove = {basePower: 95};
-				} else if (this.basePower >= 75) {
-					this.maxMove = {basePower: 90};
-				} else if (this.basePower >= 65) {
-					this.maxMove = {basePower: 85};
-				} else if (this.basePower >= 55) {
-					this.maxMove = {basePower: 80};
-				} else if (this.basePower >= 45) {
-					this.maxMove = {basePower: 75};
-				} else  {
-					this.maxMove = {basePower: 70};
-				}
-			} else {
-				if (this.basePower >= 150) {
-					this.maxMove = {basePower: 150};
-				} else if (this.basePower >= 110) {
-					this.maxMove = {basePower: 140};
-				} else if (this.basePower >= 75) {
-					this.maxMove = {basePower: 130};
-				} else if (this.basePower >= 65) {
-					this.maxMove = {basePower: 120};
-				} else if (this.basePower >= 55) {
-					this.maxMove = {basePower: 110};
-				} else if (this.basePower >= 45) {
-					this.maxMove = {basePower: 100};
-				} else  {
-					this.maxMove = {basePower: 90};
-				}
-			}
-		}
-
-		if (this.category !== 'Status' && !this.isZ && !this.isMax) {
+		if (this.category !== 'Status' && !this.isZ) {
 			let basePower = this.basePower;
 			this.zMove = {};
 			if (Array.isArray(this.multihit)) basePower *= 3;
@@ -1229,23 +986,6 @@ class Move implements Effect {
 				this.zMove.basePower = 100;
 			}
 		}
-
-		this.num = data.num || 0;
-		if (!this.gen) {
-			if (this.num >= 560) {
-				this.gen = 6;
-			} else if (this.num >= 468) {
-				this.gen = 5;
-			} else if (this.num >= 355) {
-				this.gen = 4;
-			} else if (this.num >= 252) {
-				this.gen = 3;
-			} else if (this.num >= 166) {
-				this.gen = 2;
-			} else if (this.num >= 1) {
-				this.gen = 1;
-			}
-		}
 	}
 }
 
@@ -1254,43 +994,22 @@ class Ability implements Effect {
 	readonly effectType = 'Ability';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
-	readonly num: number;
 	readonly shortDesc: string;
 	readonly desc: string;
 
 	readonly rating: number;
-	readonly isNonstandard: boolean;
 
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
-		this.num = data.num || 0;
 		this.shortDesc = data.shortDesc || data.desc || '';
 		this.desc = data.desc || data.shortDesc || '';
 		this.rating = data.rating || 1;
-		this.isNonstandard = !!data.isNonstandard;
-		if (!this.gen) {
-			if (this.num >= 234) {
-				this.gen = 8;
-			} else if (this.num >= 192) {
-				this.gen = 7;
-			} else if (this.num >= 165) {
-				this.gen = 6;
-			} else if (this.num >= 124) {
-				this.gen = 5;
-			} else if (this.num >= 77) {
-				this.gen = 4;
-			} else if (this.num >= 1) {
-				this.gen = 3;
-			}
-		}
 	}
 }
 
@@ -1299,7 +1018,6 @@ class Species implements Effect {
 	readonly effectType = 'Species';
 	readonly id: ID;
 	readonly name: string;
-	readonly gen: number;
 	readonly exists: boolean;
 
 	// name
@@ -1341,10 +1059,8 @@ class Species implements Effect {
 	readonly tier: string;
 	readonly isTotem: boolean;
 	readonly isMega: boolean;
-	readonly canGigantamax: boolean;
 	readonly isPrimal: boolean;
 	readonly battleOnly: string | string[] | undefined;
-	readonly isNonstandard: string | null;
 	readonly unreleasedHidden: boolean | 'Past';
 	readonly changesFrom: string | undefined;
 
@@ -1353,7 +1069,6 @@ class Species implements Effect {
 		if (data.name) name = data.name;
 		this.name = Dex.sanitizeName(name);
 		this.id = id;
-		this.gen = data.gen || 0;
 		this.exists = ('exists' in data ? !!data.exists : true);
 		this.baseSpecies = data.baseSpecies || name;
 		this.forme = data.forme || '';
@@ -1390,42 +1105,10 @@ class Species implements Effect {
 
 		this.isTotem = false;
 		this.isMega = false;
-		this.canGigantamax = !!data.canGigantamax;
 		this.isPrimal = false;
 		this.battleOnly = data.battleOnly || undefined;
-		this.isNonstandard = data.isNonstandard || null;
 		this.unreleasedHidden = data.unreleasedHidden || false;
 		this.changesFrom = data.changesFrom || undefined;
-		if (!this.gen) {
-			if (this.num >= 810 || this.formeid.startsWith('-galar')) {
-				this.gen = 8;
-			} else if (this.num >= 722 || this.formeid === '-alola' || this.formeid === '-starter') {
-				this.gen = 7;
-			} else if (this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid)) {
-				this.gen = 6;
-				this.isMega = true;
-				this.battleOnly = this.baseSpecies;
-			} else if (this.formeid === '-primal') {
-				this.gen = 6;
-				this.isPrimal = true;
-				this.battleOnly = this.baseSpecies;
-			} else if (this.formeid === '-totem' || this.formeid === '-alolatotem') {
-				this.gen = 7;
-				this.isTotem = true;
-			} else if (this.num >= 650) {
-				this.gen = 6;
-			} else if (this.num >= 494) {
-				this.gen = 5;
-			} else if (this.num >= 387) {
-				this.gen = 4;
-			} else if (this.num >= 252) {
-				this.gen = 3;
-			} else if (this.num >= 152) {
-				this.gen = 2;
-			} else if (this.num >= 1) {
-				this.gen = 1;
-			}
-		}
 	}
 }
 

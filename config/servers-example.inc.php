@@ -1,11 +1,11 @@
 <?php
 
 $PokemonServers = array (
-  'showdown' => 
+  'showdown' =>
   array (
     'name' => 'Smogon University',
     'id' => 'showdown',
-    'server' => 'sim.psim.us',
+    'server' => 'sim.psim.us',//PROWL change
     'port' => 8000,
   ),
 );

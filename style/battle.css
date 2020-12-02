@@ -245,9 +245,10 @@ License: GPLv2
 	border-radius: 3px;
 }
 .statbar span.brn,
+.statbar span.bld,
 .statbar span.psn,
-.statbar span.slp,
 .statbar span.par,
+.statbar span.slp,
 .statbar span.frz {
 	padding: 1px 2px;
 	border: 0;
@@ -255,6 +256,10 @@ License: GPLv2
 }
 .statbar span.brn {
 	background: #EE5533;
+	color: #FFFFFF;
+}
+.statbar span.bld {
+	background: #6b1f0e;
 	color: #FFFFFF;
 }
 .statbar span.psn {
@@ -421,7 +426,8 @@ License: GPLv2
 	background: #99BBFF url(../fx/weather-raindance.jpg) no-repeat scroll left top;
 	color: #0044BB;
 }
-.sandstormweather {
+.sandstormweather,
+.ragingsandstormweather {
 	background: #E6E0AC url(../fx/weather-sandstorm.png) no-repeat scroll left top;
 	color: #554433;
 }
@@ -447,6 +453,10 @@ License: GPLv2
 }
 .psychicterrainweather {
 	background: #CCAAEE url(../fx/weather-psychicterrain.png) no-repeat scroll left top;
+	color: #441155;
+}
+.hellfireweather {
+	background: #b32e10 url(../fx/weather-hellfire.png) no-repeat scroll left top;
 	color: #441155;
 }
 .pseudoweather {
@@ -480,6 +490,10 @@ License: GPLv2
 .battle .brnresult strong {
 	color: #FFFFFF;
 	background: #EE5533;
+}
+.battle .bldresult strong {
+	background: #6b1f0e;
+	color: #FFFFFF;
 }
 .battle .psnresult strong {
 	color: #FFFFFF;

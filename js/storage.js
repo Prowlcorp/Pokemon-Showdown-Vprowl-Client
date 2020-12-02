@@ -53,7 +53,7 @@ Storage.bg = {
 			if (location.host === 'smogtours.psim.us') {
 				bgid = 'shaymin';
 			} else if (location.host === Config.routes.client) {
-				bgid = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards', 'psday'][Math.floor(Math.random() * 6)];
+				bgid = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards'][Math.floor(Math.random() * 6)];
 			} else {
 				$(document.body).css({
 					background: '',
@@ -64,10 +64,6 @@ Storage.bg = {
 			}
 			bgUrl = Dex.resourcePrefix + 'fx/client-bg-' + bgid + '.jpg';
 		}
-
-		// April Fool's 2016 - Digimon theme
-		// bgid = 'digimon';
-		// bgUrl = Dex.resourcePrefix + 'sprites/afd/digimonbg.jpg';
 
 		var background;
 		if (bgUrl.charAt(0) === '#') {
@@ -86,32 +82,26 @@ Storage.bg = {
 
 		if (!hues) {
 			switch (bgid) {
-			case 'horizon':
-				hues = ["318.87640449438203,35.177865612648226%", "216,46.2962962962963%", "221.25,32.25806451612904%", "197.8021978021978,52.60115606936417%", "232.00000000000003,19.480519480519483%", "228.38709677419354,60.7843137254902%"];
-				attrib = '<a href="https://vtas.deviantart.com/art/Pokemon-Horizon-312267168" target="_blank" class="subtle">"Horizon" <small>background by Vivian Zou</small></a>';
-				break;
-			case 'ocean':
-				hues = ["82.8169014084507,34.63414634146342%", "216.16438356164383,29.55465587044534%", "212.92682926829266,59.42028985507245%", "209.18918918918916,57.51295336787566%", "199.2857142857143,48.275862068965495%", "213.11999999999998,55.06607929515419%"];
-				attrib = '<a href="https://quanyails.deviantart.com/art/Sunrise-Ocean-402667154" target="_blank" class="subtle">"Sunrise Ocean" <small>background by Yijing Chen</small></a>';
-				break;
-			case 'waterfall':
-				hues = ["119.31034482758622,37.66233766233767%", "184.36363636363635,23.012552301255226%", "108.92307692307692,37.14285714285714%", "70.34482758620689,20.567375886524818%", "98.39999999999998,36.76470588235296%", "140,38.18181818181818%"];
-				attrib = '<a href="https://yilx.deviantart.com/art/Irie-372292729" target="_blank" class="subtle">"Irie" <small>background by Samuel Teo</small></a>';
-				break;
-			case 'shaymin':
-				hues = ["39.000000000000064,21.7391304347826%", "170.00000000000003,2.380952380952378%", "157.5,11.88118811881188%", "174.78260869565216,12.041884816753928%", "185.00000000000003,12.76595744680851%", "20,5.660377358490567%"];
-				attrib = '<a href="http://cargocollective.com/bluep" target="_blank" class="subtle">"Shaymin" <small>background by Daniel Kong</small></a>';
-				break;
-			case 'charizards':
-				hues = ["37.159090909090914,74.57627118644066%", "10.874999999999998,70.79646017699115%", "179.51612903225808,52.10084033613446%", "20.833333333333336,36.73469387755102%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
-				attrib = '<a href="https://seiryuuden.deviantart.com/art/The-Ultimate-Mega-Showdown-Charizards-414587079" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
-				break;
-			case 'psday':
-				hues = ["24.705882352941174,25.37313432835821%", "260.4651162790697,59.44700460829492%", "165.3191489361702,46.07843137254901%", "16.363636363636367,42.63565891472869%", "259.04761904761904,34.05405405405405%", "24.705882352941174,25.37313432835821%"];
-				attrib = 'Pok&eacute;mon Showdown Day background <small>by LifeisDANK</small>';
-				break;
-			case 'digimon':
-				hues = ["170.45454545454544,27.500000000000004%", "84.70588235294119,13.821138211382115%", "112.50000000000001,7.8431372549019605%", "217.82608695652175,54.761904761904766%", "0,1.6949152542372816%", ""];
+				case 'horizon':
+					hues = ["318.87640449438203,35.177865612648226%", "216,46.2962962962963%", "221.25,32.25806451612904%", "197.8021978021978,52.60115606936417%", "232.00000000000003,19.480519480519483%", "228.38709677419354,60.7843137254902%"];
+					attrib = '<a href="https://vtas.deviantart.com/art/Pokemon-Horizon-312267168" target="_blank" class="subtle">"Horizon" <small>background by Vivian Zou</small></a>';
+					break;
+				case 'ocean':
+					hues = ["82.8169014084507,34.63414634146342%", "216.16438356164383,29.55465587044534%", "212.92682926829266,59.42028985507245%", "209.18918918918916,57.51295336787566%", "199.2857142857143,48.275862068965495%", "213.11999999999998,55.06607929515419%"];
+					attrib = '<a href="https://quanyails.deviantart.com/art/Sunrise-Ocean-402667154" target="_blank" class="subtle">"Sunrise Ocean" <small>background by Yijing Chen</small></a>';
+					break;
+				case 'waterfall':
+					hues = ["119.31034482758622,37.66233766233767%", "184.36363636363635,23.012552301255226%", "108.92307692307692,37.14285714285714%", "70.34482758620689,20.567375886524818%", "98.39999999999998,36.76470588235296%", "140,38.18181818181818%"];
+					attrib = '<a href="https://yilx.deviantart.com/art/Irie-372292729" target="_blank" class="subtle">"Irie" <small>background by Samuel Teo</small></a>';
+					break;
+				case 'shaymin':
+					hues = ["39.000000000000064,21.7391304347826%", "170.00000000000003,2.380952380952378%", "157.5,11.88118811881188%", "174.78260869565216,12.041884816753928%", "185.00000000000003,12.76595744680851%", "20,5.660377358490567%"];
+					attrib = '<a href="http://cargocollective.com/bluep" target="_blank" class="subtle">"Shaymin" <small>background by Daniel Kong</small></a>';
+					break;
+				case 'charizards':
+					hues = ["37.159090909090914,74.57627118644066%", "10.874999999999998,70.79646017699115%", "179.51612903225808,52.10084033613446%", "20.833333333333336,36.73469387755102%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
+					attrib = '<a href="https://seiryuuden.deviantart.com/art/The-Ultimate-Mega-Showdown-Charizards-414587079" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
+					break;
 			}
 		}
 		if (attrib) attrib = '<small style="display:block;padding-bottom:4px">' + attrib + '</small>';
@@ -748,7 +738,9 @@ Storage.packTeam = function (team) {
 		}
 
 		// shiny
-		if (set.shiny) {
+		if (set.shiny === "Albino") {
+			buf += '|A';
+		} else if (set.shiny === "Shiny") {
 			buf += '|S';
 		} else {
 			buf += '|';
@@ -768,10 +760,9 @@ Storage.packTeam = function (team) {
 			buf += '|';
 		}
 
-		if (set.pokeball || (set.hpType && !hasHP) || set.gigantamax) {
+		if (set.pokeball || (set.hpType && !hasHP)) {
 			buf += ',' + (set.hpType || '');
 			buf += ',' + toID(set.pokeball);
-			buf += ',' + (set.gigantamax ? 'G' : '');
 		}
 	}
 
@@ -864,7 +855,7 @@ Storage.fastUnpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = true;
+		if (i !== j) set.shiny = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -884,7 +875,6 @@ Storage.fastUnpackTeam = function (buf) {
 			set.happiness = (misc[0] ? Number(misc[0]) : 255);
 			set.hpType = misc[1];
 			set.pokeball = misc[2];
-			set.gigantamax = !!misc[3];
 		}
 		if (j < 0) break;
 		i = j + 1;
@@ -980,7 +970,7 @@ Storage.unpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = true;
+		if (i !== j) set.shiny = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -1000,7 +990,6 @@ Storage.unpackTeam = function (buf) {
 			set.happiness = (misc[0] ? Number(misc[0]) : 255);
 			set.hpType = misc[1];
 			set.pokeball = misc[2];
-			set.gigantamax = !!misc[3];
 		}
 		if (j < 0) break;
 		i = j + 1;
@@ -1165,8 +1154,10 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 9) === 'Ability: ') {
 			line = line.substr(9);
 			curSet.ability = line;
-		} else if (line === 'Shiny: Yes') {
-			curSet.shiny = true;
+		} else if (line === 'Shiny: Albino') {
+			curSet.shiny = "Albino";
+		} else if (line === 'Shiny: Shiny') {
+			curSet.shiny = "Shiny";
 		} else if (line.substr(0, 7) === 'Level: ') {
 			line = line.substr(7);
 			curSet.level = +line;
@@ -1179,8 +1170,6 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 14) === 'Hidden Power: ') {
 			line = line.substr(14);
 			curSet.hpType = line;
-		} else if (line === 'Gigantamax: Yes') {
-			curSet.gigantamax = true;
 		} else if (line.substr(0, 5) === 'EVs: ') {
 			line = line.substr(5);
 			var evLines = line.split('/');
@@ -1287,8 +1276,11 @@ Storage.exportTeam = function (team) {
 		if (curSet.level && curSet.level != 100) {
 			text += 'Level: ' + curSet.level + "  \n";
 		}
-		if (curSet.shiny) {
-			text += 'Shiny: Yes  \n';
+		if (curSet.shiny === "Albino") {
+			text += 'Shiny: Albino  \n';
+		}
+		if (curSet.shiny === "Shiny") {
+			text += 'Shiny: Shiny  \n';
 		}
 		if (typeof curSet.happiness === 'number' && curSet.happiness !== 255 && !isNaN(curSet.happiness)) {
 			text += 'Happiness: ' + curSet.happiness + "  \n";
@@ -1298,9 +1290,6 @@ Storage.exportTeam = function (team) {
 		}
 		if (curSet.hpType) {
 			text += 'Hidden Power: ' + curSet.hpType + "  \n";
-		}
-		if (curSet.gigantamax) {
-			text += 'Gigantamax: Yes  \n';
 		}
 		var first = true;
 		if (curSet.evs) {

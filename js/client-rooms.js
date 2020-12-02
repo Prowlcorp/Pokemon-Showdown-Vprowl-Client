@@ -37,7 +37,7 @@
 				if (room.substr(0, 7) === 'http://') room = room.slice(7);
 				if (room.substr(0, 8) === 'https://') room = room.slice(8);
 				if (room.substr(0, routeLength) === Config.routes.client + '/') room = room.slice(routeLength);
-				if (room.substr(0, 8) === 'psim.us/') room = room.slice(8);
+				if (room.substr(0, 8) === 'psim.us/') room = room.slice(8);//PROWL change
 				if (room.substr(0, document.location.hostname.length + 1) === document.location.hostname + '/') room = room.slice(document.location.hostname.length + 1);
 				room = toRoomid(room);
 				if (!room) return;

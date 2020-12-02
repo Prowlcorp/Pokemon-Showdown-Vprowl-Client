@@ -50,7 +50,6 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 		const stats = pokemon.baseStats;
 		let bst = 0;
 		for (const stat of Object.values(stats)) bst += stat;
-		if (search.dex.gen < 2) bst -= stats['spd'];
 
 		if (errorMessage) {
 			return <li class="result"><a href={`${this.URL_ROOT}pokemon/${id}`} data-target="push" data-entry={`pokemon|${pokemon.name}`}>
@@ -81,25 +80,24 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				)}
 			</span>
 
-			{search.dex.gen >= 3 && (pokemon.abilities['1'] ?
+			{pokemon.abilities['1'] ?
 				<span class="col twoabilitycol">{pokemon.abilities['0']}<br />{pokemon.abilities['1']}</span>
 			:
 				<span class="col abilitycol">{pokemon.abilities['0']}</span>
-			)}
-			{search.dex.gen >= 5 && (pokemon.abilities['S'] ?
+			}
+			{pokemon.abilities['S'] ?
 				<span class={`col twoabilitycol${pokemon.unreleasedHidden ? ' unreleasedhacol' : ''}`}>{pokemon.abilities['H'] || ''}<br />{pokemon.abilities['S']}</span>
 			: pokemon.abilities['H'] ?
 				<span class={`col abilitycol${pokemon.unreleasedHidden ? ' unreleasedhacol' : ''}`}>{pokemon.abilities['H']}</span>
 			:
 				<span class="col abilitycol"></span>
-			)}
+			}
 
 			<span class="col statcol"><em>HP</em><br />{stats.hp}</span>
 			<span class="col statcol"><em>Atk</em><br />{stats.atk}</span>
 			<span class="col statcol"><em>Def</em><br />{stats.def}</span>
-			{search.dex.gen > 2 && <span class="col statcol"><em>SpA</em><br />{stats.spa}</span>}
-			{search.dex.gen > 2 && <span class="col statcol"><em>SpD</em><br />{stats.spd}</span>}
-			{search.dex.gen < 2 && <span class="col statcol"><em>Spc</em><br />{stats.spa}</span>}
+			<span class="col statcol"><em>SpA</em><br />{stats.spa}</span>
+			<span class="col statcol"><em>SpD</em><br />{stats.spd}</span>
 			<span class="col statcol"><em>Spe</em><br />{stats.spe}</span>
 			<span class="col bstcol"><em>BST<br />{bst}</em></span>
 		</a></li>;
@@ -191,7 +189,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 
 			<span class="col typecol">
 				<img src={`${Dex.resourcePrefix}sprites/types/${move.type}.png`} alt={move.type} height="14" width="32" class="pixelated" />
-				<img src={`${Dex.resourcePrefix}sprites/categories/${move.category}.png`} alt={move.category} height="14" width="32" class="pixelated" />
+				<img src={`${Dex.resourcePrefix}sprites/misc/${move.category}.png`} alt={move.category} height="14" width="32" class="pixelated" />
 			</span>
 
 			<span class="col labelcol">
@@ -228,11 +226,11 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 		const search = this.props.search;
 		const name = id.charAt(0).toUpperCase() + id.slice(1);
 
-		return <li class="result"><a href={`${this.URL_ROOT}categories/${id}`} data-target="push" data-entry={`category|${name}`}>
+		return <li class="result"><a href={`${this.URL_ROOT}misc/${id}`} data-target="push" data-entry={`category|${name}`}>
 			<span class="col namecol">{this.renderName(name, matchStart, matchEnd)}</span>
 
 			<span class="col typecol">
-				<img src={`${Dex.resourcePrefix}sprites/categories/${name}.png`} alt={name} height="14" width="32" class="pixelated" />
+				<img src={`${Dex.resourcePrefix}sprites/misc/${name}.png`} alt={name} height="14" width="32" class="pixelated" />
 			</span>
 
 			{errorMessage}
@@ -272,26 +270,6 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			<span class="col namecol">{this.renderName(name, matchStart, matchEnd)}</span>
 
 			<span class="col movedesccol">(egg group)</span>
-
-			{errorMessage}
-		</a></li>;
-	}
-
-	renderTierRow(id: ID, matchStart: number, matchEnd: number, errorMessage?: preact.ComponentChildren) {
-		const search = this.props.search;
-		// very hardcode
-		const tierTable: {[id: string]: string} = {
-			uber: "Uber",
-			lcuber: "LC Uber",
-			caplc: "CAP LC",
-			capnfe: "CAP NFE",
-		};
-		const name = tierTable[id] || id.toUpperCase();
-
-		return <li class="result"><a href={`${this.URL_ROOT}tiers/${id}`} data-target="push" data-entry={`tier|${name}`}>
-			<span class="col namecol">{this.renderName(name, matchStart, matchEnd)}</span>
-
-			<span class="col movedesccol">(tier)</span>
 
 			{errorMessage}
 		</a></li>;
@@ -341,8 +319,6 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			return this.renderTypeRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'egggroup':
 			return this.renderEggGroupRow(id as ID, matchStart, matchEnd, errorMessage);
-			case 'tier':
-			return this.renderTierRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'category':
 			return this.renderCategoryRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'article':

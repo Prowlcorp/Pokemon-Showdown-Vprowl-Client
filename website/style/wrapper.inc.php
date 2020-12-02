@@ -32,7 +32,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-26211653-1', 'pokemonshowdown.com', {'allowLinker': true});
 ga('require', 'linker');
 
-ga('linker:autoLink', ['pokemonshowdown.com', 'play.pokemonshowdown.com', 'replay.pokemonshowdown.com']);
+ga('linker:autoLink', ['pokemonshowdown.com', 'prowl-showdown.netlify.app', 'replay.pokemonshowdown.com']);
 ga('send', 'pageview');
 
 </script>
@@ -71,7 +71,7 @@ function includeFooter() {
 ?>
 		<div class="footer">
 			<p>
-				<small><a href="/rules">Rules</a> | <a href="/privacy">Privacy policy</a> | <a href="/credits"<?php classCurPage('credits') ?>>Credits</a> | <a href="/contact"<?php classCurPage('contact') ?>>Contact</a></small>
+				<small><a href="/rules">Rules</a> | <a href="/privacy">Privacy policy</a> | <a href="/credits"<?php classCurPage('credits') ?>>Credits</a></small>
 			</p>
 		</div>
 	</div></body>

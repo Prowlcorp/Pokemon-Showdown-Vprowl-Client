@@ -129,7 +129,7 @@
 		update: function () {
 			teams = Storage.teams;
 			if (this.curTeam) {
-				this.ignoreEVLimits = (this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle');
+				this.ignoreEVLimits = this.curTeam.format === 'gen8metronomebattle';
 				if (this.curSet) {
 					return this.updateSetView();
 				}
@@ -248,12 +248,7 @@
 					continue;
 				}
 				switch (format.slice(0, 4)) {
-				case 'gen1': format = 'I' + format.slice(4); break;
-				case 'gen2': format = 'H' + format.slice(4); break;
-				case 'gen3': format = 'G' + format.slice(4); break;
-				case 'gen4': format = 'F' + format.slice(4); break;
 				case 'gen5': format = 'E' + format.slice(4); break;
-				case 'gen6': format = 'D' + format.slice(4); break;
 				case 'gen7': format = 'C' + format.slice(4); break;
 				case 'gen8': format = 'B' + format.slice(4); break;
 				case 'gen9': format = 'A' + format.slice(4); break;
@@ -1147,8 +1142,6 @@
 		},
 		renderSet: function (set, i) {
 			var species = Dex.getSpecies(set.species);
-			var isLetsGo = this.curTeam.format.includes('letsgo');
-			var isNatDex = this.curTeam.format.includes('nationaldex');
 			var buf = '<li value="' + i + '">';
 			if (!set.species) {
 				if (this.deletedSet) {
@@ -1184,27 +1177,10 @@
 				'N': '&mdash;'
 			};
 			buf += '<span class="detailcell detailcell-first"><label>Level</label>' + (set.level || 100) + '</span>';
-			if (this.curTeam.gen > 1) {
-				buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || species.gender || 'N'] + '</span>';
-				if (isLetsGo) {
-					buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 70) + '</span>';
-				} else if (this.curTeam.gen < 8 || isNatDex) {
-					buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
-				}
-				buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny ? 'Yes' : 'No') + '</span>';
-				if (!isLetsGo) {
-					if (this.curTeam.gen === 8 && !isNatDex) {
-						// Hidden Power isn't in normal Gen 8
-					} else {
-						buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
-					}
-				}
-				if (this.curTeam.gen === 8) {
-					if (species.canGigantamax || species.name.indexOf('-Gmax') >= 0) {
-						buf += '<span class="detailcell"><label>Gmax</label>' + (set.gigantamax ? 'Yes' : 'No') + '</span>';
-					}
-				}
-			}
+			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || species.gender || 'N'] + '</span>';
+			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
+			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			buf += '</button></div></div>';
 
 			// item/type icons
@@ -1227,9 +1203,8 @@
 			buf += '</div></div>';
 
 			buf += '<div class="setrow">';
-			// if (this.curTeam.gen > 1 && !isLetsGo) buf += '<div class="setcell setcell-item"><label>Item</label><input type="text" name="item" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.item) + '" /></div>';
-			if (this.curTeam.gen > 1) buf += '<div class="setcell setcell-item"><label>Item</label><input type="text" name="item" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.item) + '" autocomplete="off" /></div>';
-			if (this.curTeam.gen > 2 && !isLetsGo) buf += '<div class="setcell setcell-ability"><label>Ability</label><input type="text" name="ability" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.ability) + '" autocomplete="off" /></div>';
+			buf += '<div class="setcell setcell-item"><label>Item</label><input type="text" name="item" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.item) + '" autocomplete="off" /></div>';
+			buf += '<div class="setcell setcell-ability"><label>Ability</label><input type="text" name="ability" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.ability) + '" autocomplete="off" /></div>';
 			buf += '</div></div>';
 
 			// moves
@@ -1243,11 +1218,10 @@
 
 			// stats
 			buf += '<div class="setcol setcol-stats"><div class="setrow"><label>Stats</label><button class="textbox setstats" name="stats">';
-			buf += '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + (!isLetsGo ? 'EV' : 'AV') + '</em></span>';
+			buf += '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + 'EV' + '</em></span>';
 			var stats = {};
-			var defaultEV = (this.curTeam.gen > 2 ? 0 : 252);
+			var defaultEV = 0;
 			for (var j in BattleStatNames) {
-				if (j === 'spd' && this.curTeam.gen === 1) continue;
 				stats[j] = this.getStat(j, set);
 				var ev = (set.evs[j] === undefined ? defaultEV : set.evs[j]);
 				var evBuf = '<em>' + (ev === defaultEV ? '' : ev) + '</em>';
@@ -1261,7 +1235,7 @@
 				if (width > 75) width = 75;
 				var color = Math.floor(stats[j] * 180 / 714);
 				if (color > 360) color = 360;
-				var statName = this.curTeam.gen === 1 && j === 'spa' ? 'Spc' : BattleStatNames[j];
+				var statName = BattleStatNames[j];
 				buf += '<span class="statrow"><label>' + statName + '</label> <span class="statgraph"><span style="width:' + width + 'px;background:hsl(' + color + ',40%,75%);"></span></span> ' + evBuf + '</span>';
 			}
 			buf += '</button></div></div>';
@@ -1353,7 +1327,7 @@
 			}
 		},
 		validate: function () {
-			var format = this.curTeam.format || 'gen7anythinggoes';
+			var format = this.curTeam.format;
 
 			if (!this.curSetList.length) {
 				app.addPopupMessage("You need at least one Pokémon to validate.");
@@ -1767,13 +1741,10 @@
 
 			var stats = {hp:'', atk:'', def:'', spa:'', spd:'', spe:''};
 
-			var supportsEVs = !this.curTeam.format.includes('letsgo');
-
 			// stat cell
-			var buf = '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + (supportsEVs ? 'EV' : 'AV') + '</em></span>';
-			var defaultEV = (this.curTeam.gen > 2 ? 0 : 252);
+			var buf = '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + 'EV' + '</em></span>';
+			var defaultEV = 0;
 			for (var stat in stats) {
-				if (stat === 'spd' && this.curTeam.gen === 1) continue;
 				stats[stat] = this.getStat(stat, set);
 				var ev = (set.evs[stat] === undefined ? defaultEV : set.evs[stat]);
 				var evBuf = '<em>' + (ev === defaultEV ? '' : ev) + '</em>';
@@ -1795,7 +1766,6 @@
 
 			buf = '<div></div>';
 			for (var stat in stats) {
-				if (stat === 'spd' && this.curTeam.gen === 1) continue;
 				buf += '<div><b>' + stats[stat] + '</b></div>';
 			}
 			this.$chart.find('.statscol').html(buf);
@@ -1803,7 +1773,6 @@
 			buf = '<div></div>';
 			var totalev = 0;
 			for (var stat in stats) {
-				if (stat === 'spd' && this.curTeam.gen === 1) continue;
 				var width = stats[stat] * 180 / 504;
 				if (stat == 'hp') width = stats[stat] * 180 / 704;
 				if (width > 179) width = 179;
@@ -1813,17 +1782,14 @@
 				totalev += (set.evs[stat] || 0);
 			}
 
-			if (this.curTeam.gen > 2 && supportsEVs) buf += '<div><em>Remaining:</em></div>';
+			buf += '<div><em>Remaining:</em></div>';
 			this.$chart.find('.graphcol').html(buf);
 
-			if (this.curTeam.gen <= 2) return;
-			if (supportsEVs) {
-				var maxEv = 510;
-				if (totalev <= maxEv) {
-					this.$chart.find('.totalev').html('<em>' + (totalev > (maxEv - 2) ? 0 : (maxEv - 2) - totalev) + '</em>');
-				} else {
-					this.$chart.find('.totalev').html('<b>' + (maxEv - totalev) + '</b>');
-				}
+			var maxEv = 510;
+			if (totalev <= maxEv) {
+				this.$chart.find('.totalev').html('<em>' + (totalev > (maxEv - 2) ? 0 : (maxEv - 2) - totalev) + '</em>');
+			} else {
+				this.$chart.find('.totalev').html('<b>' + (maxEv - totalev) + '</b>');
 			}
 			this.$chart.find('select[name=nature]').val(set.nature || 'Serious');
 		},
@@ -1968,14 +1934,8 @@
 			var generation = ['rb', 'gs', 'rs', 'dp', 'bw', 'xy', 'sm', 'ss'][generationNumber - 1];
 			if (format === 'battlespotdoubles') {
 				smogdexid += '/vgc15';
-			} else if (format === 'doublesou' || format === 'doublesuu') {
-				smogdexid += '/doubles';
-			} else if (format === 'ou' || format === 'uu' || format === 'ru' || format === 'nu' || format === 'pu' || format === 'lc' || format === 'monotype' || format === 'mixandmega' || format === 'nfe' || format === 'nationaldex' || format === 'stabmons' || format === '1v1' || format === 'almostanyability') {
+			} else if (format === 'monotype' || format === 'mixandmega' || format === 'nfe' || format === 'stabmons' || format === '1v1' || format === 'almostanyability') {
 				smogdexid += '/' + format;
-			} else if (format === 'balancedhackmons') {
-				smogdexid += 'bh';
-			} else if (format === 'nationaldexag' || format === 'anythinggoes') {
-				smogdexid += 'ag';
 			}
 			return 'http://smogon.com/dex/' + generation + '/pokemon/' + smogdexid + '/';
 		},
@@ -2001,7 +1961,7 @@
 				buf += ' </small><button name="setStatFormGuesses">' + role + ': ';
 				for (var i in BattleStatNames) {
 					if (guessedEVs[i]) {
-						var statName = this.curTeam.gen === 1 && i === 'spa' ? 'Spc' : BattleStatNames[i];
+						var statName = BattleStatNames[i];
 						buf += '' + guessedEVs[i] + ' ' + statName + ' / ';
 					}
 				}
@@ -2024,25 +1984,18 @@
 			}
 
 			var stats = {hp:'', atk:'', def:'', spa:'', spd:'', spe:''};
-			if (this.curTeam.gen === 1) delete stats.spd;
 			if (!set) return;
 			var nature = BattleNatures[set.nature || 'Serious'];
 			if (!nature) nature = {};
-
-			var supportsEVs = !this.curTeam.format.includes('letsgo');
-			// var supportsAVs = !supportsEVs && this.curTeam.format.endsWith('norestrictions');
-			var defaultEV = this.curTeam.gen <= 2 ? 252 : 0;
-			var maxEV = supportsEVs ? 252 : 200;
-			var stepEV = supportsEVs ? 4 : 1;
+			var defaultEV = 0;
+			var maxEV = 252;
+			var stepEV = 4;
 
 			// label column
 			buf += '<div class="col labelcol"><div></div>';
 			buf += '<div><label>HP</label></div><div><label>Attack</label></div><div><label>Defense</label></div><div>';
-			if (this.curTeam.gen === 1) {
-				buf += '<label>Special</label></div>';
-			} else {
-				buf += '<label>Sp. Atk.</label></div><div><label>Sp. Def.</label></div>';
-			}
+
+			buf += '<label>Sp. Atk.</label></div><div><label>Sp. Def.</label></div>';
 
 			buf += '<div><label>Speed</label></div></div>';
 
@@ -2062,10 +2015,10 @@
 				if (color > 360) color = 360;
 				buf += '<div><em><span style="width:' + Math.floor(width) + 'px;background:hsl(' + color + ',85%,45%);border-color:hsl(' + color + ',85%,35%)"></span></em></div>';
 			}
-			if (this.curTeam.gen > 2 && supportsEVs) buf += '<div><em>Remaining:</em></div>';
+			buf += '<div><em>Remaining:</em></div>';
 			buf += '</div>';
 
-			buf += '<div class="col evcol"><div><strong>' + (supportsEVs ? 'EVs' : 'AVs') + '</strong></div>';
+			buf += '<div class="col evcol"><div><strong>' + 'EVs' + '</strong></div>';
 			var totalev = 0;
 			this.plus = '';
 			this.minus = '';
@@ -2083,153 +2036,139 @@
 				buf += '<div><input type="text" name="stat-' + i + '" value="' + val + '" class="textbox inputform numform" /></div>';
 				totalev += (set.evs[i] || 0);
 			}
-			if (this.curTeam.gen > 2 && supportsEVs) {
-				var maxTotalEVs = 510;
-				if (totalev <= maxTotalEVs) {
-					buf += '<div class="totalev"><em>' + (totalev > (maxTotalEVs - 2) ? 0 : (maxTotalEVs - 2) - totalev) + '</em></div>';
-				} else {
-					buf += '<div class="totalev"><b>' + (maxTotalEVs - totalev) + '</b></div>';
-				}
+			var maxTotalEVs = 510;
+			if (totalev <= maxTotalEVs) {
+				buf += '<div class="totalev"><em>' + (totalev > (maxTotalEVs - 2) ? 0 : (maxTotalEVs - 2) - totalev) + '</em></div>';
+			} else {
+				buf += '<div class="totalev"><b>' + (maxTotalEVs - totalev) + '</b></div>';
 			}
 			buf += '</div>';
 
 			buf += '<div class="col evslidercol"><div></div>';
 			for (var i in stats) {
-				if (i === 'spd' && this.curTeam.gen === 1) continue;
 				buf += '<div><input type="range" name="evslider-' + i + '" value="' + BattleLog.escapeHTML(set.evs[i] === undefined ? '' + defaultEV : '' + set.evs[i]) + '" min="0" max="' + maxEV + '" step="' + stepEV + '" class="evslider" tabindex="-1" aria-hidden="true" /></div>';
 			}
 			buf += '</div>';
 
-			if (this.curTeam.gen > 2) {
-				buf += '<div class="col ivcol"><div><strong>IVs</strong></div>';
-				if (!set.ivs) set.ivs = {};
-				for (var i in stats) {
-					if (set.ivs[i] === undefined || isNaN(set.ivs[i])) set.ivs[i] = 31;
-					var val = '' + (set.ivs[i]);
-					buf += '<div><input type="number" name="iv-' + i + '" value="' + BattleLog.escapeHTML(val) + '" class="textbox inputform numform" min="0" max="31" step="1" /></div>';
-				}
-				var hpType = '';
-				if (set.moves) {
-					for (var i = 0; i < set.moves.length; i++) {
-						var moveid = toID(set.moves[i]);
-						if (moveid.slice(0, 11) === 'hiddenpower') {
-							hpType = moveid.slice(11);
-						}
-					}
-				}
-				if (hpType && !this.canHyperTrain(set)) {
-					var hpIVs;
-					switch (hpType) {
-					case 'dark':
-						hpIVs = ['111111']; break;
-					case 'dragon':
-						hpIVs = ['011111', '101111', '110111']; break;
-					case 'ice':
-						hpIVs = ['010111', '100111', '111110']; break;
-					case 'psychic':
-						hpIVs = ['011110', '101110', '110110']; break;
-					case 'electric':
-						hpIVs = ['010110', '100110', '111011']; break;
-					case 'grass':
-						hpIVs = ['011011', '101011', '110011']; break;
-					case 'water':
-						hpIVs = ['100011', '111010']; break;
-					case 'fire':
-						hpIVs = ['101010', '110010']; break;
-					case 'steel':
-						hpIVs = ['100010', '111101']; break;
-					case 'ghost':
-						hpIVs = ['101101', '110101']; break;
-					case 'bug':
-						hpIVs = ['100101', '111100', '101100']; break;
-					case 'rock':
-						hpIVs = ['001100', '110100', '100100']; break;
-					case 'ground':
-						hpIVs = ['000100', '111001', '101001']; break;
-					case 'poison':
-						hpIVs = ['001001', '110001', '100001']; break;
-					case 'flying':
-						hpIVs = ['000001', '111000', '101000']; break;
-					case 'fighting':
-						hpIVs = ['001000', '110000', '100000']; break;
-					}
-					buf += '<div style="margin-left:-80px;text-align:right"><select name="ivspread">';
-					buf += '<option value="" selected>HP ' + hpType.charAt(0).toUpperCase() + hpType.slice(1) + ' IVs</option>';
-
-					var minStat = this.curTeam.gen >= 6 ? 0 : 2;
-
-					buf += '<optgroup label="min Atk">';
-					for (var i = 0; i < hpIVs.length; i++) {
-						var spread = '';
-						for (var j = 0; j < 6; j++) {
-							if (j) spread += '/';
-							spread += (j === 1 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
-						}
-						buf += '<option value="' + spread + '">' + spread + '</option>';
-					}
-					buf += '</optgroup>';
-					buf += '<optgroup label="min Atk, min Spe">';
-					for (var i = 0; i < hpIVs.length; i++) {
-						var spread = '';
-						for (var j = 0; j < 6; j++) {
-							if (j) spread += '/';
-							spread += (j === 5 || j === 1 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
-						}
-						buf += '<option value="' + spread + '">' + spread + '</option>';
-					}
-					buf += '</optgroup>';
-					buf += '<optgroup label="max all">';
-					for (var i = 0; i < hpIVs.length; i++) {
-						var spread = '';
-						for (var j = 0; j < 6; j++) {
-							if (j) spread += '/';
-							spread += 30 + parseInt(hpIVs[i].charAt(j), 10);
-						}
-						buf += '<option value="' + spread + '">' + spread + '</option>';
-					}
-					buf += '</optgroup>';
-					buf += '<optgroup label="min Spe">';
-					for (var i = 0; i < hpIVs.length; i++) {
-						var spread = '';
-						for (var j = 0; j < 6; j++) {
-							if (j) spread += '/';
-							spread += (j === 5 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
-						}
-						buf += '<option value="' + spread + '">' + spread + '</option>';
-					}
-					buf += '</optgroup>';
-
-					buf += '</select></div>';
-				} else {
-					buf += '<div style="margin-left:-80px;text-align:right"><select name="ivspread">';
-					buf += '<option value="" selected>IV spreads</option>';
-
-					buf += '<optgroup label="min Atk">';
-					buf += '<option value="31/0/31/31/31/31">31/0/31/31/31/31</option>';
-					buf += '</optgroup>';
-					buf += '<optgroup label="min Atk, min Spe">';
-					buf += '<option value="31/0/31/31/31/0">31/0/31/31/31/0</option>';
-					buf += '</optgroup>';
-					buf += '<optgroup label="max all">';
-					buf += '<option value="31/31/31/31/31/31">31/31/31/31/31/31</option>';
-					buf += '</optgroup>';
-					buf += '<optgroup label="min Spe">';
-					buf += '<option value="31/31/31/31/31/0">31/31/31/31/31/0</option>';
-					buf += '</optgroup>';
-
-					buf += '</select></div>';
-				}
-				buf += '</div>';
-			} else {
-				buf += '<div class="col ivcol"><div><strong>DVs</strong></div>';
-				if (!set.ivs) set.ivs = {};
-				for (var i in stats) {
-					if (set.ivs[i] === undefined || isNaN(set.ivs[i])) set.ivs[i] = 31;
-					var val = '' + Math.floor(set.ivs[i] / 2);
-					buf += '<div><input type="number" name="iv-' + i + '" value="' + BattleLog.escapeHTML(val) + '" class="textbox inputform numform" min="0" max="15" step="1" /></div>';
-				}
-				buf += '</div>';
+			buf += '<div class="col ivcol"><div><strong>IVs</strong></div>';
+			if (!set.ivs) set.ivs = {};
+			for (var i in stats) {
+				if (set.ivs[i] === undefined || isNaN(set.ivs[i])) set.ivs[i] = 31;
+				var val = '' + (set.ivs[i]);
+				buf += '<div><input type="number" name="iv-' + i + '" value="' + BattleLog.escapeHTML(val) + '" class="textbox inputform numform" min="0" max="31" step="1" /></div>';
 			}
+			var hpType = '';
+			if (set.moves) {
+				for (var i = 0; i < set.moves.length; i++) {
+					var moveid = toID(set.moves[i]);
+					if (moveid.slice(0, 11) === 'hiddenpower') {
+						hpType = moveid.slice(11);
+					}
+				}
+			}
+			if (hpType && !this.canHyperTrain(set)) {
+				var hpIVs;
+				switch (hpType) {
+				case 'dark':
+					hpIVs = ['111111']; break;
+				case 'dragon':
+					hpIVs = ['011111', '101111', '110111']; break;
+				case 'ice':
+					hpIVs = ['010111', '100111', '111110']; break;
+				case 'psychic':
+					hpIVs = ['011110', '101110', '110110']; break;
+				case 'electric':
+					hpIVs = ['010110', '100110', '111011']; break;
+				case 'grass':
+					hpIVs = ['011011', '101011', '110011']; break;
+				case 'water':
+					hpIVs = ['100011', '111010']; break;
+				case 'fire':
+					hpIVs = ['101010', '110010']; break;
+				case 'steel':
+					hpIVs = ['100010', '111101']; break;
+				case 'ghost':
+					hpIVs = ['101101', '110101']; break;
+				case 'bug':
+					hpIVs = ['100101', '111100', '101100']; break;
+				case 'rock':
+					hpIVs = ['001100', '110100', '100100']; break;
+				case 'ground':
+					hpIVs = ['000100', '111001', '101001']; break;
+				case 'poison':
+					hpIVs = ['001001', '110001', '100001']; break;
+				case 'flying':
+					hpIVs = ['000001', '111000', '101000']; break;
+				case 'fighting':
+					hpIVs = ['001000', '110000', '100000']; break;
+				}
+				buf += '<div style="margin-left:-80px;text-align:right"><select name="ivspread">';
+				buf += '<option value="" selected>HP ' + hpType.charAt(0).toUpperCase() + hpType.slice(1) + ' IVs</option>';
+
+				var minStat = 0;
+
+				buf += '<optgroup label="min Atk">';
+				for (var i = 0; i < hpIVs.length; i++) {
+					var spread = '';
+					for (var j = 0; j < 6; j++) {
+						if (j) spread += '/';
+						spread += (j === 1 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
+					}
+					buf += '<option value="' + spread + '">' + spread + '</option>';
+				}
+				buf += '</optgroup>';
+				buf += '<optgroup label="min Atk, min Spe">';
+				for (var i = 0; i < hpIVs.length; i++) {
+					var spread = '';
+					for (var j = 0; j < 6; j++) {
+						if (j) spread += '/';
+						spread += (j === 5 || j === 1 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
+					}
+					buf += '<option value="' + spread + '">' + spread + '</option>';
+				}
+				buf += '</optgroup>';
+				buf += '<optgroup label="max all">';
+				for (var i = 0; i < hpIVs.length; i++) {
+					var spread = '';
+					for (var j = 0; j < 6; j++) {
+						if (j) spread += '/';
+						spread += 30 + parseInt(hpIVs[i].charAt(j), 10);
+					}
+					buf += '<option value="' + spread + '">' + spread + '</option>';
+				}
+				buf += '</optgroup>';
+				buf += '<optgroup label="min Spe">';
+				for (var i = 0; i < hpIVs.length; i++) {
+					var spread = '';
+					for (var j = 0; j < 6; j++) {
+						if (j) spread += '/';
+						spread += (j === 5 ? minStat : 30) + parseInt(hpIVs[i].charAt(j), 10);
+					}
+					buf += '<option value="' + spread + '">' + spread + '</option>';
+				}
+				buf += '</optgroup>';
+
+				buf += '</select></div>';
+			} else {
+				buf += '<div style="margin-left:-80px;text-align:right"><select name="ivspread">';
+				buf += '<option value="" selected>IV spreads</option>';
+
+				buf += '<optgroup label="min Atk">';
+				buf += '<option value="31/0/31/31/31/31">31/0/31/31/31/31</option>';
+				buf += '</optgroup>';
+				buf += '<optgroup label="min Atk, min Spe">';
+				buf += '<option value="31/0/31/31/31/0">31/0/31/31/31/0</option>';
+				buf += '</optgroup>';
+				buf += '<optgroup label="max all">';
+				buf += '<option value="31/31/31/31/31/31">31/31/31/31/31/31</option>';
+				buf += '</optgroup>';
+				buf += '<optgroup label="min Spe">';
+				buf += '<option value="31/31/31/31/31/0">31/31/31/31/31/0</option>';
+				buf += '</optgroup>';
+
+				buf += '</select></div>';
+			}
+			buf += '</div>';
 
 			buf += '<div class="col statscol"><div></div>';
 			for (var i in stats) {
@@ -2237,20 +2176,18 @@
 			}
 			buf += '</div>';
 
-			if (this.curTeam.gen > 2) {
-				buf += '<p style="clear:both">Nature: <select name="nature">';
-				for (var i in BattleNatures) {
-					var curNature = BattleNatures[i];
-					buf += '<option value="' + i + '"' + (curNature === nature ? 'selected="selected"' : '') + '>' + i;
-					if (curNature.plus) {
-						buf += ' (+' + BattleStatNames[curNature.plus] + ', -' + BattleStatNames[curNature.minus] + ')';
-					}
-					buf += '</option>';
+			buf += '<p style="clear:both">Nature: <select name="nature">';
+			for (var i in BattleNatures) {
+				var curNature = BattleNatures[i];
+				buf += '<option value="' + i + '"' + (curNature === nature ? 'selected="selected"' : '') + '>' + i;
+				if (curNature.plus) {
+					buf += ' (+' + BattleStatNames[curNature.plus] + ', -' + BattleStatNames[curNature.minus] + ')';
 				}
-				buf += '</select></p>';
-
-				buf += '<p><em>Protip:</em> You can also set natures by typing "+" and "-" next to a stat.</p>';
+				buf += '</option>';
 			}
+			buf += '</select></p>';
+
+			buf += '<p><em>Protip:</em> You can also set natures by typing "+" and "-" next to a stat.</p>';
 
 			buf += '</div>';
 			this.$chart.html(buf);
@@ -2280,8 +2217,6 @@
 			var inputName = '';
 			inputName = e.currentTarget.name;
 			var val = Math.abs(parseInt(e.currentTarget.value, 10));
-			var supportsEVs = !this.curTeam.format.includes('letsgo');
-			var supportsAVs = !supportsEVs && this.curTeam.format.endsWith('norestrictions');
 			var set = this.curSet;
 			if (!set) return;
 
@@ -2317,7 +2252,7 @@
 				if (set.evs[stat] !== val || natureChange) {
 					set.evs[stat] = val;
 					if (this.ignoreEVLimits) {
-						var evNum = supportsEVs ? 252 : supportsAVs ? 200 : 0;
+						var evNum = 252;
 						if (set.evs['hp'] === undefined) set.evs['hp'] = evNum;
 						if (set.evs['atk'] === undefined) set.evs['atk'] = evNum;
 						if (set.evs['def'] === undefined) set.evs['def'] = evNum;
@@ -2331,11 +2266,6 @@
 			} else {
 				// IV
 				var stat = inputName.substr(3);
-
-				if (this.curTeam.gen <= 2) {
-					val *= 2;
-					if (val === 30) val = 31;
-				}
 
 				if (val > 31 || isNaN(val)) val = 31;
 				if (val < 0) val = 0;
@@ -2362,30 +2292,15 @@
 			if (!hasHiddenPower) return;
 			var hpTypes = ['Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark'];
 			var hpType;
-			if (this.curTeam.gen <= 2) {
-				var hpDV = Math.floor(set.ivs.hp / 2);
-				var atkDV = Math.floor(set.ivs.atk / 2);
-				var defDV = Math.floor(set.ivs.def / 2);
-				var speDV = Math.floor(set.ivs.spe / 2);
-				var spcDV = Math.floor(set.ivs.spa / 2);
-				hpType = hpTypes[4 * (atkDV % 4) + (defDV % 4)];
-				var expectedHpDV = (atkDV % 2) * 8 + (defDV % 2) * 4 + (speDV % 2) * 2 + (spcDV % 2);
-				if (expectedHpDV !== hpDV) {
-					set.ivs.hp = expectedHpDV * 2;
-					if (set.ivs.hp === 30) set.ivs.hp = 31;
-					this.$chart.find('input[name=iv-hp]').val(expectedHpDV);
-				}
-			} else {
-				var hpTypeX = 0;
-				var i = 1;
-				var stats = {hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31};
-				for (var s in stats) {
-					if (set.ivs[s] === undefined) set.ivs[s] = 31;
-					hpTypeX += i * (set.ivs[s] % 2);
-					i *= 2;
-				}
-				hpType = hpTypes[Math.floor(hpTypeX * 15 / 63)];
+			var hpTypeX = 0;
+			var i = 1;
+			var stats = {hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31};
+			for (var s in stats) {
+				if (set.ivs[s] === undefined) set.ivs[s] = 31;
+				hpTypeX += i * (set.ivs[s] % 2);
+				i *= 2;
 			}
+			hpType = hpTypes[Math.floor(hpTypeX * 15 / 63)];
 			for (var i = 0; i < set.moves.length; i++) {
 				if (toID(set.moves[i]).slice(0, 11) === 'hiddenpower') {
 					set.moves[i] = "Hidden Power " + hpType;
@@ -2401,13 +2316,9 @@
 			var val = +slider.value;
 			var originalVal = val;
 			var result = this.getStat(stat, set, val);
-			var supportsEVs = !this.curTeam.format.includes('letsgo');
-			var supportsAVs = !supportsEVs && this.curTeam.format.endsWith('norestrictions');
-			if (supportsEVs) {
-				while (val > 0 && this.getStat(stat, set, val - 4) == result) val -= 4;
-			}
+			while (val > 0 && this.getStat(stat, set, val - 4) == result) val -= 4;
 
-			if (supportsEVs && !this.ignoreEVLimits && set.evs) {
+			if (!this.ignoreEVLimits && set.evs) {
 				var total = 0;
 				for (var i in set.evs) {
 					total += (i === stat ? val : set.evs[i]);
@@ -2431,7 +2342,7 @@
 
 			if (!set.evs) set.evs = {};
 			if (this.ignoreEVLimits) {
-				var evNum = supportsEVs ? 252 : supportsAVs ? 200 : 0;
+				var evNum = 252;
 				if (set.evs['hp'] === undefined) set.evs['hp'] = evNum;
 				if (set.evs['atk'] === undefined) set.evs['atk'] = evNum;
 				if (set.evs['def'] === undefined) set.evs['def'] = evNum;
@@ -2503,8 +2414,6 @@
 		updateDetailsForm: function () {
 			var buf = '';
 			var set = this.curSet;
-			var isLetsGo = this.curTeam.format.includes('letsgo');
-			var isNatDex = this.curTeam.gen === 8 && this.curTeam.format.includes('nationaldex');
 			var species = Dex.getSpecies(set.species);
 			if (!set) return;
 			buf += '<div class="resultheader"><h3>Details</h3></div>';
@@ -2512,58 +2421,38 @@
 
 			buf += '<div class="formrow"><label class="formlabel">Level:</label><div><input type="number" min="1" max="100" step="1" name="level" value="' + (typeof set.level === 'number' ? set.level : 100) + '" class="textbox inputform numform" /></div></div>';
 
-			if (this.curTeam.gen > 1) {
-				buf += '<div class="formrow"><label class="formlabel">Gender:</label><div>';
-				if (species.gender && this.curTeam.format.indexOf('hackmons') < 0) {
-					var genderTable = {'M': "Male", 'F': "Female", 'N': "Genderless"};
-					buf += genderTable[species.gender];
+			buf += '<div class="formrow"><label class="formlabel">Gender:</label><div>';
+			if (species.gender) {
+				var genderTable = {'M': "Male", 'F': "Female", 'N': "Genderless"};
+				buf += genderTable[species.gender];
+			} else {
+				buf += '<label><input type="radio" name="gender" value="M"' + (set.gender === 'M' ? ' checked' : '') + ' /> Male</label> ';
+				buf += '<label><input type="radio" name="gender" value="F"' + (set.gender === 'F' ? ' checked' : '') + ' /> Female</label> ';
+				if (this.curTeam.format.indexOf('hackmons') < 0) {
+					buf += '<label><input type="radio" name="gender" value="N"' + (!set.gender ? ' checked' : '') + ' /> Random</label>';
 				} else {
-					buf += '<label><input type="radio" name="gender" value="M"' + (set.gender === 'M' ? ' checked' : '') + ' /> Male</label> ';
-					buf += '<label><input type="radio" name="gender" value="F"' + (set.gender === 'F' ? ' checked' : '') + ' /> Female</label> ';
-					if (this.curTeam.format.indexOf('hackmons') < 0) {
-						buf += '<label><input type="radio" name="gender" value="N"' + (!set.gender ? ' checked' : '') + ' /> Random</label>';
-					} else {
-						buf += '<label><input type="radio" name="gender" value="N"' + (set.gender === 'N' ? ' checked' : '') + ' /> Genderless</label>';
-					}
-				}
-				buf += '</div></div>';
-
-				if (isLetsGo) {
-					buf += '<div class="formrow"><label class="formlabel">Happiness:</label><div><input type="number" name="happiness" value="70" class="textbox inputform numform" /></div></div>';
-				} else {
-					if (this.curTeam.gen < 8 || isNatDex) buf += '<div class="formrow"><label class="formlabel">Happiness:</label><div><input type="number" min="0" max="255" step="1" name="happiness" value="' + (typeof set.happiness === 'number' ? set.happiness : 255) + '" class="textbox inputform numform" /></div></div>';
-				}
-
-				buf += '<div class="formrow"><label class="formlabel">Shiny:</label><div>';
-				buf += '<label><input type="radio" name="shiny" value="yes"' + (set.shiny ? ' checked' : '') + ' /> Yes</label> ';
-				buf += '<label><input type="radio" name="shiny" value="no"' + (!set.shiny ? ' checked' : '') + ' /> No</label>';
-				buf += '</div></div>';
-
-				if (species.canGigantamax) {
-					buf += '<div class="formrow"><label class="formlabel">Gigantamax:</label></div>';
-					buf += '<label><input type="radio" name="gigantamax" value="yes"' + (set.gigantamax ? ' checked' : '') + ' /> Yes</label> ';
-					buf += '<label><input type="radio" name="gigantamax" value="no"' + (!set.gigantamax ? ' checked' : '') + ' /> No</label>';
-					buf += '</div></div>';
-				}
-				if (species.name.indexOf('-Gmax') >= 0) {
-					buf += '<div class="formrow"><label class="formlabel">Gigantamax:</label></div>';
-					buf += '<label><input type="radio" name="gigantamax" value="yes" checked /> Yes</label> ';
-					buf += '<label><input type="radio" name="gigantamax" value="no" /> No</label>';
-					buf += '</div></div>';
+					buf += '<label><input type="radio" name="gender" value="N"' + (set.gender === 'N' ? ' checked' : '') + ' /> Genderless</label>';
 				}
 			}
+			buf += '</div></div>';
 
-			if (this.curTeam.gen > 2) {
-				buf += '<div class="formrow" style="display:none"><label class="formlabel">Pokeball:</label><div><select name="pokeball">';
-				buf += '<option value=""' + (!set.pokeball ? ' selected="selected"' : '') + '></option>'; // unset
-				var balls = Dex.forGen(this.curTeam.gen).getPokeballs();
-				for (var i = 0; i < balls.length; i++) {
-					buf += '<option value="' + balls[i] + '"' + (set.pokeball === balls[i] ? ' selected="selected"' : '') + '>' + balls[i] + '</option>';
-				}
-				buf += '</select></div></div>';
+			buf += '<div class="formrow"><label class="formlabel">Happiness:</label><div><input type="number" min="0" max="255" step="1" name="happiness" value="' + (typeof set.happiness === 'number' ? set.happiness : 255) + '" class="textbox inputform numform" /></div></div>';
+
+			buf += '<div class="formrow"><label class="formlabel">Shiny:</label><div>';
+			buf += '<label><input type="radio" name="shiny" value="albino"' + (set.shiny === 'albino' ? ' checked' : '') + ' /> Albino</label> ';
+			buf += '<label><input type="radio" name="shiny" value="shiny"' + (set.shiny === 'shiny' ? ' checked' : '') + ' /> Shiny</label> ';
+			buf += '<label><input type="radio" name="shiny" value="no"' + (!set.shiny ? ' checked' : '') + ' /> No</label>';
+			buf += '</div></div>';
+
+			buf += '<div class="formrow" style="display:none"><label class="formlabel">Pokeball:</label><div><select name="pokeball">';
+			buf += '<option value=""' + (!set.pokeball ? ' selected="selected"' : '') + '></option>'; // unset
+			var balls = Dex.forGen(this.curTeam.gen).getPokeballs();
+			for (var i = 0; i < balls.length; i++) {
+				buf += '<option value="' + balls[i] + '"' + (set.pokeball === balls[i] ? ' selected="selected"' : '') + '>' + balls[i] + '</option>';
 			}
+			buf += '</select></div></div>';
 
-			if (!isLetsGo && (this.curTeam.gen === 7 || isNatDex)) {
+			if (this.curTeam.gen === 7) {
 				buf += '<div class="formrow"><label class="formlabel" title="Hidden Power Type">Hidden Power:</label><div><select name="hptype">';
 				buf += '<option value=""' + (!set.hpType ? ' selected="selected"' : '') + '>(automatic type)</option>'; // unset
 				for (var type in exports.BattleTypeChart) {
@@ -2587,8 +2476,6 @@
 			var set = this.curSet;
 			if (!set) return;
 			var species = Dex.getSpecies(set.species);
-			var isLetsGo = this.curTeam.format.includes('letsgo');
-			var isNatDex = this.curTeam.format.includes('nationaldex');
 
 			// level
 			var level = parseInt(this.$chart.find('input[name=level]').val(), 10);
@@ -2604,19 +2491,14 @@
 			if (set.happiness === 255) delete set.happiness;
 
 			// shiny
-			var shiny = (this.$chart.find('input[name=shiny]:checked').val() === 'yes');
-			if (shiny) {
-				set.shiny = true;
+			var shiny = (this.$chart.find('input[name=shiny]:checked').val());
+			if (shiny === "albino") {
+				set.shiny = "Albino";
+			}
+			else if (shiny === "shiny") {
+				set.shiny = "Shiny";
 			} else {
 				delete set.shiny;
-			}
-
-			// gigantamax
-			var gmax = (this.$chart.find('input[name=gigantamax]:checked').val() === 'yes');
-			if (gmax) {
-				set.gigantamax = true;
-			} else {
-				delete set.gigantamax;
 			}
 
 			// gender
@@ -2651,23 +2533,10 @@
 				'N': '&mdash;'
 			};
 			buf += '<span class="detailcell detailcell-first"><label>Level</label>' + (set.level || 100) + '</span>';
-			if (this.curTeam.gen > 1) {
-				buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || 'N'] + '</span>';
-				if (isLetsGo) {
-					buf += '<span class="detailcell"><label>Happiness</label>70</span>';
-				} else {
-					if (this.curTeam.gen < 8 || isNatDex) buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
-				}
-				buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny ? 'Yes' : 'No') + '</span>';
-				if (!isLetsGo && (this.curTeam.gen < 8 || isNatDex)) buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
-				if (this.curTeam.gen === 8) {
-					if (species.canGigantamax) {
-						buf += '<span class="detailcell"><label>Gmax</label>' + (set.gigantamax ? 'Yes' : 'No') + '</span>';
-					} else if (species.name.indexOf('-Gmax') >= 0) {
-						buf += '<span class="detailcell"><label>Gmax</label>Yes</span>';
-					}
-				}
-			}
+			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || 'N'] + '</span>';
+			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
+			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			this.$('button[name=details]').html(buf);
 
 			this.save();
@@ -2882,13 +2751,11 @@
 				if (baseFormat.substr(0, 3) === 'gen') baseFormat = baseFormat.substr(4);
 				if (baseFormat.substr(0, 8) === 'pokebank') baseFormat = baseFormat.substr(8);
 				if (this.curTeam && this.curTeam.format) {
-					if (baseFormat === 'battlespotsingles' || baseFormat === 'battlespotdoubles' || baseFormat.substr(0, 3) === 'vgc') set.level = 50;
-					if (baseFormat.substr(0, 2) === 'lc') set.level = 5;
+					if (baseFormat === 'battlespotsingles' || baseFormat === 'battlespotdoubles') set.level = 50;
 				}
 				set.gender = 'F';
 				if (set.happiness) delete set.happiness;
 				if (set.shiny) delete set.shiny;
-				if (set.gigantamax) delete set.gigantamax;
 				set.item = 'Starf Berry';
 				set.ability = 'Harvest';
 				set.moves = ['Substitute', 'Horn Leech', 'Earthquake', 'Phantom Force'];
@@ -2908,12 +2775,10 @@
 				if (baseFormat.substr(0, 3) === 'gen') baseFormat = baseFormat.substr(4);
 				if (baseFormat.substr(0, 8) === 'pokebank') baseFormat = baseFormat.substr(8);
 				if (this.curTeam && this.curTeam.format) {
-					if (baseFormat === 'battlespotsingles' || baseFormat === 'battlespotdoubles' || baseFormat.substr(0, 3) === 'vgc') set.level = 50;
-					if (baseFormat.substr(0, 2) === 'lc') set.level = 5;
+					if (baseFormat === 'battlespotsingles' || baseFormat === 'battlespotdoubles') set.level = 50;
 				}
 				if (set.happiness) delete set.happiness;
 				if (set.shiny) delete set.shiny;
-				if (set.gigantamax) delete set.gigantamax;
 				set.item = 'Leftovers';
 				set.ability = 'Battle Armor';
 				set.moves = ['Acupressure', 'Knock Off', 'Rest', 'Sleep Talk'];
@@ -3001,7 +2866,7 @@
 			var format = this.curTeam.format;
 			if (!set.level || set.level === 100) return true;
 			if (format.substr(0, 3) === 'gen') format = format.substr(4);
-			if (format.substr(0, 10) === 'battlespot' || format.substr(0, 3) === 'vgc' || format === 'ultrasinnohclassic') {
+			if (format.substr(0, 10) === 'battlespot') {
 				if (set.level === 50) return true;
 			}
 			return false;
@@ -3018,21 +2883,8 @@
 					var hpType = moveName.substr(13);
 
 					set.ivs = {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31};
-					if (this.curTeam.gen > 2) {
-						for (var i in exports.BattleTypeChart[hpType].HPivs) {
-							set.ivs[i] = exports.BattleTypeChart[hpType].HPivs[i];
-						}
-					} else {
-						for (var i in exports.BattleTypeChart[hpType].HPdvs) {
-							set.ivs[i] = exports.BattleTypeChart[hpType].HPdvs[i] * 2;
-						}
-						var atkDV = Math.floor(set.ivs.atk / 2);
-						var defDV = Math.floor(set.ivs.def / 2);
-						var speDV = Math.floor(set.ivs.spe / 2);
-						var spcDV = Math.floor(set.ivs.spa / 2);
-						var expectedHpDV = (atkDV % 2) * 8 + (defDV % 2) * 4 + (speDV % 2) * 2 + (spcDV % 2);
-						set.ivs.hp = expectedHpDV * 2;
-						if (set.ivs.hp === 30) set.ivs.hp = 31;
+					for (var i in exports.BattleTypeChart[hpType].HPivs) {
+						set.ivs[i] = exports.BattleTypeChart[hpType].HPivs[i];
 					}
 				}
 			} else if (moveName === 'Return') {
@@ -3047,7 +2899,7 @@
 
 			var minAtk = true;
 			if (set.ability === 'Battle Bond') minAtk = false; // only available through an event with 31 Atk IVs
-			var hpModulo = (this.curTeam.gen >= 6 ? 2 : 4);
+			var hpModulo = 2;
 			var hasHiddenPower = false;
 			var moves = set.moves;
 			for (var i = 0; i < moves.length; ++i) {
@@ -3077,7 +2929,7 @@
 			}
 
 			if (!set.ivs) {
-				if (minSpe === undefined && (!minAtk || gen < 3)) return;
+				if (minSpe === undefined && (!minAtk)) return;
 				set.ivs = {};
 			}
 			if (!set.ivs['spe'] && set.ivs['spe'] !== 0) set.ivs['spe'] = 31;
@@ -3088,7 +2940,6 @@
 				// max Spe
 				set.ivs['spe'] = (hasHiddenPower ? 30 + (set.ivs['spe'] % 2) : 31);
 			}
-			if (gen < 3) return;
 			if (!set.ivs['atk'] && set.ivs['atk'] !== 0) set.ivs['atk'] = 31;
 			if (minAtk) {
 				// min Atk
@@ -3113,11 +2964,8 @@
 				var baseFormat = this.curTeam.format;
 				var format = window.BattleFormats && window.BattleFormats[baseFormat];
 				if (baseFormat.substr(0, 3) === 'gen') baseFormat = baseFormat.substr(4);
-				if (baseFormat.substr(0, 8) === 'pokebank') baseFormat = baseFormat.substr(8);
 				if (this.curTeam && this.curTeam.format) {
-					if (baseFormat.substr(0, 10) === 'battlespot' && baseFormat.substr(0, 19) != 'battlespotspecial13' || baseFormat.substr(0, 3) === 'vgc') set.level = 50;
-					if (baseFormat.substr(0, 2) === 'lc' || baseFormat.substr(0, 5) === 'caplc') set.level = 5;
-					if (baseFormat.substr(0, 19) === 'battlespotspecial17') set.level = 1;
+					if (baseFormat.substr(0, 10) === 'battlespot') set.level = 50;
 					if (format && format.teambuilderLevel) {
 						set.level = format.teambuilderLevel;
 					}
@@ -3127,7 +2975,6 @@
 			if (species.gender && species.gender !== 'N') set.gender = species.gender;
 			if (set.happiness) delete set.happiness;
 			if (set.shiny) delete set.shiny;
-			if (set.gigantamax) delete set.gigantamax;
 			if (this.curTeam.format.indexOf('hackmons') < 0) {
 				set.item = (species.requiredItem || '');
 			} else {
@@ -3150,8 +2997,6 @@
 		// Stat calculator
 
 		getStat: function (stat, set, evOverride, natureOverride) {
-			var supportsEVs = !this.curTeam.format.includes('letsgo');
-			var supportsAVs = !supportsEVs;
 			if (!set) set = this.curSet;
 			if (!set) return 0;
 
@@ -3175,20 +3020,16 @@
 
 			var baseStat = species.baseStats[stat];
 			var iv = (set.ivs[stat] || 0);
-			if (this.curTeam.gen <= 2) iv &= 30;
 			var ev = set.evs[stat];
+			var shinyMod = pokemon.shiny === "Albino" ? 1.5 : pokemon.shiny === "Shiny" ? 1.25 : 1;
 			if (evOverride !== undefined) ev = evOverride;
-			if (ev === undefined) ev = (this.curTeam.gen > 2 ? 0 : 252);
+			if (ev === undefined) ev = 0;
 
 			if (stat === 'hp') {
 				if (baseStat === 1) return 1;
-				if (!supportsEVs) return Math.floor(Math.floor(2 * baseStat + iv + 100) * set.level / 100 + 10) + (supportsAVs ? ev : 0);
-				return Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4) + 100) * set.level / 100 + 10);
+				return Math.floor(Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4) + 100) * set.level / 100 + 10)*shinyMod);
 			}
 			var val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
-			if (!supportsEVs) {
-				val = Math.floor(Math.floor(2 * baseStat + iv) * set.level / 100 + 5);
-			}
 			if (natureOverride) {
 				val *= natureOverride;
 			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].plus === stat) {
@@ -3196,10 +3037,7 @@
 			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].minus === stat) {
 				val *= 0.9;
 			}
-			if (!supportsEVs) {
-				var friendshipValue = Math.floor((70 / 255 / 10 + 1) * 100);
-				val = Math.floor(val) * friendshipValue / 100 + (supportsAVs ? ev : 0);
-			}
+			val = Math.floor(val*shinyMod);
 			return Math.floor(val);
 		},
 
@@ -3278,7 +3116,7 @@
 			var spriteSize = 96;
 			var spriteDim = 'width: 96px; height: 96px;';
 
-			var gen = {1:'gen1', 2:'gen2', 3:'gen3', 4:'gen4', 5:'gen5', 6:'dex', 7:'dex', 8:'dex'}[Math.max(this.room.curTeam.gen, species.gen)];
+			var gen = {5:'gen5', 6:'dex', 7:'dex', 8:'dex'}[Math.max(this.room.curTeam.gen, species.gen)];
 			if (Dex.prefs('nopastgens')) gen = 'dex';
 			if (Dex.prefs('bwgfx') && gen === 'dex') gen = 'gen5';
 			spriteDir += gen;

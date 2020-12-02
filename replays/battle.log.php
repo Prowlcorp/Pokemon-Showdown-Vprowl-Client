@@ -48,7 +48,7 @@ if ($replay['password'] ?? null) {
 $replay['log'] = str_replace("\r","",$replay['log']);
 
 if ($replay['inputlog']) {
-	if (substr($replay['formatid'], -12) === 'randombattle' || substr($replay['formatid'], -19) === 'randomdoublesbattle' || $replay['formatid'] === 'gen7challengecup' || $replay['formatid'] === 'gen7challengecup1v1' || $replay['formatid'] === 'gen7battlefactory' || $replay['formatid'] === 'gen7bssfactory' || $replay['formatid'] === 'gen7hackmonscup' || $manage) {
+	if ($replay['formatid'] === 'gen7challengecup' || $replay['formatid'] === 'gen7challengecup1v1' || $replay['formatid'] === 'gen7battlefactory' || $replay['formatid'] === 'gen7bssfactory' || $manage) {
 		// ok
 	} else {
 		unset($replay['inputlog']);

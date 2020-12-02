@@ -85,7 +85,7 @@ imagedestroy($srcim);
 
 if ($Ahp)
 {
-$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png');
+$srcim = @imagecreatefrompng('../sprites/gen5/'.$A.'.png') or $srcim = imagecreatefrompng('../sprites/gen5/0.png')
 //imagecopymerge($im, $srcim, 124, 4, 0,0, 96,96, $Ahp?100:30);
 imagecopyresampled($im, $srcim, 124,4, 96,0, 96,96, -96,96);
 imagedestroy($srcim);
