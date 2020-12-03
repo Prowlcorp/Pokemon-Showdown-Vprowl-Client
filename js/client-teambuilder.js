@@ -119,7 +119,7 @@
 		// format
 		// Special values:
 		// '' -     show all
-		// 'gen8' - show teams with no format
+		// 'gen999' - show teams with no format
 		// '/' -    show teams with no folder
 		curFolder: '',
 		curFolderKeep: '',
@@ -129,7 +129,7 @@
 		update: function () {
 			teams = Storage.teams;
 			if (this.curTeam) {
-				this.ignoreEVLimits = this.curTeam.format === 'gen8metronomebattle';
+				this.ignoreEVLimits = this.curTeam.format === 'gen999metronomebattle';
 				if (this.curSet) {
 					return this.updateSetView();
 				}
@@ -230,7 +230,7 @@
 					format = this.curFolder;
 				} else {
 					format = Storage.teams[i].format;
-					if (!format) format = 'gen8';
+					if (!format) format = 'gen999';
 				}
 				if (!format) continue;
 				if (format in folderTable) continue;
@@ -243,15 +243,12 @@
 					}
 					continue;
 				}
-				if (format === 'gen8') {
+				if (format === 'gen999') {
 					folders.push('B~');
 					continue;
 				}
 				switch (format.slice(0, 4)) {
-				case 'gen5': format = 'E' + format.slice(4); break;
-				case 'gen7': format = 'C' + format.slice(4); break;
-				case 'gen8': format = 'B' + format.slice(4); break;
-				case 'gen9': format = 'A' + format.slice(4); break;
+				case 'gen999': format = 'B' + format.slice(4); break;
 				default: format = 'X' + format; break;
 				}
 				folders.push(format);
@@ -352,7 +349,7 @@
 
 			var newTeamButtonText = "New Team";
 			if (filterFolder) newTeamButtonText = "New Team in folder";
-			if (filterFormat && filterFormat !== 'gen8') {
+			if (filterFormat && filterFormat !== 'gen999') {
 				newTeamButtonText = "New " + BattleLog.escapeFormat(filterFormat) + " Team";
 			}
 			buf += '<p><button name="newTop" value="team" class="button big"><i class="fa fa-plus-circle"></i> ' + newTeamButtonText + '</button> ' +
@@ -395,7 +392,7 @@
 						continue;
 					}
 
-					if (filterFormat && filterFormat !== (team.format || 'gen8')) continue;
+					if (filterFormat && filterFormat !== (team.format || 'gen999')) continue;
 					if (filterFolder !== undefined && filterFolder !== team.folder) continue;
 
 					if (this.curSearchVal) {
@@ -768,11 +765,11 @@
 					iconCache: ''
 				};
 			} else {
-				var format = this.curFolder || 'gen8';
+				var format = this.curFolder || 'gen999';
 				var folder = '';
 				if (format && format.charAt(format.length - 1) === '/') {
 					folder = format.slice(0, -1);
-					format = 'gen8';
+					format = 'gen999';
 				}
 				newTeam = {
 					name: (isBox ? 'Box ' : 'Untitled ') + (teams.length + 1),
@@ -1053,7 +1050,7 @@
 					var capacity = 6;
 					if (bracketIndex >= 0) {
 						format = name.substr(1, bracketIndex - 1);
-						if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
+						if (format && format.slice(0, 3) !== 'gen') format = 'gen999' + format;
 						if (format && format.endsWith('-box')) {
 							format = format.slice(0, -4);
 							capacity = 24;
@@ -1195,8 +1192,7 @@
 			buf += '</div>';
 			buf += '<div class="setcell setcell-typeicons">';
 			var types = species.types;
-			var table = (this.curTeam.gen < 7 ? BattleTeambuilderTable['gen' + this.curTeam.gen] : null);
-			if (table && species.id in table.overrideType) types = table.overrideType[species.id].split('/');
+			var table = BattleTeambuilderTable['gen999'];
 			if (types) {
 				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i]);
 			}
@@ -1832,7 +1828,7 @@
 					this.$chart.scrollTop(0);
 				}
 				this.search.$inputEl = $inputEl;
-				this.search.setType(type, this.curTeam.format || 'gen8', this.curSet, cur);
+				this.search.setType(type, this.curTeam.format || 'gen999', this.curSet, cur);
 				this.qInitial = q;
 				this.search.qName = this.curChartName;
 				if (wasIncomplete) {
@@ -2706,16 +2702,16 @@
 				val = (id in BattlePokedex ? Dex.getSpecies(e.currentTarget.value).name : '');
 				break;
 			case 'ability':
-				if (id in BattleItems && this.curTeam.format == "gen8dualwielding") {
+				if (id in BattleItems && this.curTeam.format == "gen999dualwielding") {
 					val = BattleItems[id].name;
-				} else if (id in BattleMovedex && this.curTeam.format == "gen8trademarked") {
+				} else if (id in BattleMovedex && this.curTeam.format == "gen999trademarked") {
 					val = BattleMovedex[id].name;
 				} else {
 					val = (id in BattleAbilities ? BattleAbilities[id].name : '');
 				}
 				break;
 			case 'item':
-				if (id in BattleMovedex && this.curTeam.format == "gen8fortemons") {
+				if (id in BattleMovedex && this.curTeam.format == "gen999fortemons") {
 					val = BattleMovedex[id].name;
 				} else {
 					val = (id in BattleItems ? BattleItems[id].name : '');

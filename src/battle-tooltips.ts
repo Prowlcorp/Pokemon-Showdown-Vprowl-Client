@@ -1120,7 +1120,7 @@ class BattleTooltips {
 		let baseSpe = pokemon.getSpecies().baseStats['spe'];
 		let tier = this.battle.tier;
 		let gen = this.battle.gen;
-		let isRandomBattle = (tier.includes('Random') && tier.includes('Battle') && gen >= 6);
+		let isRandomBattle = (tier.includes('Random') && tier.includes('Battle'));
 
 		let minNature = (isRandomBattle) ? 1 : 0.9;
 		let maxNature = (isRandomBattle) ? 1 : 1.1;
@@ -1875,7 +1875,7 @@ class BattleStatGuesser {
 		let needsFourMoves = !['ditto'].includes(species.id);
 		let moveids = set.moves.map(toID);
 		if (moveids.includes('lastresort' as ID)) needsFourMoves = false;
-		if (set.moves.length < 4 && needsFourMoves && this.formatid !== 'gen8metronomebattle') {
+		if (set.moves.length < 4 && needsFourMoves && this.formatid !== 'gen999metronomebattle') {
 			return '?';
 		}
 

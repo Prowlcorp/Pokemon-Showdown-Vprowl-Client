@@ -12,7 +12,7 @@
  */
 
 type SearchType = (
-	'pokemon' | 'type' | 'move' | 'item' | 'ability' | 'egggroup' | 'category' | 'article'
+	'pokemon' | 'type' | 'tier' | 'move' | 'item' | 'ability' | 'egggroup' | 'category' | 'article'
 );
 
 type SearchRow = (
@@ -581,7 +581,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (format.endsWith('nfe')) {
 			format = format.slice(3) as ID;
 			this.formatType = 'nfe';
-			if (!format) format = 'ou' as ID;
+			if (!format) format = 'customgame' as ID;
 		}
 		this.format = format;
 
@@ -804,18 +804,15 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		const dex = this.dex;
 
 		let table = BattleTeambuilderTable;
-		if (table['doubles'] &&
-			(
-			format.includes('doubles') || format.includes('triples')
-		)) {
+		if (table['doubles'] &&	(format.includes('doubles') || format.includes('triples'))) {
 			table = table['doubles'];
 			isDoublesOrBS = true;
-		} else if (dex.gen < 8 && !this.formatType) {
+		} else if (!this.formatType) {
 			table = table['gen' + dex.gen];
 		} else if (this.formatType === 'metronome') {
 			table = table['metronome'];
 		} else if (this.formatType === 'nfe') {
-			table = table['nfe'];
+			table = table['gen' + dex.gen + 'nfe'];
 		}
 
 		if (!table.tierSet) {
@@ -1221,7 +1218,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		}
 		if (sketch) {
 			for (let id in BattleMovedex) {
-				if (!format.startsWith('cap') && (id === 'paleowave' || id === 'shadowstrike')) continue;
 				const move = dex.getMove(id);
 				if (sketch) {
 					if (move.isZ) continue;

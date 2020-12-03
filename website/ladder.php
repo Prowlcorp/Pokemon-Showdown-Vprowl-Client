@@ -17,14 +17,14 @@ if ($formatid && !ctype_alnum($formatid)) {
 }
 
 $formats = array(
-	'gen8challengecup1v1' => 'Challenge Cup 1v1',
-	'gen8monotype' => 'Monotype',
-	'gen81v1' => '1v1',
-	'gen8battlestadiumsingles' => 'Battle Stadium Singles',
-	'gen8mixandmega' => 'Mix and Mega',
-	'gen8almostanyability' => 'Almost Any Ability',
-	'gen8stabmons' => 'STABmons',
-	'gen8nfe' => 'NFE',
+	'challengecup1v1' => 'Challenge Cup 1v1',
+	'monotype' => 'Monotype',
+	'1v1' => '1v1',
+	'battlestadiumsingles' => 'Battle Stadium Singles',
+	'mixandmega' => 'Mix and Mega',
+	'almostanyability' => 'Almost Any Ability',
+	'stabmons' => 'STABmons',
+	'nfe' => 'NFE',
 );
 
 $format = $formatid;
@@ -80,19 +80,18 @@ if (!$formatid) {
 			Ladders
 		</h1>
 		<ul class="laddernav">
-			<li><a data-target="push" class="button" href="/ladder/gen8challengecup1v1">Challenge Cup 1v1</a></li>
+			<li><a data-target="push" class="button" href="/ladder/challengecup1v1">Challenge Cup 1v1</a></li>
 		</ul>
 		<ul class="laddernav">
-			<li><a data-target="push" class="button nav-first" href="/ladder/gen8lc">Little Cup</a></li>
-			<li><a data-target="push" class="button" href="/ladder/gen8monotype">Monotype</a></li>
-			<li><a data-target="push" class="button" href="/ladder/gen81v1">1v1</a></li>
-			<li><a data-target="push" class="button nav-last" href="/ladder/gen8battlestadiumsingles">Battle Stadium Singles</a></li>
+			<li><a data-target="push" class="button nav-first" href="/ladder/monotype">Monotype</a></li>
+			<li><a data-target="push" class="button" href="/ladder/1v1">1v1</a></li>
+			<li><a data-target="push" class="button nav-last" href="/ladder/battlestadiumsingles">Battle Stadium Singles</a></li>
 		</ul>
 		<ul class="laddernav">
-			<li><a data-target="push" class="button" href="/ladder/gen8mixandmega">Mix and Mega</a></li>
-			<li><a data-target="push" class="button" href="/ladder/gen8almostanyability">Almost Any Ability</a></li>
-			<li><a data-target="push" class="button" href="/ladder/gen8stabmons">STABmons</a></li>
-			<li><a data-target="push" class="button" href="/ladder/gen8nfe">NFE</a></li>
+			<li><a data-target="push" class="button" href="/ladder/mixandmega">Mix and Mega</a></li>
+			<li><a data-target="push" class="button" href="/ladder/almostanyability">Almost Any Ability</a></li>
+			<li><a data-target="push" class="button" href="/ladder/stabmons">STABmons</a></li>
+			<li><a data-target="push" class="button" href="/ladder/nfe">NFE</a></li>
 		</ul>
 		<h1>
 			Find user

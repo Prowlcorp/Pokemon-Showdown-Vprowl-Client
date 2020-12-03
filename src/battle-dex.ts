@@ -171,7 +171,7 @@ interface TeambuilderSpriteData {
 
 const Dex = new class implements ModdedDex {
 	readonly gen = 8;
-	readonly modid = 'gen8' as ID;
+	readonly modid = 'gen999' as ID;
 	readonly cache = null!;
 
 	readonly statNames: ReadonlyArray<StatName> = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
@@ -182,22 +182,22 @@ const Dex = new class implements ModdedDex {
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
-		return `${prefix}//${window.Config ? Config.routes.client : 'prowl-showdown.netlify.app'}/`;
+		return `${prefix}//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/`;
 	})();
 
 	fxPrefix = (() => {
 		if (window.document?.location?.protocol === 'file:') {
-			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'prowl-showdown.netlify.app'}/fx/`;//PROWL change
+			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
 			return `fx/`;
 		}
-		return `//${window.Config ? Config.routes.client : 'prowl-showdown.netlify.app'}/fx/`;
+		return `//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
 	})();
 
 	loadedSpriteData = {xy: 1, bw: 0};
 	moddedDexes: {[mod: string]: ModdedDex} = {};
 
 	mod(modid: ID): ModdedDex {
-		if (modid === 'gen8') return this;
+		if (modid === 'gen999') return this;
 		if (!window.BattleTeambuilderTable) return this;
 		if (modid in this.moddedDexes) {
 			return this.moddedDexes[modid];

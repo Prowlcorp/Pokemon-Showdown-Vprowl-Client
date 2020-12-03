@@ -912,7 +912,7 @@
 						var row = data[i];
 						if (!row) return self.add('|raw|Error: corrupted ranking data');
 						var formatId = toID(row.formatid);
-						if (!formatTargeting || formats[formatId] || gens[formatId.slice(0, 4)] || (gens['gen6'] && formatId.substr(0, 3) !== 'gen')) {
+						if (!formatTargeting || formats[formatId] || gens[formatId.slice(0, 4)] || (gens['gen999'] && formatId.substr(0, 3) !== 'gen')) {
 							buffer += '<tr>';
 						} else {
 							buffer += '<tr class="hidden">';

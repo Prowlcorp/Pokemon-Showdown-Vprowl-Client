@@ -86,9 +86,9 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				<span class="col abilitycol">{pokemon.abilities['0']}</span>
 			}
 			{pokemon.abilities['S'] ?
-				<span class={`col twoabilitycol${pokemon.unreleasedHidden ? ' unreleasedhacol' : ''}`}>{pokemon.abilities['H'] || ''}<br />{pokemon.abilities['S']}</span>
+				<span class={`col twoabilitycol''`}>{pokemon.abilities['H'] || ''}<br />{pokemon.abilities['S']}</span>
 			: pokemon.abilities['H'] ?
-				<span class={`col abilitycol${pokemon.unreleasedHidden ? ' unreleasedhacol' : ''}`}>{pokemon.abilities['H']}</span>
+				<span class={`col abilitycol''`}>{pokemon.abilities['H']}</span>
 			:
 				<span class="col abilitycol"></span>
 			}
@@ -275,6 +275,23 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 		</a></li>;
 	}
 
+	renderTierRow(id: ID, matchStart: number, matchEnd: number, errorMessage?: preact.ComponentChildren) {
+		const search = this.props.search;
+		// very hardcode
+		const tierTable: {[id: string]: string} = {
+			filler: "Filler",
+		};
+		const name = tierTable[id] || id.toUpperCase();
+
+		return <li class="result"><a href={`${this.URL_ROOT}tiers/${id}`} data-target="push" data-entry={`tier|${name}`}>
+			<span class="col namecol">{this.renderName(name, matchStart, matchEnd)}</span>
+
+			<span class="col movedesccol">(tier)</span>
+
+			{errorMessage}
+		</a></li>;
+	}
+
 	renderRow(row: SearchRow) {
 		const search = this.props.search;
 		const [type, id] = row;
@@ -319,6 +336,8 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			return this.renderTypeRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'egggroup':
 			return this.renderEggGroupRow(id as ID, matchStart, matchEnd, errorMessage);
+		case 'tier':
+			return this.renderTierRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'category':
 			return this.renderCategoryRow(id as ID, matchStart, matchEnd, errorMessage);
 		case 'article':

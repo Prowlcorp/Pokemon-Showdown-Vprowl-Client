@@ -1061,7 +1061,6 @@ class Species implements Effect {
 	readonly isMega: boolean;
 	readonly isPrimal: boolean;
 	readonly battleOnly: string | string[] | undefined;
-	readonly unreleasedHidden: boolean | 'Past';
 	readonly changesFrom: string | undefined;
 
 	constructor(id: ID, name: string, data: any) {
@@ -1107,7 +1106,6 @@ class Species implements Effect {
 		this.isMega = false;
 		this.isPrimal = false;
 		this.battleOnly = data.battleOnly || undefined;
-		this.unreleasedHidden = data.unreleasedHidden || false;
 		this.changesFrom = data.changesFrom || undefined;
 	}
 }

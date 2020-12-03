@@ -472,8 +472,8 @@ class PSTeambuilder {
 
 				line = line.slice(3, -3).trim();
 				[curTeam.format, line] = this.splitPrefix(line, ']', 1) as [ID, string];
-				if (!curTeam.format) curTeam.format = 'gen8' as ID;
-				else if (!curTeam.format.startsWith('gen')) curTeam.format = `gen6${curTeam.format}` as ID;
+				if (!curTeam.format) curTeam.format = 'gen999' as ID;
+				else if (!curTeam.format.startsWith('gen')) curTeam.format = `gen999${curTeam.format}` as ID;
 
 				[curTeam.folder, curTeam.name] = this.splitPrefix(line, '/');
 			} else if (line.includes('|')) {
@@ -560,7 +560,7 @@ function TeamBox(props: {team: Team | null, noLink?: boolean, button?: boolean})
 			team.iconCache = icons;
 		}
 		let format = team.format as string;
-		if (format.startsWith('gen8')) format = format.slice(4);
+		if (format.startsWith('gen999')) format = format.slice(4);
 		format = (format ? `[${format}] ` : ``) + (team.folder ? `${team.folder}/` : ``);
 		contents = [
 			<strong>{format && <span>{format}</span>}{team.name}</strong>,
@@ -813,7 +813,6 @@ class FormatDropdownPanel extends PSRoomPanel {
 			{columns.map(column => <ul class="options" onClick={this.click}>
 				{column.map(format => format.id ? (
 					<li><button value={format.name} class="option">
-						{format.name.replace('[Gen 8 ', '[').replace('[Gen 8] ', '').replace('[Gen 7 ', '[')}
 					</button></li>
 				) : (
 					<li><h3>

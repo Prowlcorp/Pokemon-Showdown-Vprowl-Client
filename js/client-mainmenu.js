@@ -798,7 +798,7 @@
 			if (format) {
 				var formatParts = format.split('@@@', 2);
 				formatParts[0] = toID(formatParts[0]);
-				if (!formatParts[0].startsWith('gen')) formatParts[0] = 'gen8' + formatParts[0];
+				if (!formatParts[0].startsWith('gen')) formatParts[0] = 'gen999' + formatParts[0];
 				format = formatParts.length > 1 ? formatParts[0] + '@@@' + formatParts[1] : formatParts[0];
 			}
 
@@ -1135,10 +1135,7 @@
 					bufs[curBuf] += '<li><h3>' + BattleLog.escapeHTML(curSection) + '</li>';
 				}
 				var formatName = BattleLog.escapeFormat(format.id);
-				if (formatName.charAt(0) !== '[') formatName = '[Gen 6] ' + formatName;
-				formatName = formatName.replace('[Gen 8 ', '[');
-				formatName = formatName.replace('[Gen 8] ', '');
-				formatName = formatName.replace('[Gen 7 ', '[');
+				if (formatName.charAt(0) !== '[') formatName = '[Gen 999] ' + formatName;
 				bufs[curBuf] += '<li><button name="selectFormat" value="' + i + '"' + (curFormat === i ? ' class="sel"' : '') + '>' + formatName + '</button></li>';
 			}
 

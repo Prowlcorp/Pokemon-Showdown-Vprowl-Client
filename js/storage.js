@@ -625,9 +625,9 @@ Storage.unpackAllTeams = function (buffer) {
 	if (buffer.charAt(0) === '[' && $.trim(buffer).indexOf('\n') < 0) {
 		// old format
 		return JSON.parse(buffer).map(function (oldTeam) {
-			var format = oldTeam.format || 'gen8';
+			var format = oldTeam.format || 'gen999';
 			var capacity = 6;
-			if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
+			if (format && format.slice(0, 3) !== 'gen') format = 'gen999' + format;
 			if (format && format.endsWith('-box')) {
 				format = format.slice(0, -4);
 				capacity = 24;
@@ -654,8 +654,8 @@ Storage.unpackLine = function (line) {
 	var isBox = line.slice(0, bracketIndex).endsWith('-box');
 	var slashIndex = line.lastIndexOf('/', pipeIndex);
 	if (slashIndex < 0) slashIndex = bracketIndex; // line.slice(slashIndex + 1, pipeIndex) will be ''
-	var format = bracketIndex > 0 ? line.slice(0, isBox ? bracketIndex - 4 : bracketIndex) : 'gen8';
-	if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
+	var format = bracketIndex > 0 ? line.slice(0, isBox ? bracketIndex - 4 : bracketIndex) : 'gen999';
+	if (format && format.slice(0, 3) !== 'gen') format = 'gen999' + format;
 	return {
 		name: line.slice(slashIndex + 1, pipeIndex),
 		format: format,
@@ -1088,12 +1088,12 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 3) === '===' && teams) {
 			team = [];
 			line = $.trim(line.substr(3, line.length - 6));
-			var format = 'gen8';
+			var format = 'gen999';
 			var capacity = 6;
 			var bracketIndex = line.indexOf(']');
 			if (bracketIndex >= 0) {
 				format = line.substr(1, bracketIndex - 1);
-				if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
+				if (format && format.slice(0, 3) !== 'gen') format = 'gen999' + format;
 				if (format && format.endsWith('-box')) {
 					format = format.slice(0, -4);
 					capacity = 24;
@@ -1527,7 +1527,7 @@ Storage.nwLoadTeamFile = function (filename, localApp) {
 		format = line.slice(1, bracketIndex);
 		line = $.trim(line.slice(bracketIndex + 1));
 	}
-	if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
+	if (format && format.slice(0, 3) !== 'gen') format = 'gen999' + format;
 	fs.readFile(this.dir + 'Teams/' + filename, function (err, data) {
 		if (!err) {
 			self.teams.push({

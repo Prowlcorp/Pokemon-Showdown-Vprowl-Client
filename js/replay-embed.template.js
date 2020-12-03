@@ -12,28 +12,28 @@ function requireScript(url) {
 	document.head.appendChild(scriptEl);
 }
 
-linkStyle('https://prowl-showdown.netlify.app/style/font-awesome.css?');
-linkStyle('https://prowl-showdown.netlify.app/style/battle.css?a7');
-linkStyle('https://prowl-showdown.netlify.app/style/replay.css?a7');
-linkStyle('https://prowl-showdown.netlify.app/style/utilichart.css?a7');
+linkStyle('./style/font-awesome.css?');
+linkStyle('./style/battle.css?a7');
+linkStyle('./style/replay.css?a7');
+linkStyle('./style/utilichart.css?a7');
 //PROWL change
-requireScript('https://prowl-showdown.netlify.app/js/lib/ps-polyfill.js');
-requireScript('https://prowl-showdown.netlify.app/config/config.js?a7');
-requireScript('https://prowl-showdown.netlify.app/js/lib/jquery-1.11.0.min.js');
-requireScript('https://prowl-showdown.netlify.app/js/lib/lodash.compat.js');
-requireScript('https://prowl-showdown.netlify.app/js/lib/html-sanitizer-minified.js');
-requireScript('https://prowl-showdown.netlify.app/js/battle-sound.js');
-requireScript('https://prowl-showdown.netlify.app/js/battledata.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/pokedex-mini.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/pokedex-mini-bw.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/graphics.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/pokedex.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/moves.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/abilities.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/items.js?a7');
-requireScript('https://prowl-showdown.netlify.app/data/teambuilder-tables.js?a7');
-requireScript('https://prowl-showdown.netlify.app/js/battle-tooltips.js?a7');
-requireScript('https://prowl-showdown.netlify.app/js/battle.js?a7');
+requireScript('./js/lib/ps-polyfill.js');
+requireScript('./config/config.js?a7');
+requireScript('./js/lib/jquery-1.11.0.min.js');
+requireScript('./js/lib/lodash.compat.js');
+requireScript('./js/lib/html-sanitizer-minified.js');
+requireScript('./js/battle-sound.js');
+requireScript('./js/battledata.js?a7');
+requireScript('./data/pokedex-mini.js?a7');
+requireScript('./data/pokedex-mini-bw.js?a7');
+requireScript('./data/graphics.js?a7');
+requireScript('./data/pokedex.js?a7');
+requireScript('./data/moves.js?a7');
+requireScript('./data/abilities.js?a7');
+requireScript('./data/items.js?a7');
+requireScript('./data/teambuilder-tables.js?a7');
+requireScript('./js/battle-tooltips.js?a7');
+requireScript('./js/battle.js?a7');
 
 var Replays = {
 	init: function (log) {

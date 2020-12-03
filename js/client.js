@@ -1203,7 +1203,7 @@ function toId() {
 					if (isTeambuilderFormat) {
 						teambuilderFormatName = name;
 						if (id.slice(0, 3) !== 'gen') {
-							teambuilderFormatName = '[Gen 6] ' + name;
+							teambuilderFormatName = '[Gen 999] ' + name;
 						}
 						var parenPos = teambuilderFormatName.indexOf('(');
 						if (parenPos > 0 && name.slice(-1) === ')') {

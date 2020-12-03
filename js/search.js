@@ -225,6 +225,13 @@
 			}
 			var egggroup = {name: egName};
 			return this.renderEggGroupRow(egggroup, matchStart, matchLength, errorMessage);
+		case 'tier':
+			// very hardcode
+			var tierTable = {
+				filler: "Filler"
+			};
+			var tier = {name: tierTable[id]};
+			return this.renderTierRow(tier, matchStart, matchLength, errorMessage);
 		case 'category':
 			var category = {name: id[0].toUpperCase() + id.substr(1), id: id};
 			return this.renderCategoryRow(category, matchStart, matchLength, errorMessage);
@@ -323,15 +330,14 @@
 		} else {
 			buf += '<span class="col abilitycol">' + abilities['0'] + '</span>';
 		}
-		var unreleasedHidden = pokemon.unreleasedHidden;
 		if (abilities['S']) {
 			if (abilities['H']) {
-				buf += '<span class="col twoabilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
+				buf += '<span class="col twoabilitycol' + '' + '">' + (abilities['H'] || '') + '<br />(' + abilities['S'] + ')</span>';
 			} else {
 				buf += '<span class="col abilitycol">(' + abilities['S'] + ')</span>';
 			}
 		} else if (abilities['H']) {
-			buf += '<span class="col abilitycol' + (unreleasedHidden ? ' unreleasedhacol' : '') + '">' + abilities['H'] + '</span>';
+			buf += '<span class="col abilitycol' + '' + '">' + abilities['H'] + '</span>';
 		} else {
 			buf += '<span class="col abilitycol"></span>';
 		}

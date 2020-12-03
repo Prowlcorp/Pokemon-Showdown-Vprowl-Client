@@ -37,7 +37,7 @@ function runReplace(a, b, c) {
 	 } catch (e) {}
 	c = c.replace('/replay.pokemonshowdown.com/', '/' + routes.replays + '/');
 	c = c.replace('/dex.pokemonshowdown.com/', '/' + routes.dex + '/');
-	c = c.replace('/prowl-showdown.netlify.app/', '/' + routes.client + '/');
+	c = c.replace('/play.pokemonshowdown.com/', '/' + routes.client + '/');
 	c = c.replace('/pokemonshowdown.com/users/', '/' + routes.users + '/');
 	c = c.replace('/pokemonshowdown.com/', '/' + routes.root + '/');
 
