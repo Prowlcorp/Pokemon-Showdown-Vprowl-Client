@@ -3,7 +3,7 @@
 /**
  * This script parses index.html and sets the version query string of each
  * resource to be the MD5 hash of that resource.
- * It also updates news and the learnsets-g6.js file.
+ * It also updates news and the learnsets-g999.js file.
  *
  * On the live web server, this script is set as the following git hooks:
  *   post-commit, post-checkout, post-merge, post-rewrite
@@ -37,7 +37,7 @@ function updateLearnsets(callback) {
 
 	const Pokedex = Dex.data.Pokedex;
 	const Learnsets = Dex.data.Learnsets;
-	const newLearnsetsG6 = {};
+	const newLearnsetsG999 = {};
 
 	for (const speciesid in Learnsets) {
 		const newLearnset = {};
@@ -53,7 +53,7 @@ function updateLearnsets(callback) {
 			);
 		}
 
-		newLearnsetsG6[speciesid] = {learnset: newLearnset};
+		newLearnsetsG999[speciesid] = {learnset: newLearnset};
 	}
 
 	const buf = [];
@@ -67,7 +67,7 @@ function updateLearnsets(callback) {
 	}).map(species => toID(species.name));
 
 	for (const speciesid of pokemonList) {
-		const entry = newLearnsetsG6[speciesid];
+		const entry = newLearnsetsG999[speciesid];
 		if (!entry || !entry.learnset) continue;
 		const lsetSerialized = '{' + Object.keys(entry.learnset).sort(alphabetize).map(
 			moveid => moveid.replace(reservedRegExp, '"$1"') + ':' + JSON.stringify(entry.learnset[moveid])
@@ -75,7 +75,7 @@ function updateLearnsets(callback) {
 		buf.push(speciesid + ':{learnset:' + lsetSerialized + '}');
 	}
 
-	const writeStream = fs.createWriteStream(path.join(rootDir, 'data', 'learnsets-g6.js')).on('error', callback);
+	const writeStream = fs.createWriteStream(path.join(rootDir, 'data', 'learnsets-g999.js')).on('error', callback);
 	writeStream.write('exports.BattleLearnsets = {\n\t' + buf.join(',\n\t') + '\n};\n');
 	writeStream.end(callback);
 }
@@ -96,41 +96,41 @@ try {
 	throw err; // !!
 }
 
-// update learnsets-g6
-process.stdout.write("Updating file `data/learnsets-g6`... ");
+// update learnsets-g999
+process.stdout.write("Updating file `data/learnsets-g999`... ");
 
 let learnsetsStats;
-let learnsetsG6Stats;
-let learnsetsG6ToUpdate = true;
+let learnsetsG999Stats;
+let learnsetsG999ToUpdate = true;
 
 try {
 	learnsetsStats = fs.statSync(path.join(rootDir, 'data', 'learnsets.js'));
 } catch (err) {
 	// Couldn't find learnsets.js, but that's not the end of the world: skip to next task.
 	console.error("Couldn't find `data/learnsets.js`. Task aborted.");
-	learnsetsG6ToUpdate = false;
+	learnsetsG999ToUpdate = false;
 }
-if (learnsetsG6ToUpdate) {
+if (learnsetsG999ToUpdate) {
 	try {
-		learnsetsG6Stats = fs.statSync(path.join(rootDir, 'data', 'learnsets-g6.js'));
+		learnsetsG999Stats = fs.statSync(path.join(rootDir, 'data', 'learnsets-g999.js'));
 	} catch (err) {
 		if (err.code === 'ENOENT') {
 			// It doesn't exist currently, but it will by the end of the script execution.
 		} else {
-			// Any other error is unacceptable for learnsets-g6.js update: skip to next task.
-			console.error("Failed to read `data/learnsets-g6.js`. Task aborted.");
-			learnsetsG6ToUpdate = false;
+			// Any other error is unacceptable for learnsets-g999.js update: skip to next task.
+			console.error("Failed to read `data/learnsets-g999.js`. Task aborted.");
+			learnsetsG999ToUpdate = false;
 		}
 	}
 }
 
-if (learnsetsG6ToUpdate && (!indexStats || !learnsetsG6Stats || indexMTime < updateMTime || indexMTime < learnsetsStats.mtime.getTime() || indexMTime < learnsetsG6Stats.mtime.getTime())) {
-	// Only merge learnsets.js with learnsets-g6.js if any of those files, or this one, have been modified recently (or if we don't know what "recently" means)
+if (learnsetsG999ToUpdate && (!indexStats || !learnsetsG999Stats || indexMTime < updateMTime || indexMTime < learnsetsStats.mtime.getTime() || indexMTime < learnsetsG999Stats.mtime.getTime())) {
+	// Only merge learnsets.js with learnsets-g999.js if any of those files, or this one, have been modified recently (or if we don't know what "recently" means)
 
 	updateLearnsets(function (err) {
 		if (err) {
 			let stack = err.stack || '';
-			stack = "File `data/learnsets-g6` failed to update.\n" + stack;
+			stack = "File `data/learnsets-g999` failed to update.\n" + stack;
 			console.error(stack);
 		} else {
 			console.log("DONE");

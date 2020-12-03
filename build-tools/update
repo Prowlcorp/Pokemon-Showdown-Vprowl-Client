@@ -3,7 +3,7 @@
 /**
  * This script parses index.html and sets the version query string of each
  * resource to be the MD5 hash of that resource.
- * It also updates news and the learnsets-g6.js file.
+ * It also updates news and the learnsets-g999.js file.
  */
 
 "use strict";
