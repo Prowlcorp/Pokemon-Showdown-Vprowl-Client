@@ -1193,6 +1193,7 @@
 			buf += '<div class="setcell setcell-typeicons">';
 			var types = species.types;
 			var table = BattleTeambuilderTable['gen999'];
+			if (table && species.id in table.overrideType) types = table.overrideType[species.id].split('/');
 			if (types) {
 				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i]);
 			}
