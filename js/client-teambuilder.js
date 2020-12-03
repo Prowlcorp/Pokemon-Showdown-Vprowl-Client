@@ -261,15 +261,7 @@
 				var format = folders[i];
 				var newGen;
 				switch (format.charAt(0)) {
-				case 'I': newGen = '1'; break;
-				case 'H': newGen = '2'; break;
-				case 'G': newGen = '3'; break;
-				case 'F': newGen = '4'; break;
-				case 'E': newGen = '5'; break;
-				case 'D': newGen = '6'; break;
-				case 'C': newGen = '7'; break;
-				case 'B': newGen = '8'; break;
-				case 'A': newGen = '9'; break;
+				case 'I': newGen = '999'; break;
 				case 'X': newGen = 'X'; break;
 				case 'Z': newGen = '/'; break;
 				}
@@ -1364,7 +1356,7 @@
 			this.curTeam.format = format;
 			this.curTeam.gen = this.getGen(this.curTeam.format);
 			this.save();
-			if (this.curTeam.gen === 5 && !Dex.loadedSpriteData['bw']) Dex.loadSpriteData('bw');
+			if (this.curTeam.gen === 999 && !Dex.loadedSpriteData['bw']) Dex.loadSpriteData('bw');
 			this.update();
 		},
 		nicknameChange: function (e) {
@@ -2425,11 +2417,7 @@
 			} else {
 				buf += '<label><input type="radio" name="gender" value="M"' + (set.gender === 'M' ? ' checked' : '') + ' /> Male</label> ';
 				buf += '<label><input type="radio" name="gender" value="F"' + (set.gender === 'F' ? ' checked' : '') + ' /> Female</label> ';
-				if (this.curTeam.format.indexOf('hackmons') < 0) {
-					buf += '<label><input type="radio" name="gender" value="N"' + (!set.gender ? ' checked' : '') + ' /> Random</label>';
-				} else {
-					buf += '<label><input type="radio" name="gender" value="N"' + (set.gender === 'N' ? ' checked' : '') + ' /> Genderless</label>';
-				}
+				buf += '<label><input type="radio" name="gender" value="N"' + (!set.gender ? ' checked' : '') + ' /> Random</label>';
 			}
 			buf += '</div></div>';
 
@@ -2449,7 +2437,7 @@
 			}
 			buf += '</select></div></div>';
 
-			if (this.curTeam.gen === 7) {
+			if (this.curTeam.gen === 999) {
 				buf += '<div class="formrow"><label class="formlabel" title="Hidden Power Type">Hidden Power:</label><div><select name="hptype">';
 				buf += '<option value=""' + (!set.hpType ? ' selected="selected"' : '') + '>(automatic type)</option>'; // unset
 				for (var type in exports.BattleTypeChart) {
@@ -2859,7 +2847,7 @@
 			this.chooseMove('', resetSpeed);
 		},
 		canHyperTrain: function (set) {
-			if (this.curTeam.gen < 7 || this.curTeam.format === 'gen7hiddentype') return false;
+			if (this.curTeam.format === 'gen999hiddentype') return false;
 			var format = this.curTeam.format;
 			if (!set.level || set.level === 100) return true;
 			if (format.substr(0, 3) === 'gen') format = format.substr(4);
@@ -2972,11 +2960,7 @@
 			if (species.gender && species.gender !== 'N') set.gender = species.gender;
 			if (set.happiness) delete set.happiness;
 			if (set.shiny) delete set.shiny;
-			if (this.curTeam.format.indexOf('hackmons') < 0) {
-				set.item = (species.requiredItem || '');
-			} else {
-				set.item = '';
-			}
+			set.item = (species.requiredItem || '');
 			set.ability = species.abilities['0'];
 
 			set.moves = [];
@@ -3113,7 +3097,7 @@
 			var spriteSize = 96;
 			var spriteDim = 'width: 96px; height: 96px;';
 
-			var gen = {5:'gen5', 6:'dex', 7:'dex', 8:'dex'}[Math.max(this.room.curTeam.gen, species.gen)];
+			var gen = {999:'gen5'}[Math.max(this.room.curTeam.gen, species.gen)];
 			if (Dex.prefs('nopastgens')) gen = 'dex';
 			if (Dex.prefs('bwgfx') && gen === 'dex') gen = 'gen5';
 			spriteDir += gen;
