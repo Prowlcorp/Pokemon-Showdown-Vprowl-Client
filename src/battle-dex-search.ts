@@ -1229,10 +1229,8 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		if (sketch) {
 			for (let id in BattleMovedex) {
 				const move = dex.getMove(id);
-				if (sketch) {
-					if (move.isZ) continue;
-					sketchMoves.push(move.id);
-				}
+				if (move.isZ) continue;
+				sketchMoves.push(move.id);
 			}
 		}
 		if (this.formatType === 'metronome') moves = ['metronome'];
