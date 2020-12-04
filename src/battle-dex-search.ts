@@ -351,7 +351,7 @@ class DexSearch {
 
 			// For pokemon queries, accept types/tier/abilities/moves/eggroups as filters
 			if (searchType === 'pokemon' && (typeIndex === 5 || typeIndex > 7)) continue;
-			if (searchType === 'pokemon' && typeIndex === 3 && this.dex.gen < 8) continue;
+			if (searchType === 'pokemon' && typeIndex === 3) continue;
 			// For move queries, accept types/categories as filters
 			if (searchType === 'move' && ((typeIndex !== 8 && typeIndex > 4) || typeIndex === 3)) continue;
 			// For move queries in the teambuilder, don't accept pokemon as filters
@@ -567,7 +567,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.baseIllegalResults = null;
 
 		if (format.slice(0, 3) === 'gen') {
-			const gen = (Number(format.charAt(3)) || 6);
+			const gen = 999;
 			format = (format.slice(4) || 'customgame') as ID;
 			this.dex = Dex.forGen(gen);
 		} else if (!format) {
@@ -702,12 +702,8 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			this.format.startsWith('battlespot') ||
 			this.format.startsWith('battlestadium')
 		) {
-			if (this.dex.gen === 8) {
+			if (this.dex.gen === 999) {
 				genChar = 'g';
-			} else if (this.dex.gen === 7) {
-				genChar = 'q';
-			} else if (this.dex.gen === 6) {
-				genChar = 'p';
 			}
 		}
 		let learnsetid = this.firstLearnsetid(speciesid);
@@ -812,7 +808,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		} else if (this.formatType === 'metronome') {
 			table = table['metronome'];
 		} else if (this.formatType === 'nfe') {
-			table = table['gen' + dex.gen + 'nfe'];
+			table = table['nfe'];
 		}
 
 		if (!table.tierSet) {
@@ -1208,9 +1204,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			if (learnset) {
 				for (let moveid in learnset) {
 					let learnsetEntry = learnset[moveid];
-					/* if (requirePentagon && learnsetEntry.indexOf('p') < 0) {
-						continue;
-					} */
 					if (!learnsetEntry.includes(gen)) {
 						continue;
 					}

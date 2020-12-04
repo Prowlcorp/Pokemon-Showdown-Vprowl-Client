@@ -314,10 +314,10 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				if (isNFE) {
 					let tier = species.tier;
 					if (!species.nfe) tier = 'Illegal';
-					const format = Dex.getFormat(gen + 'nfe');
+					const format = Dex.getFormat('nfe');
 					const banlist = Dex.getRuleTable(format);
 					if (banlist.isBannedSpecies(species)) {
-						tier = 'Uber';
+						tier = 'Illegal';
 					}
 					return tier;
 				}
@@ -351,15 +351,15 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			BattleTeambuilderTable['metronome'].items = items;
 			BattleTeambuilderTable['metronome'].formatSlices = formatSlices;
 		} else if (isNFE) {
-			BattleTeambuilderTable[gen + 'nfe'] = {};
-			BattleTeambuilderTable[gen + 'nfe'].tiers = tiers;
-			BattleTeambuilderTable[gen + 'nfe'].overrideTier = overrideTier;
-			BattleTeambuilderTable[gen + 'nfe'].formatSlices = formatSlices;
+			BattleTeambuilderTable['nfe'] = {};
+			BattleTeambuilderTable['nfe'].tiers = tiers;
+			BattleTeambuilderTable['nfe'].overrideTier = overrideTier;
+			BattleTeambuilderTable['nfe'].formatSlices = formatSlices;
 		} else if (isDoubles) {
-			BattleTeambuilderTable[gen + 'doubles'] = {};
-			BattleTeambuilderTable[gen + 'doubles'].tiers = tiers;
-			BattleTeambuilderTable[gen + 'doubles'].overrideTier = overrideTier;
-			BattleTeambuilderTable[gen + 'doubles'].formatSlices = formatSlices;
+			BattleTeambuilderTable['doubles'] = {};
+			BattleTeambuilderTable['doubles'].tiers = tiers;
+			BattleTeambuilderTable['doubles'].overrideTier = overrideTier;
+			BattleTeambuilderTable['doubles'].formatSlices = formatSlices;
 		} else if (gen === 'gen999') {
 			BattleTeambuilderTable.tiers = tiers;
 			BattleTeambuilderTable.items = items;
@@ -559,7 +559,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		const learnset = Dex.data.Learnsets[id].learnset;
 		if (!learnset) continue;
 		learnsets[id] = {};
-		for (const moveid in learnset) {
+		for (const moveid in learnset) {//PROWL fix
 			const gens = learnset[moveid].map(x => Number(x[0]));
 			const minGen = Math.min(...gens);
 			const vcOnly = (minGen === 7 && learnset[moveid].every(x => x[0] !== '7' || x === '7V') ||

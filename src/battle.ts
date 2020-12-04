@@ -1055,7 +1055,7 @@ class Battle {
 	sides: [Side, Side] = [null!, null!];
 	lastMove = '';
 
-	gen = 7;
+	gen = 999;
 	dex: ModdedDex = Dex;
 	teamPreviewCount = 0;
 	speciesClause = false;
@@ -1133,7 +1133,7 @@ class Battle {
 		this.sides = [this.mySide, this.yourSide];
 		this.p1 = this.mySide;
 		this.p2 = this.yourSide;
-		this.gen = 7;
+		this.gen = 999;
 		this.reset();
 	}
 	reset(dontResetSound?: boolean) {

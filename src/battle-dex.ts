@@ -170,7 +170,7 @@ interface TeambuilderSpriteData {
 }
 
 const Dex = new class implements ModdedDex {
-	readonly gen = 8;
+	readonly gen = 999;
 	readonly modid = 'gen999' as ID;
 	readonly cache = null!;
 
@@ -528,7 +528,7 @@ const Dex = new class implements ModdedDex {
 		//
 		let graphicsGen = mechanicsGen;
 		if (Dex.prefs('nopastgens')) graphicsGen = 6;
-		if (Dex.prefs('bwgfx') && graphicsGen >= 6) graphicsGen = 5;
+		if (Dex.prefs('bwgfx')) graphicsGen = 5;
 		const baseDir = 'gen5';
 
 		let animationData = null;
@@ -781,7 +781,7 @@ class ModdedDex {
 	pokeballs: string[] | null = null;
 	constructor(modid: ID) {
 		this.modid = modid;
-		let gen = parseInt(modid.slice(3), 10);
+		let gen = 999;
 		if (!modid.startsWith('gen') || !gen) throw new Error("Unsupported modid");
 		this.gen = gen;
 	}

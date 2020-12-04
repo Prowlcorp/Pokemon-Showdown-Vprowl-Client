@@ -17,7 +17,7 @@ class BattleTextParser {
 	p1 = "Player 1";
 	p2 = "Player 2";
 	perspective: 0 | 1;
-	gen = 7;
+	gen = 999;
 	curLineSection: 'break' | 'preMajor' | 'major' | 'postMajor' = 'break';
 	lowercaseRegExp: RegExp | null | undefined = undefined;
 

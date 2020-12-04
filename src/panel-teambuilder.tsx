@@ -149,7 +149,7 @@ class TeambuilderPanel extends PSRoomPanel<TeambuilderRoom> {
 
 		let gen = -1;
 		for (let format of folders) {
-			const newGen = format.endsWith('/') ? 0 : parseInt(format.charAt(3), 10);
+			const newGen = format.endsWith('/') ? 0 : 999;
 			if (gen !== newGen) {
 				gen = newGen;
 				if (gen === 0) {
