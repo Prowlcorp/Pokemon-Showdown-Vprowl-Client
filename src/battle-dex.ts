@@ -159,6 +159,7 @@ interface SpriteData {
 	isBackSprite?: boolean;
 	cryurl?: string;
 	shiny?: string;
+	card?: string;
 }
 
 interface TeambuilderSpriteData {
@@ -482,9 +483,9 @@ const Dex = new class implements ModdedDex {
 				options.shiny = pokemon.volatiles.transform[2];
 				options.gender = pokemon.volatiles.transform[3];
 			} else {
-				if(pokemon.shiny === "Albino") {
+				if (pokemon.shiny === "Albino") {
 					options.shiny = "Albino";
-				} else if(pokemon.shiny === "Shiny") {
+				} else if (pokemon.shiny === "Shiny") {
 					options.shiny = "Shiny";
 				}
 				options.gender = pokemon.gender;
@@ -801,8 +802,8 @@ class ModdedDex {
 		if (id in table.overridePP) data.pp = table.overridePP[id];
 		if (id in table.overrideMoveType) data.type = table.overrideMoveType[id];
 		for (let i = this.gen; i < 8; i++) {
-			if (id in window.BattleTeambuilderTable['gen' + i].overrideMoveDesc) {
-				data.shortDesc = window.BattleTeambuilderTable['gen' + i].overrideMoveDesc[id];
+			if (id in window.BattleTeambuilderTable['gen999'].overrideMoveDesc) {
+				data.shortDesc = window.BattleTeambuilderTable['gen999'].overrideMoveDesc[id];
 				break;
 			}
 		}
@@ -822,8 +823,8 @@ class ModdedDex {
 		let data = {...Dex.getItem(name)};
 
 		for (let i = this.gen; i < 8; i++) {
-			if (id in window.BattleTeambuilderTable['gen' + i].overrideItemDesc) {
-				data.shortDesc = window.BattleTeambuilderTable['gen' + i].overrideItemDesc[id];
+			if (id in window.BattleTeambuilderTable['gen999'].overrideItemDesc) {
+				data.shortDesc = window.BattleTeambuilderTable['gen999'].overrideItemDesc[id];
 				break;
 			}
 		}
@@ -842,13 +843,6 @@ class ModdedDex {
 
 		let data = {...Dex.getAbility(name)};
 
-		for (let i = this.gen; i < 8; i++) {
-			if (id in window.BattleTeambuilderTable['gen' + i].overrideAbilityDesc) {
-				data.shortDesc = window.BattleTeambuilderTable['gen' + i].overrideAbilityDesc[id];
-				break;
-			}
-		}
-
 		const ability = new Ability(id, name, data);
 		this.cache.Abilities[id] = ability;
 		return ability;
@@ -865,23 +859,9 @@ class ModdedDex {
 
 		const table = window.BattleTeambuilderTable[this.modid];
 		let abilities = {...data.abilities};
-		if (id in table.overrideAbility) {
-			abilities['0'] = table.overrideAbility[id];
-		}
-		if (id in table.removeSecondAbility) {
-			delete abilities['1'];
-		}
-		if (id in table.overrideHiddenAbility) {
-			abilities['H'] = table.overrideHiddenAbility[id];
-		}
 
-		data.abilities = abilities
-		if (id in table.overrideStats) {
-			data.baseStats = {...data.baseStats, ...table.overrideStats[id]};
-		}
-		if (id in table.overrideType) data.types = table.overrideType[id].split('/');
+		data.abilities = abilities;
 
-		if (id in table.overrideTier) data.tier = table.overrideTier[id];
 		if (!data.tier && id.slice(-5) === 'totem') {
 			data.tier = this.getSpecies(id.slice(0, -5)).tier;
 		}
@@ -902,13 +882,13 @@ class ModdedDex {
 		let data = {...Dex.getType(name)};
 
 		for (let i = 7; i >= this.gen; i--) {
-			if (id in window.BattleTeambuilderTable['gen' + i].removeType) {
+			if (id in window.BattleTeambuilderTable['gen999'].removeType) {
 				data.exists = false;
 				// don't bother correcting its attributes given it doesn't exist
 				break;
 			}
-			if (id in window.BattleTeambuilderTable['gen' + i].overrideTypeChart) {
-				data = {...data, ...window.BattleTeambuilderTable['gen' + i].overrideTypeChart[id]};
+			if (id in window.BattleTeambuilderTable['gen999'].overrideTypeChart) {
+				data = {...data, ...window.BattleTeambuilderTable['gen999'].overrideTypeChart[id]};
 			}
 		}
 

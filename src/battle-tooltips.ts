@@ -1141,6 +1141,14 @@ class BattleTooltips {
 			min = tr(min*1.5);
 			max = tr(max*1.5);
 		}
+		if(pokemon.card === "Shiny") {
+			min = tr(min*1.5);
+			max = tr(max*1.5);
+		}
+		if(pokemon.card === "Albino") {
+			min = tr(min*2);
+			max = tr(max*2);
+		}
 		return [min, max];
 	}
 
@@ -1802,6 +1810,8 @@ interface PokemonSet {
 	level?: number;
 	/** Defaults to no (error if shiny event) */
 	shiny?: string;
+	/** Defaults to no */
+	card?: string;
 	/** Defaults to 255 unless you have Frustration, in which case 0 */
 	happiness?: number;
 	/** Defaults to event required ball, otherwise Poké Ball */

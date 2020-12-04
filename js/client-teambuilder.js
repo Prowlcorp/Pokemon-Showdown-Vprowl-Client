@@ -259,9 +259,8 @@
 			formatFolderBuf += '<div class="folder"><div class="selectFolder" data-value="+"><i class="fa fa-plus"></i><em>(add format folder)</em></div></div>';
 			for (var i = 0; i < folders.length; i++) {
 				var format = folders[i];
-				var newGen;
+				var newGen = '999';
 				switch (format.charAt(0)) {
-				case 'I': newGen = '999'; break;
 				case 'X': newGen = 'X'; break;
 				case 'Z': newGen = '/'; break;
 				}
@@ -1169,6 +1168,7 @@
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || species.gender || 'N'] + '</span>';
 			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			buf += '</button></div></div>';
 
@@ -2424,9 +2424,15 @@
 			buf += '<div class="formrow"><label class="formlabel">Happiness:</label><div><input type="number" min="0" max="255" step="1" name="happiness" value="' + (typeof set.happiness === 'number' ? set.happiness : 255) + '" class="textbox inputform numform" /></div></div>';
 
 			buf += '<div class="formrow"><label class="formlabel">Shiny:</label><div>';
-			buf += '<label><input type="radio" name="shiny" value="albino"' + (set.shiny === 'albino' ? ' checked' : '') + ' /> Albino</label> ';
-			buf += '<label><input type="radio" name="shiny" value="shiny"' + (set.shiny === 'shiny' ? ' checked' : '') + ' /> Shiny</label> ';
+			buf += '<label><input type="radio" name="shiny" value="albino"' + (set.shiny === "Albino" ? ' checked' : '') + ' /> Albino</label> ';
+			buf += '<label><input type="radio" name="shiny" value="shiny"' + (set.shiny === "Shiny" ? ' checked' : '') + ' /> Shiny</label> ';
 			buf += '<label><input type="radio" name="shiny" value="no"' + (!set.shiny ? ' checked' : '') + ' /> No</label>';
+			buf += '</div></div>';
+
+			buf += '<div class="formrow"><label class="formlabel">Card:</label><div>';
+			buf += '<label><input type="radio" name="card" value="albino"' + (set.card === "Albino" ? ' checked' : '') + ' /> Albino</label> ';
+			buf += '<label><input type="radio" name="card" value="shiny"' + (set.card === "Shiny" ? ' checked' : '') + ' /> Shiny</label> ';
+			buf += '<label><input type="radio" name="card" value="no"' + (!set.card ? ' checked' : '') + ' /> No</label>';
 			buf += '</div></div>';
 
 			buf += '<div class="formrow" style="display:none"><label class="formlabel">Pokeball:</label><div><select name="pokeball">';
@@ -2486,6 +2492,17 @@
 				delete set.shiny;
 			}
 
+			// card
+			var card = (this.$chart.find('input[name=card]:checked').val());
+			if (card === "albino") {
+				set.card = "Albino";
+			}
+			else if (card === "shiny") {
+				set.card = "Shiny";
+			} else {
+				delete set.card;
+			}
+
 			// gender
 			var gender = this.$chart.find('input[name=gender]:checked').val();
 			if (gender === 'M' || gender === 'F') {
@@ -2521,6 +2538,7 @@
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || 'N'] + '</span>';
 			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			this.$('button[name=details]').html(buf);
 
@@ -3002,13 +3020,14 @@
 			var baseStat = species.baseStats[stat];
 			var iv = (set.ivs[stat] || 0);
 			var ev = set.evs[stat];
-			var shinyMod = pokemon.shiny === "Albino" ? 1.5 : pokemon.shiny === "Shiny" ? 1.25 : 1;
+			var shinyMod = set.shiny === "Albino" ? 1.5 : set.shiny === "Shiny" ? 1.25 : 1;
+			var cardMod = set.card === "Albino" ? 2 : set.card === "Shiny" ? 1.5 : 1;
 			if (evOverride !== undefined) ev = evOverride;
 			if (ev === undefined) ev = 0;
 
 			if (stat === 'hp') {
 				if (baseStat === 1) return 1;
-				return Math.floor(Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4) + 100) * set.level / 100 + 10)*shinyMod);
+				return Math.floor(Math.floor(Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4) + 100) * set.level / 100 + 10)*shinyMod)*cardMod);
 			}
 			var val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
 			if (natureOverride) {
@@ -3018,7 +3037,7 @@
 			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].minus === stat) {
 				val *= 0.9;
 			}
-			val = Math.floor(val*shinyMod);
+			val = Math.floor(Math.floor(val*shinyMod)*cardMod);
 			return Math.floor(val);
 		},
 

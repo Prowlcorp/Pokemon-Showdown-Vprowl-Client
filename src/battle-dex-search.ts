@@ -796,19 +796,33 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 	getBaseResults(): SearchRow[] {
 		const format = this.format;
 		if (!format) return this.getDefaultResults();
+		const requirePentagon = format === 'battlespotsingles' || format === 'battledoubles' || format.startsWith('vgc');
 		let isDoublesOrBS = this.formatType === 'doubles';
 		const dex = this.dex;
 
 		let table = BattleTeambuilderTable;
-		if (table['doubles'] &&	(format.includes('doubles') || format.includes('triples'))) {
-			table = table['doubles'];
+		if (dex.gen === 7 && requirePentagon) {
+			table = table['gen' + dex.gen + 'vgc'];
 			isDoublesOrBS = true;
-		} else if (!this.formatType) {
+		} else if (table['gen' + dex.gen + 'doubles'] && dex.gen > 4 &&
+			(
+				format.includes('doubles') || format.includes('vgc') || format.includes('triples') ||
+				format.endsWith('lc') || format.endsWith('lcuu')
+			)) {
+			table = table['gen' + dex.gen + 'doubles'];
+			isDoublesOrBS = true;
+		} else if (dex.gen < 8 && !this.formatType) {
 			table = table['gen' + dex.gen];
 		} else if (this.formatType === 'metronome') {
 			table = table['metronome'];
 		} else if (this.formatType === 'nfe') {
-			table = table['nfe'];
+			table = table['gen' + dex.gen + 'nfe'];
+		} else if (this.formatType?.startsWith('dlc1')) {
+			if (this.formatType.includes('doubles')) {
+				table = table['gen8dlc1doubles'];
+			} else {
+				table = table['gen8dlc1'];
+			}
 		}
 
 		if (!table.tierSet) {
@@ -822,6 +836,21 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		let slices: {[k: string]: number} = table.formatSlices;
 		if (format === 'battlespotsingles') tierSet = tierSet.slice(slices.Regular);
 		else if (format === 'battlespotdoubles') tierSet = tierSet.slice(slices.Regular);
+		// else if (isDoublesOrBS) tierSet = tierSet;
+		else if (!isDoublesOrBS) {
+			tierSet = [
+				...tierSet.slice(slices.OU, slices.UU),
+				...tierSet.slice(slices.AG, slices.Uber),
+				...tierSet.slice(slices.Uber, slices.OU),
+				...tierSet.slice(slices.UU),
+			];
+		} else {
+			tierSet = [
+				...tierSet.slice(slices.DOU, slices.DUU),
+				...tierSet.slice(slices.DUber, slices.DOU),
+				...tierSet.slice(slices.DUU),
+			];
+		}
 
 		return tierSet;
 	}

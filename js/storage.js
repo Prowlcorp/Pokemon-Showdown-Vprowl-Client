@@ -746,6 +746,15 @@ Storage.packTeam = function (team) {
 			buf += '|';
 		}
 
+		// card
+		if (set.card === "Albino") {
+			buf += '|A';
+		} else if (set.card === "Shiny") {
+			buf += '|S';
+		} else {
+			buf += '|';
+		}
+
 		// level
 		if (set.level && set.level != 100) {
 			buf += '|' + set.level;
@@ -856,6 +865,11 @@ Storage.fastUnpackTeam = function (buf) {
 		// shiny
 		j = buf.indexOf('|', i);
 		if (i !== j) set.shiny = buf.substring(i, j);
+		i = j + 1;
+
+		// card
+		j = buf.indexOf('|', i);
+		if (i !== j) set.card = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -971,6 +985,11 @@ Storage.unpackTeam = function (buf) {
 		// shiny
 		j = buf.indexOf('|', i);
 		if (i !== j) set.shiny = buf.substring(i, j);
+		i = j + 1;
+
+		// card
+		j = buf.indexOf('|', i);
+		if (i !== j) set.card = buf.substring(i, j);
 		i = j + 1;
 
 		// level
@@ -1158,6 +1177,10 @@ Storage.importTeam = function (buffer, teams) {
 			curSet.shiny = "Albino";
 		} else if (line === 'Shiny: Shiny') {
 			curSet.shiny = "Shiny";
+		} else if (line === 'Card: Albino') {
+			curSet.card = "Albino";
+		} else if (line === 'Card: Shiny') {
+			curSet.card = "Shiny";
 		} else if (line.substr(0, 7) === 'Level: ') {
 			line = line.substr(7);
 			curSet.level = +line;
@@ -1281,6 +1304,12 @@ Storage.exportTeam = function (team) {
 		}
 		if (curSet.shiny === "Shiny") {
 			text += 'Shiny: Shiny  \n';
+		}
+		if (curSet.card === "Albino") {
+			text += 'Card: Albino  \n';
+		}
+		if (curSet.card === "Shiny") {
+			text += 'Card: Shiny  \n';
 		}
 		if (typeof curSet.happiness === 'number' && curSet.happiness !== 255 && !isNaN(curSet.happiness)) {
 			text += 'Happiness: ' + curSet.happiness + "  \n";

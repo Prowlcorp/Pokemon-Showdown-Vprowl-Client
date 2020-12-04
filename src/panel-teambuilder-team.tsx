@@ -101,7 +101,7 @@ class TeamTextbox extends preact.Component<{team: Team}> {
 				} else if (
 					!lcLine || lcLine.startsWith('ivs:') || lcLine.startsWith('evs:') ||
 					lcLine.startsWith('level:') || lcLine.startsWith('gender:') ||
-					lcLine.endsWith(' nature') || lcLine.startsWith('shiny:')
+					lcLine.endsWith(' nature') || lcLine.startsWith('shiny:') || lcLine.startsWith('card:')
 				) {
 					// leave activeType blank
 				} else {

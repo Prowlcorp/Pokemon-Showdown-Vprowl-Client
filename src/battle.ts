@@ -78,6 +78,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	level = 100;
 	gender: GenderName = 'N';
 	shiny = null;
+	card = null;
 
 	hpcolor: HPColor = 'g';
 	moves: string[] = [];
@@ -110,6 +111,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		this.name = data.name;
 		this.level = data.level;
 		this.shiny = data.shiny;
+		this.card = data.card;
 		this.gender = data.gender || 'N';
 		this.ident = data.ident;
 		this.searchid = data.searchid;
@@ -962,6 +964,7 @@ interface PokemonDetails {
 	speciesForme: string;
 	level: number;
 	shiny: string | null;
+	card: string | null;
 	gender: GenderName | '';
 	ident: string;
 	searchid: string;
@@ -2883,6 +2886,7 @@ class Battle {
 		output.speciesForme = name;
 		output.level = 100;
 		output.shiny = null;
+		output.card = null;
 		output.gender = '';
 		output.ident = (!isTeamPreview ? pokemonid : '');
 		output.searchid = (!isTeamPreview ? `${pokemonid}|${details}` : '');

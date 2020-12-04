@@ -84,6 +84,15 @@ class PSTeambuilder {
 				buf += '|';
 			}
 
+			// card
+			if (set.card === "Albino") {
+				buf += '|A';
+			} else if (set.card === "Shiny") {
+				buf += '|S';
+			} else {
+				buf += '|';
+			}
+
 			// level
 			if (set.level) {
 				buf += '|' + set.level;
@@ -182,12 +191,15 @@ class PSTeambuilder {
 			// shiny
 			if (parts[9]) set.shiny = parts[9];
 
+			// card
+			if (parts[10]) set.card = parts[10];
+
 			// level
-			if (parts[10]) set.level = parseInt(parts[9], 10);
+			if (parts[11]) set.level = parseInt(parts[11], 10);
 
 			// happiness
-			if (parts[11]) {
-				let misc = parts[11].split(',', 4);
+			if (parts[12]) {
+				let misc = parts[12].split(',', 4);
 				set.happiness = (misc[0] ? Number(misc[0]) : undefined);
 				set.hpType = misc[1];
 				set.pokeball = misc[2];
@@ -278,6 +290,12 @@ class PSTeambuilder {
 		if (set.shiny === "Shiny") {
 			text += `Shiny: Shiny  \n`;
 		}
+		if (set.card === "Albino") {
+			text += `Card: Albino  \n`;
+		}
+		if (set.card === "Shiny") {
+			text += `Card: Shiny  \n`;
+		}
 		if (typeof set.happiness === 'number' && set.happiness !== 255 && !isNaN(set.happiness)) {
 			text += `Happiness: ${set.happiness}  \n`;
 		}
@@ -337,6 +355,10 @@ class PSTeambuilder {
 			set.shiny = "Albino";
 		} else if (line === 'Shiny: Shiny') {
 			set.shiny = "Shiny";
+		} else if (line === 'Card: Albino') {
+			set.card = "Albino";
+		} else if (line === 'Card: Shiny') {
+			set.card = "Shiny";
 		} else if (line.startsWith('Level: ')) {
 			line = line.slice(7);
 			set.level = +line;
