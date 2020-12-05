@@ -59,6 +59,9 @@ $formats = array(
 	'almostanyability' => 'Almost Any Ability',
 	'stabmons' => 'STABmons',
 	'nfe' => 'NFE',
+	'customgame' => 'Custom Game',
+	'doublescustomgame' => 'Doubles Custom Game',
+	'triplescustomgame' => 'Triples Custom Game',
 );
 
 if (isset($_REQUEST['user']) && strlen($_REQUEST['user'])) {
