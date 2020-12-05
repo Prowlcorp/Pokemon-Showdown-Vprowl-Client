@@ -1166,7 +1166,6 @@
 			};
 			buf += '<span class="detailcell detailcell-first"><label>Level</label>' + (set.level || 100) + '</span>';
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || species.gender || 'N'] + '</span>';
-			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : set.card === "Normal" ? 'Normal' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
@@ -2407,7 +2406,7 @@
 			buf += '<div class="resultheader"><h3>Details</h3></div>';
 			buf += '<form class="detailsform">';
 
-			buf += '<div class="formrow"><label class="formlabel">Level:</label><div><input type="number" min="1" max="100" step="1" name="level" value="' + (typeof set.level === 'number' ? set.level : 100) + '" class="textbox inputform numform" /></div></div>';
+			buf += '<div class="formrow"><label class="formlabel">Level:</label><div><input type="number" min="1" max="9999" step="1" name="level" value="' + (typeof set.level === 'number' ? set.level : 100) + '" class="textbox inputform numform" /></div></div>';
 
 			buf += '<div class="formrow"><label class="formlabel">Gender:</label><div>';
 			if (species.gender) {
@@ -2470,7 +2469,7 @@
 
 			// level
 			var level = parseInt(this.$chart.find('input[name=level]').val(), 10);
-			if (!level || level > 100 || level < 1) level = 100;
+			if (!level || level < 1) level = 100;
 			if (level !== 100 || set.level) set.level = level;
 
 			// happiness
@@ -2536,7 +2535,6 @@
 			};
 			buf += '<span class="detailcell detailcell-first"><label>Level</label>' + (set.level || 100) + '</span>';
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || 'N'] + '</span>';
-			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : set.card === "Normal" ? 'Normal' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
