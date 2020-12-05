@@ -2598,7 +2598,7 @@ a.ilink.yours {
 	background: #DAE5F0 no-repeat scroll 10px 5px none;
 	border-radius: 5px;
 	padding: 2px 0 0 3px;
-	height: 127px;
+	height: 157px;
 	width: 626px;
 	margin-top: 8px;
 
@@ -2712,7 +2712,7 @@ a.ilink.yours {
 	outline: 0 none;
 }
 .setdetails {
-	width: 230px;
+	width: 240px;
 	height: 34px;
 }
 .setdetails:focus,.setdetails:active {

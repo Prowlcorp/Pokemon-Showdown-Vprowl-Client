@@ -2500,7 +2500,7 @@ class PokemonSprite extends Sprite {
 		else if (pokemon.speciesForme === 'Kyogre-Primal') symbol = 'alpha';
 		else if (pokemon.speciesForme === 'Groudon-Primal') symbol = 'omega';
 		if (symbol) {
-			buf += ` <img src="${Dex.resourcePrefix}sprites/misc/${symbol}.png" alt="${symbol}" style="vertical-align:text-bottom;" />`;
+			buf += ` <img src="./sprites/misc/${symbol}.png" alt="${symbol}" style="vertical-align:text-bottom;" />`;
 		}
 
 		buf += `</strong><div class="hpbar"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;

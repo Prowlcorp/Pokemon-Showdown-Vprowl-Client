@@ -47,8 +47,8 @@ includeHeader();
 				All attacking moves are either Physical or Special moves. Physical moves use your attacker's Attack stat against your target's Defense stat, while Special moves use your attacker's Special Attack stat against the target's Special Defense stat.
 			</p>
 			<blockquote><p>
-				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/misc/Physical.png" alt="[Physical]" /> Physical<br />
-				<img src="//<?= $psconfig['routes']['client'] ?>/sprites/misc/Special.png" alt="[Special]" /> Special<br />
+				<img src="./sprites/misc/Physical.png" alt="[Physical]" /> Physical<br />
+				<img src="./sprites/misc/Special.png" alt="[Special]" /> Special<br />
 			</p></blockquote>
 			<p>
 				In game and online, these icons will remind you of whether a move is Physical or Special. Remember that a Pokémon with high Attack and low Special Attack should usually be using only Physical moves, and vice versa.

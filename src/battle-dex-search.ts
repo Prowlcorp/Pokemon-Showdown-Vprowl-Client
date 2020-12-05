@@ -1093,8 +1093,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 				return ['skilllink', 'technician'].includes(abilityid);
 			case 'counter':
 				return species.baseStats.hp >= 65;
-			case 'darkvoid':
-				return dex.gen < 7;
 			case 'drainingkiss':
 				return abilityid === 'triage';
 			case 'dualwingbeat':
@@ -1108,42 +1106,38 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			case 'headbutt':
 				return abilityid === 'serenegrace';
 			case 'hiddenpowerelectric':
-				return (dex.gen < 4 && !moves.includes('thunderpunch')) && !moves.includes('thunderbolt');
+				return (!moves.includes('thunderpunch')) && !moves.includes('thunderbolt');
 			case 'hiddenpowerfighting':
-				return (dex.gen < 4 && !moves.includes('brickbreak')) && !moves.includes('aurasphere') && !moves.includes('focusblast');
+				return (!moves.includes('brickbreak')) && !moves.includes('aurasphere') && !moves.includes('focusblast');
 			case 'hiddenpowerfire':
-				return (dex.gen < 4 && !moves.includes('firepunch')) && !moves.includes('flamethrower');
+				return (!moves.includes('firepunch')) && !moves.includes('flamethrower');
 			case 'hiddenpowergrass':
 				return !moves.includes('energyball') && !moves.includes('grassknot') && !moves.includes('gigadrain');
 			case 'hiddenpowerice':
-				return !moves.includes('icebeam') && (dex.gen < 4 && !moves.includes('icepunch')) || (dex.gen > 5 && !moves.includes('aurorabeam'));
+				return !moves.includes('icebeam') && (!moves.includes('icepunch')) || (!moves.includes('aurorabeam'));
 			case 'hiddenpowerflying':
-				return dex.gen < 4 && !moves.includes('drillpeck');
+				return !moves.includes('drillpeck');
 			case 'hiddenpowerbug':
-				return dex.gen < 4 && !moves.includes('megahorn');
-			case 'hiddenpowerpsychic':
-				return species.baseSpecies === 'Unown';
+				return !moves.includes('megahorn');
 			case 'hyperspacefury':
 				return species.id === 'hoopaunbound';
 			case 'hypnosis':
-				return (dex.gen < 4 && !moves.includes('sleeppowder')) || (dex.gen > 6 && abilityid === 'baddreams');
+				return (!moves.includes('sleeppowder')) || (abilityid === 'baddreams');
 			case 'icywind':
 				// Keldeo needs Hidden Power for Electric/Ghost
 				return species.baseSpecies === 'Keldeo' || this.formatType === 'doubles';
 			case 'infestation':
 				return moves.includes('stickyweb');
 			case 'irontail':
-				return dex.gen > 5 && !moves.includes('ironhead') && !moves.includes('gunkshot') && !moves.includes('poisonjab');
+				return !moves.includes('ironhead') && !moves.includes('gunkshot') && !moves.includes('poisonjab');
 			case 'jumpkick':
 				return !moves.includes('highjumpkick');
 			case 'leechlife':
-				return dex.gen > 6;
+				return true;
 			case 'mysticalfire':
-				return dex.gen > 6 && !moves.includes('flamethrower');
-			case 'naturepower':
-				return dex.gen === 5;
+				return !moves.includes('flamethrower');
 			case 'nightslash':
-				return !moves.includes('crunch') && !(moves.includes('knockoff') && dex.gen >= 6);
+				return !moves.includes('crunch') && !(moves.includes('knockoff'));
 			case 'petaldance':
 				return abilityid === 'owntempo';
 			case 'phantomforce':
@@ -1156,8 +1150,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 				return abilityid === 'electricsurge';
 			case 'rocktomb':
 				return abilityid === 'technician';
-			case 'selfdestruct':
-				return dex.gen < 5 && !moves.includes('explosion');
 			case 'shadowpunch':
 				return abilityid === 'ironfist';
 			case 'smackdown':
@@ -1171,9 +1163,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			case 'stunspore':
 				return !moves.includes('thunderwave');
 			case 'technoblast':
-				return dex.gen > 5 && itemid.endsWith('drive') || itemid === 'dousedrive';
-			case 'teleport':
-				return dex.gen > 7;
+				return itemid.endsWith('drive') || itemid === 'dousedrive';
 			case 'terrainpulse': case 'waterpulse':
 				return ['megalauncher', 'technician'].includes(abilityid) && !moves.includes('originpulse');
 			case 'trickroom':
@@ -1232,10 +1222,6 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
 			if (learnset) {
 				for (let moveid in learnset) {
-					let learnsetEntry = learnset[moveid];
-					if (!learnsetEntry.includes(gen)) {
-						continue;
-					}
 					if (moves.includes(moveid)) continue;
 					moves.push(moveid);
 					if (moveid === 'sketch') sketch = true;

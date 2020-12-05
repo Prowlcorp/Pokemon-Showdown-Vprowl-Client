@@ -754,7 +754,7 @@ const Dex = new class implements ModdedDex {
 			sanitizedCategory = 'undefined';
 			break;
 		}
-		return `<img src="${Dex.resourcePrefix}sprites/misc/${sanitizedCategory}.png" alt="${sanitizedCategory}" height="14" width="32" class="pixelated" />`;
+		return `<img src="./sprites/misc/${sanitizedCategory}.png" alt="${sanitizedCategory}" height="14" width="32" class="pixelated" />`;
 	}
 
 	getPokeballs() {
@@ -797,16 +797,6 @@ class ModdedDex {
 		let data = {...Dex.getMove(name)};
 
 		const table = window.BattleTeambuilderTable[this.modid];
-		if (id in table.overrideAcc) data.accuracy = table.overrideAcc[id];
-		if (id in table.overrideBP) data.basePower = table.overrideBP[id];
-		if (id in table.overridePP) data.pp = table.overridePP[id];
-		if (id in table.overrideMoveType) data.type = table.overrideMoveType[id];
-		for (let i = this.gen; i < 8; i++) {
-			if (id in window.BattleTeambuilderTable['gen999'].overrideMoveDesc) {
-				data.shortDesc = window.BattleTeambuilderTable['gen999'].overrideMoveDesc[id];
-				break;
-			}
-		}
 
 		const move = new Move(id, name, data);
 		this.cache.Moves[id] = move;
@@ -821,13 +811,6 @@ class ModdedDex {
 		if (this.cache.Items.hasOwnProperty(id)) return this.cache.Items[id];
 
 		let data = {...Dex.getItem(name)};
-
-		for (let i = this.gen; i < 8; i++) {
-			if (id in window.BattleTeambuilderTable['gen999'].overrideItemDesc) {
-				data.shortDesc = window.BattleTeambuilderTable['gen999'].overrideItemDesc[id];
-				break;
-			}
-		}
 
 		const item = new Item(id, name, data);
 		this.cache.Items[id] = item;
@@ -880,17 +863,6 @@ class ModdedDex {
 		if (this.cache.Types.hasOwnProperty(id)) return this.cache.Types[id];
 
 		let data = {...Dex.getType(name)};
-
-		for (let i = 7; i >= this.gen; i--) {
-			if (id in window.BattleTeambuilderTable['gen999'].removeType) {
-				data.exists = false;
-				// don't bother correcting its attributes given it doesn't exist
-				break;
-			}
-			if (id in window.BattleTeambuilderTable['gen999'].overrideTypeChart) {
-				data = {...data, ...window.BattleTeambuilderTable['gen999'].overrideTypeChart[id]};
-			}
-		}
 
 		this.cache.Types[id] = data;
 		return data;

@@ -89,6 +89,8 @@ class PSTeambuilder {
 				buf += '|A';
 			} else if (set.card === "Shiny") {
 				buf += '|S';
+			} else if (set.card === "Normal") {
+				buf += '|N';
 			} else {
 				buf += '|';
 			}
@@ -296,6 +298,9 @@ class PSTeambuilder {
 		if (set.card === "Shiny") {
 			text += `Card: Shiny  \n`;
 		}
+		if (set.card === "Normal") {
+			text += `Card: Normal  \n`;
+		}
 		if (typeof set.happiness === 'number' && set.happiness !== 255 && !isNaN(set.happiness)) {
 			text += `Happiness: ${set.happiness}  \n`;
 		}
@@ -359,6 +364,8 @@ class PSTeambuilder {
 			set.card = "Albino";
 		} else if (line === 'Card: Shiny') {
 			set.card = "Shiny";
+		} else if (line === 'Card: Normal') {
+			set.card = "Normal";
 		} else if (line.startsWith('Level: ')) {
 			line = line.slice(7);
 			set.level = +line;

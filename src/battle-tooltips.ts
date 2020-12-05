@@ -933,6 +933,16 @@ class BattleTooltips {
 		if (ability === 'purepower' || ability === 'hugepower') {
 			stats.atk *= 2;
 		}
+		if (ability === 'superbrain') {
+			stats.spa *= 2;
+		}
+		if (ability === 'bijuuboost') {
+			stats.atk *= 2;
+			stats.def *= 2;
+			stats.spa *= 2;
+			stats.spd *= 2;
+			stats.spe *= 2;
+		}
 		if (ability === 'hustle' || ability === 'gorillatactics') {
 			stats.atk = Math.floor(stats.atk * 1.5);
 		}
@@ -1140,14 +1150,6 @@ class BattleTooltips {
 		if(pokemon.shiny === "Albino") {
 			min = tr(min*1.5);
 			max = tr(max*1.5);
-		}
-		if(pokemon.card === "Shiny") {
-			min = tr(min*1.5);
-			max = tr(max*1.5);
-		}
-		if(pokemon.card === "Albino") {
-			min = tr(min*2);
-			max = tr(max*2);
 		}
 		return [min, max];
 	}
@@ -1615,6 +1617,12 @@ class BattleTooltips {
 		// Item
 		value = this.getItemBoost(move, value, moveType);
 
+		// Level
+		if (pokemon.level > 100) {
+			let modval = Math.floor((pokemon.level - 100) / 10);
+			modval = (modval / 20) + 1;
+			value.modify(modval, 'Level Boost');
+		}
 		return value;
 	}
 

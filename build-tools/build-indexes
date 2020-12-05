@@ -560,16 +560,11 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		if (!learnset) continue;
 		learnsets[id] = {};
 		for (const moveid in learnset) {//PROWL fix
-			const gens = learnset[moveid].map(x => Number(x[0]));
-			const minGen = Math.min(...gens);
-			const vcOnly = (minGen === 7 && learnset[moveid].every(x => x[0] !== '7' || x === '7V') ||
-				minGen === 8 && learnset[moveid].every(x => x[0] !== '8' || x === '8V'));
+			const gens = 999;
+			const minGen = gens;
 
-			learnsets[id][moveid] = '012345678'.slice(minGen);
-
-			if (gens.indexOf(6) >= 0) learnsets[id][moveid] += 'p';
-			if (gens.indexOf(7) >= 0 && !vcOnly) learnsets[id][moveid] += 'q';
-			if (gens.indexOf(8) >= 0 && !vcOnly) learnsets[id][moveid] += 'g';
+			learnsets[id][moveid] = '999'.slice(minGen);
+			learnsets[id][moveid] += 'g';
 		}
 	}
 

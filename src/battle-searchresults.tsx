@@ -188,8 +188,8 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			<span class="col movenamecol">{this.renderName(move.name, matchStart, matchEnd, tagStart)}</span>
 
 			<span class="col typecol">
-				<img src={`${Dex.resourcePrefix}sprites/types/${move.type}.png`} alt={move.type} height="14" width="32" class="pixelated" />
-				<img src={`${Dex.resourcePrefix}sprites/misc/${move.category}.png`} alt={move.category} height="14" width="32" class="pixelated" />
+				<img src={`./sprites/types/${move.type}.png`} alt={move.type} height="14" width="32" class="pixelated" />
+				<img src={`./sprites/misc/${move.category}.png`} alt={move.category} height="14" width="32" class="pixelated" />
 			</span>
 
 			<span class="col labelcol">
@@ -230,7 +230,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			<span class="col namecol">{this.renderName(name, matchStart, matchEnd)}</span>
 
 			<span class="col typecol">
-				<img src={`${Dex.resourcePrefix}sprites/misc/${name}.png`} alt={name} height="14" width="32" class="pixelated" />
+				<img src={`./sprites/misc/${name}.png`} alt={name} height="14" width="32" class="pixelated" />
 			</span>
 
 			{errorMessage}

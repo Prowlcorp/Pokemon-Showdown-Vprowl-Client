@@ -1168,7 +1168,7 @@
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || species.gender || 'N'] + '</span>';
 			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
-			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : set.card === "Normal" ? 'Normal' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			buf += '</button></div></div>';
 
@@ -1185,7 +1185,6 @@
 			buf += '<div class="setcell setcell-typeicons">';
 			var types = species.types;
 			var table = BattleTeambuilderTable['gen999'];
-			if (table && species.id in table.overrideType) types = table.overrideType[species.id].split('/');
 			if (types) {
 				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i]);
 			}
@@ -2432,6 +2431,7 @@
 			buf += '<div class="formrow"><label class="formlabel">Card:</label><div>';
 			buf += '<label><input type="radio" name="card" value="albino"' + (set.card === "Albino" ? ' checked' : '') + ' /> Albino</label> ';
 			buf += '<label><input type="radio" name="card" value="shiny"' + (set.card === "Shiny" ? ' checked' : '') + ' /> Shiny</label> ';
+			buf += '<label><input type="radio" name="card" value="normal"' + (set.card === "Normal" ? ' checked' : '') + ' /> Normal</label> ';
 			buf += '<label><input type="radio" name="card" value="no"' + (!set.card ? ' checked' : '') + ' /> No</label>';
 			buf += '</div></div>';
 
@@ -2538,7 +2538,7 @@
 			buf += '<span class="detailcell"><label>Gender</label>' + GenderChart[set.gender || 'N'] + '</span>';
 			buf += '<span class="detailcell"><label>Happiness</label>' + (typeof set.happiness === 'number' ? set.happiness : 255) + '</span>';
 			buf += '<span class="detailcell"><label>Shiny</label>' + (set.shiny === "Albino" ? 'Albino' : set.shiny === "Shiny" ? 'Shiny' : 'No') + '</span>';
-			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : 'No') + '</span>';
+			buf += '<span class="detailcell"><label>Card</label>' + (set.card === "Albino" ? 'Albino' : set.card === "Shiny" ? 'Shiny' : set.card === "Normal" ? 'Normal' : 'No') + '</span>';
 			buf += '<span class="detailcell"><label>HP Type</label>' + (set.hpType || 'Dark') + '</span>';
 			this.$('button[name=details]').html(buf);
 
@@ -3021,7 +3021,7 @@
 			var iv = (set.ivs[stat] || 0);
 			var ev = set.evs[stat];
 			var shinyMod = set.shiny === "Albino" ? 1.5 : set.shiny === "Shiny" ? 1.25 : 1;
-			var cardMod = set.card === "Albino" ? 2 : set.card === "Shiny" ? 1.5 : 1;
+			var cardMod = set.card === "Albino" ? 2 : set.card === "Shiny" ? 1.5 : set.card === "Normal" ? 1.25 : 1;
 			if (evOverride !== undefined) ev = evOverride;
 			if (ev === undefined) ev = 0;
 

@@ -751,6 +751,8 @@ Storage.packTeam = function (team) {
 			buf += '|A';
 		} else if (set.card === "Shiny") {
 			buf += '|S';
+		} else if (set.card === "Normal") {
+			buf += '|N';
 		} else {
 			buf += '|';
 		}
@@ -1310,6 +1312,9 @@ Storage.exportTeam = function (team) {
 		}
 		if (curSet.card === "Shiny") {
 			text += 'Card: Shiny  \n';
+		}
+		if (curSet.card === "Normal") {
+			text += 'Card: Normal  \n';
 		}
 		if (typeof curSet.happiness === 'number' && curSet.happiness !== 255 && !isNaN(curSet.happiness)) {
 			text += 'Happiness: ' + curSet.happiness + "  \n";
