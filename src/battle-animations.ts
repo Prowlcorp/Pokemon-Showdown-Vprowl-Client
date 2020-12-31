@@ -861,6 +861,8 @@ class BattleScene {
 			case 'mistyterrain':
 			case 'psychicterrain':
 			case 'hellfire':
+			case 'hauntedterrain':
+			case 'niflheim':
 				terrain = pwid;
 				break;
 			default:
@@ -1621,6 +1623,7 @@ class PokemonSprite extends Sprite {
 		healblock: ['Heal Block', 'bad'],
 		yawn: ['Drowsy', 'bad'],
 		flashfire: ['Flash Fire', 'good'],
+		hauntedhouse: ['Haunted House', 'good'],
 		imprison: ['Imprisoning foe', 'good'],
 		autotomize: ['Lightened', 'neutral'],
 		miracleeye: ['Miracle Eye', 'bad'],
@@ -1637,6 +1640,7 @@ class PokemonSprite extends Sprite {
 		embargo: ['Embargo', 'bad'],
 		ingrain: ['Ingrain', 'good'],
 		aquaring: ['Aqua Ring', 'good'],
+		regen: ['Regen', 'good'],
 		stockpile1: ['Stockpile', 'good'],
 		stockpile2: ['Stockpile&times;2', 'good'],
 		stockpile3: ['Stockpile&times;3', 'good'],
@@ -1654,6 +1658,7 @@ class PokemonSprite extends Sprite {
 		focusenergy: ['Critical Hit Boost', 'good'],
 		slowstart: ['Slow Start', 'bad'],
 		noretreat: ['No Retreat', 'bad'],
+		angelwings: ['Angel Wings', 'bad'],
 		tarshot: ['Tar Shot', 'bad'],
 		doomdesire: null,
 		futuresight: null,

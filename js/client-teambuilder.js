@@ -2498,6 +2498,9 @@
 			}
 			else if (card === "shiny") {
 				set.card = "Shiny";
+			}
+			else if (card === "normal") {
+				set.card = "Normal";
 			} else {
 				delete set.card;
 			}

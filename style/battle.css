@@ -459,6 +459,14 @@ License: GPLv2
 	background: #b32e10 url(../fx/weather-hellfire.png) no-repeat scroll left top;
 	color: #441155;
 }
+.hauntedterrainweather {
+	background: #261560 url(../fx/weather-hauntedterrain.png) no-repeat scroll left top;
+	color: #e4fcff;
+}
+.niflheimweather {
+	background: #77c9d1 url(../fx/weather-niflheim.png) no-repeat scroll left top;
+	color: #fdfdff;
+}
 .pseudoweather {
 	background: #DDAAEE url(../fx/weather-trickroom.png) no-repeat scroll left top;
 	color: #661155;

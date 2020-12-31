@@ -114,7 +114,7 @@ class BattleTextParser {
 			if ([
 				'ingrain', 'quickguard', 'wideguard', 'craftyshield', 'matblock', 'protect', 'mist', 'safeguard',
 				'electricterrain', 'mistyterrain', 'psychicterrain', 'telepathy', 'stickyhold', 'suctioncups', 'aromaveil',
-				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads',//PROWL change?
+				'flowerveil', 'sweetveil', 'disguise', 'safetygoggles', 'protectivepads', //PROWL change?
 			].includes(id)) {
 				if (target) {
 					kwArgs.of = pokemon;

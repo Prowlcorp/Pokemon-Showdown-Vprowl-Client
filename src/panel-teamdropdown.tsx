@@ -125,7 +125,7 @@ class PSTeambuilder {
 
 		for (const setBuf of buf.split(`]`)) {
 			const parts = setBuf.split(`|`);
-			if (parts.length < 11) continue;
+			if (parts.length < 13) continue;
 			let set: PokemonSet = {species: '', moves: []};
 			team.push(set);
 
@@ -191,10 +191,10 @@ class PSTeambuilder {
 			}
 
 			// shiny
-			if (parts[9]) set.shiny = parts[9];
+			if (parts[9]) set.shiny = parts[9] === 'A' ? "Albino" : "Shiny";
 
 			// card
-			if (parts[10]) set.card = parts[10];
+			if (parts[10]) set.card = parts[10] === 'A' ? "Albino" : parts[10] === 'S' ? "Shiny" : "Normal";
 
 			// level
 			if (parts[11]) set.level = parseInt(parts[11], 10);

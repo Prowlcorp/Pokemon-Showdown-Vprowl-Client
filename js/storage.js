@@ -866,12 +866,12 @@ Storage.fastUnpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = buf.substring(i, j);
+		if (i !== j) set.shiny = buf.substring(i, j) === 'A' ? "Albino" : "Shiny";
 		i = j + 1;
 
 		// card
 		j = buf.indexOf('|', i);
-		if (i !== j) set.card = buf.substring(i, j);
+		if (i !== j) set.card = buf.substring(i, j) === 'A' ? "Albino" : buf.substring(i, j) === 'S' ? "Shiny" : "Normal";
 		i = j + 1;
 
 		// level
@@ -986,12 +986,12 @@ Storage.unpackTeam = function (buf) {
 
 		// shiny
 		j = buf.indexOf('|', i);
-		if (i !== j) set.shiny = buf.substring(i, j);
+		if (i !== j) set.shiny = buf.substring(i, j) === 'A' ? "Albino" : "Shiny";
 		i = j + 1;
 
 		// card
 		j = buf.indexOf('|', i);
-		if (i !== j) set.card = buf.substring(i, j);
+		if (i !== j) set.card = buf.substring(i, j) === 'A' ? "Albino" : buf.substring(i, j) === 'S' ? "Shiny" : "Normal";
 		i = j + 1;
 
 		// level

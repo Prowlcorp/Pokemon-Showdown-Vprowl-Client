@@ -576,6 +576,10 @@ class BattleTooltips {
 				calls = 'Psychic';
 			} else if (this.battle.hasPseudoWeather('Hell FIre')) {
 				calls = 'Flamethrower';
+			} else if (this.battle.hasPseudoWeather('Haunted Terrain')) {
+				calls = 'Shadow Ball';
+			} else if (this.battle.hasPseudoWeather('Niflheim')) {
+				calls = 'Ice Beam';
 			} else {
 				calls = 'Tri Attack';
 			}
@@ -1001,6 +1005,18 @@ class BattleTooltips {
 			stats.def = Math.floor(stats.def * 1.5);
 			stats.spd = Math.floor(stats.spd * 1.5);
 		}
+		if(item === 'ultraeviolite' && Dex.getSpecies(pokemon.speciesForme).evos){
+			stats.atk = Math.floor(stats.atk * 1.5);
+			stats.def = Math.floor(stats.def * 1.5);
+			stats.spa = Math.floor(stats.spa * 1.5);
+			stats.spd = Math.floor(stats.spd * 1.5);
+		}
+		if(item === 'ultimateeviolite' && Dex.getSpecies(pokemon.speciesForme).evos) {
+			stats.atk = Math.floor(stats.atk * 1.5);
+			stats.def = Math.floor(stats.def * 2);
+			stats.spa = Math.floor(stats.spa * 1.5);
+			stats.spd = Math.floor(stats.spd * 2);
+		}
 		if (ability === 'grasspelt' && this.battle.hasPseudoWeather('Grassy Terrain')) {
 			stats.def = Math.floor(stats.def * 1.5);
 		}
@@ -1213,6 +1229,12 @@ class BattleTooltips {
 				moveType = 'Fairy';
 			} else if (this.battle.hasPseudoWeather('Psychic Terrain')) {
 				moveType = 'Psychic';
+			} else if (this.battle.hasPseudoWeather('Haunted Terrain')) {
+				moveType = 'Ghost';
+			} else if (this.battle.hasPseudoWeather('Niflheim')) {
+				moveType = 'Ice';
+			} else if (this.battle.hasPseudoWeather('Hell Fire')) {
+				moveType = 'Fire';
 			}
 		}
 
@@ -1399,7 +1421,10 @@ class BattleTooltips {
 				this.battle.hasPseudoWeather('Electric Terrain') ||
 				this.battle.hasPseudoWeather('Grassy Terrain') ||
 				this.battle.hasPseudoWeather('Misty Terrain') ||
-				this.battle.hasPseudoWeather('Psychic Terrain')
+				this.battle.hasPseudoWeather('Psychic Terrain') ||
+				this.battle.hasPseudoWeather('Hell Fire') ||
+				this.battle.hasPseudoWeather('Haunted Terrain') ||
+				this.battle.hasPseudoWeather('Niflheim')
 			) {
 				value.modify(2, 'Terrain Pulse boost');
 			}
@@ -1478,6 +1503,7 @@ class BattleTooltips {
 		if (!value.value) return value;
 
 		// Other ability boosts
+		value.abilityModify(2, "Ultimate Sparring");
 		if (pokemon.status === 'brn' && move.category === 'Special') {
 			value.abilityModify(1.5, "Flare Boost");
 		}
@@ -1580,9 +1606,16 @@ class BattleTooltips {
 		}
 
 		// Terrain
+		const pokeType = pokemon.getTypeList();
+		if (this.battle.hasPseudoWeather('Haunted Terrain') && pokeType.includes("Ghost")) {
+			if (pokemon.isGrounded(serverPokemon)) {
+				value.modify(1.3, 'Haunted Terrain boost');
+			}
+		}
 		if ((this.battle.hasPseudoWeather('Electric Terrain') && moveType === 'Electric') ||
 			(this.battle.hasPseudoWeather('Grassy Terrain') && moveType === 'Grass') ||
-			(this.battle.hasPseudoWeather('Psychic Terrain') && moveType === 'Psychic')) {
+			(this.battle.hasPseudoWeather('Psychic Terrain') && moveType === 'Psychic') ||
+			(this.battle.hasPseudoWeather('Haunted Terrain') && moveType === 'Ghost')) {
 			if (pokemon.isGrounded(serverPokemon)) {
 				value.modify(1.5, 'Terrain boost');
 			}
@@ -1609,7 +1642,9 @@ class BattleTooltips {
 			!this.battle.hasPseudoWeather('Electric Terrain') &&
 			!this.battle.hasPseudoWeather('Grassy Terrain') &&
 			!this.battle.hasPseudoWeather('Misty Terrain') &&
-			!this.battle.hasPseudoWeather('Psychic Terrain')
+			!this.battle.hasPseudoWeather('Psychic Terrain') &&
+			!this.battle.hasPseudoWeather('Haunted Terrain') &&
+			!this.battle.hasPseudoWeather('Niflheim')
 		) {
 			value.set(0, 'no Terrain');
 		}
@@ -2041,6 +2076,14 @@ class BattleStatGuesser {
 		if (itemid === 'eviolite') {
 			physicalBulk *= 1.5;
 			specialBulk *= 1.5;
+		}
+		if (itemid === 'ultraeviolite') {
+			physicalBulk *= 2;
+			specialBulk *= 2;
+		}
+		if (itemid === 'ultimateeviolite') {
+			physicalBulk *= 2;
+			specialBulk *= 2;
 		}
 		if (itemid === 'assaultvest') {
 			specialBulk *= 1.5;

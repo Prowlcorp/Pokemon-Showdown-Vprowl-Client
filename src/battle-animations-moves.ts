@@ -20236,6 +20236,22 @@ const BattleMoveAnims: AnimTable = {
 		anim: null!,
 		prepareAnim: BattleOtherAnims.selfstatus.anim,
 	},
+	meteor: {
+		anim: null!,
+		prepareAnim: BattleOtherAnims.selfstatus.anim,
+	},
+	aquacrush: {
+		anim: null!,
+		prepareAnim: BattleOtherAnims.selfstatus.anim,
+	},
+	zeusfury: {
+		anim: null!,
+		prepareAnim: BattleOtherAnims.selfstatus.anim,
+	},
+	maxhealzone: {
+		anim: null!,
+		prepareAnim: BattleOtherAnims.selfstatus.anim,
+	},
 	overheat: {
 		anim(scene, [attacker, defender]) {
 			scene.backgroundEffect('linear-gradient(#390000 30%, #B84038)', 700, 0.4);
@@ -31798,6 +31814,11 @@ BattleMoveAnims['silverwind'] = {anim: BattleMoveAnims['whirlwind'].anim};
 BattleMoveAnims['gust'] = {anim: BattleMoveAnims['whirlwind'].anim};
 BattleMoveAnims['twister'] = {anim: BattleMoveAnims['whirlwind'].anim};
 BattleMoveAnims['razorwind'].anim = BattleMoveAnims['airslash'].anim;
+BattleMoveAnims['meteor'].anim = BattleMoveAnims['fusionflare'].anim;
+BattleMoveAnims['niflheim'].anim = BattleMoveAnims['sheercold'].anim;
+BattleMoveAnims['aquacrush'].anim = BattleMoveAnims['oceanicoperetta'].anim;
+BattleMoveAnims['zeusfury'].anim = BattleMoveAnims['thunderbolt'].anim;
+BattleMoveAnims['maxhealzone'].anim = BattleMoveAnims['healpulse'].anim;
 
 BattleMoveAnims['chatter'] = {anim: BattleMoveAnims['hypervoice'].anim};
 BattleMoveAnims['echoedvoice'] = {anim: BattleMoveAnims['hypervoice'].anim};
@@ -31963,3 +31984,4 @@ BattleMoveAnims['scaleshot'] = {anim: BattleMoveAnims['clangingscales'].anim};
 BattleMoveAnims['lashout'] = {anim: BattleMoveAnims['nightslash'].anim};
 BattleMoveAnims['steelroller'] = {anim: BattleMoveAnims['steamroller'].anim};
 BattleMoveAnims['surgingstrikes'] = {anim: BattleMoveAnims['aquajet'].anim};
+BattleMoveAnims['angelwings'] = {anim: BattleMoveAnims['stockpile'].anim};
