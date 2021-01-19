@@ -225,6 +225,7 @@ class PSTeambuilder {
 		}
 		if (set.gender === 'M') text += ` (M)`;
 		if (set.gender === 'F') text += ` (F)`;
+		if (set.gender === 'H') text += ` (H)`;
 		if (set.item) {
 			text += ` @ ${set.item}`;
 		}
@@ -340,6 +341,10 @@ class PSTeambuilder {
 			}
 			if (line.endsWith(' (F)')) {
 				set.gender = 'F';
+				line = line.slice(0, -4);
+			}
+			if (line.endsWith(' (H)')) {
+				set.gender = 'H';
 				line = line.slice(0, -4);
 			}
 			let parenIndex = line.lastIndexOf(' (');

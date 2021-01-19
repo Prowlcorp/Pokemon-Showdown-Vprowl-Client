@@ -19,10 +19,17 @@
  */
 type ID = string & {__isID: true};
 
-const BattleNatures: {[k in NatureName]: {plus?: StatName, minus?: StatName}} = {
+const BattleNatures: {[k in NatureName]: {plus?: StatName, plus2?: StatName, plus3?: StatName, minus?: StatName, minus2?: StatName}} = {
 	Adamant: {
 		plus: 'atk',
 		minus: 'spa',
+	},
+	Aggressive: {
+		plus: 'atk',
+		plus2: 'spa',
+		plus3: 'spe',
+		minus: 'def',
+		minus2: 'spd',
 	},
 	Bashful: {},
 	Bold: {
@@ -82,6 +89,13 @@ const BattleNatures: {[k in NatureName]: {plus?: StatName, minus?: StatName}} = 
 	Naughty: {
 		plus: 'atk',
 		minus: 'spd',
+	},
+	Pacifist: {
+		plus: 'def',
+		plus2: 'spd',
+		plus3: 'spe',
+		minus: 'atk',
+		minus2: 'spa',
 	},
 	Quiet: {
 		plus: 'spa',
@@ -756,15 +770,15 @@ const BattleAvatarNumbers: {[k: string]: string} = {
 };
 
 type StatName = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
-type NatureName = 'Adamant' | 'Bashful' | 'Bold' | 'Brave' | 'Calm' | 'Careful' | 'Docile' | 'Gentle' |
-	'Hardy' | 'Hasty' | 'Impish' | 'Jolly' | 'Lax' | 'Lonely' | 'Mild' | 'Modest' | 'Naive' | 'Naughty' |
+type NatureName = 'Adamant' | 'Aggressive' | 'Bashful' | 'Bold' | 'Brave' | 'Calm' | 'Careful' | 'Docile' | 'Gentle' |
+	'Hardy' | 'Hasty' | 'Impish' | 'Jolly' | 'Lax' | 'Lonely' | 'Mild' | 'Modest' | 'Naive' | 'Naughty' | 'Pacifist' |
 	'Quiet' | 'Quirky' | 'Rash' | 'Relaxed' | 'Sassy' | 'Serious' | 'Timid';
 type StatNameExceptHP = 'atk' | 'def' | 'spa' | 'spd' | 'spe';
 type TypeName = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' |
 	'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Dark' | 'Fairy' | '???';
 type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn' | 'bld';
 type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy';
-type GenderName = 'M' | 'F' | 'N';
+type GenderName = 'M' | 'F' | 'N' | 'H';
 
 interface Effect {
 	readonly id: ID;

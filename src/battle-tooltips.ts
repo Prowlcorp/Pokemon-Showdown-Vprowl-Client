@@ -688,6 +688,10 @@ class BattleTooltips {
 		if (gender === 'M' || gender === 'F') {
 			genderBuf = ` <img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" /> `;
 		}
+		if (gender === 'H') {
+			genderBuf = ` <img src="${Dex.resourcePrefix}fx/gender-m.png" alt="M" width="7" height="10" class="pixelated" /> `;
+			genderBuf += ` <img src="${Dex.resourcePrefix}fx/gender-f.png" alt="F" width="7" height="10" class="pixelated" /> `;
+		}
 
 		let name = BattleLog.escapeHTML(pokemon.name);
 		if (pokemon.speciesForme !== pokemon.name) {
@@ -1538,7 +1542,7 @@ class BattleTooltips {
 			value.abilityModify(1.3, "Punk Rock");
 		}
 		if (target) {
-			if (["MF", "FM"].includes(pokemon.gender + target.gender)) {
+			if (["MF", "FM", "HM", "HF", "MH", "FH", "HH"].includes(pokemon.gender + target.gender)) {
 				value.abilityModify(0.75, "Rivalry");
 			} else if (["MM", "FF"].includes(pokemon.gender + target.gender)) {
 				value.abilityModify(1.25, "Rivalry");
@@ -2440,8 +2444,10 @@ class BattleStatGuesser {
 			val *= natureOverride;
 		} else if (BattleNatures[set.nature!]?.plus === stat) {
 			val *= 1.1;
-		} else if (BattleNatures[set.nature!]?.minus === stat) {
+		} else if (BattleNatures[set.nature!]?.minus === stat && !BattleNatures[set.nature!]?.minus2) {
 			val *= 0.9;
+		} else if (BattleNatures[set.nature!]?.minus === stat || BattleNatures[set.nature!]?.minus2 === stat) {
+			val *= 0.85;
 		}
 		return ~~(val);
 	}

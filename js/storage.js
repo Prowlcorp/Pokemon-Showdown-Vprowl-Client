@@ -1159,6 +1159,10 @@ Storage.importTeam = function (buffer, teams) {
 				curSet.gender = 'F';
 				line = line.substr(0, line.length - 4);
 			}
+			if (line.substr(line.length - 4) === ' (H)') {
+				curSet.gender = 'H';
+				line = line.substr(0, line.length - 4);
+			}
 			var parenIndex = line.lastIndexOf(' (');
 			if (line.substr(line.length - 1) === ')' && parenIndex !== -1) {
 				line = line.substr(0, line.length - 1);
@@ -1291,6 +1295,7 @@ Storage.exportTeam = function (team) {
 		}
 		if (curSet.gender === 'M') text += ' (M)';
 		if (curSet.gender === 'F') text += ' (F)';
+		if (curSet.gender === 'H') text += ' (H)';
 		if (curSet.item) {
 			text += ' @ ' + curSet.item;
 		}

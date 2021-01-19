@@ -731,6 +731,10 @@ class BattleScene {
 				if (gender === 'M' || gender === 'F') {
 					buf2 += `<img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" style="margin-bottom:-1px" /> `;
 				}
+				if (gender === 'H') {
+					buf2 += `<img src="${Dex.resourcePrefix}fx/gender-m.png" alt="M" width="7" height="10" class="pixelated" /> `;
+					buf2 += `<img src="${Dex.resourcePrefix}fx/gender-f.png" alt="F" width="7" height="10" class="pixelated" /> `;
+				}
 				if (pokemon.level !== 100) {
 					buf2 += '<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>' + pokemon.level + '</span>';
 				}
@@ -2497,6 +2501,10 @@ class PokemonSprite extends Sprite {
 		const gender = pokemon.gender;
 		if (gender === 'M' || gender === 'F') {
 			buf += ` <img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" />`;
+		}
+		if (gender === 'H') {
+			buf += ` <img src="${Dex.resourcePrefix}fx/gender-m.png" alt="M" width="7" height="10" class="pixelated" /> `;
+			buf += ` <img src="${Dex.resourcePrefix}fx/gender-f.png" alt="F" width="7" height="10" class="pixelated" /> `;
 		}
 		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 

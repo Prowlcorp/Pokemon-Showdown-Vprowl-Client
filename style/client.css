@@ -2598,7 +2598,7 @@ a.ilink.yours {
 	background: #DAE5F0 no-repeat scroll 10px 5px none;
 	border-radius: 5px;
 	padding: 2px 0 0 3px;
-	height: 157px;
+	height: 127px;
 	width: 626px;
 	margin-top: 8px;
 
@@ -3083,17 +3083,6 @@ a.ilink.yours {
 .statform .ivcol {
 	width: 48px;
 	text-align: center;
-}
-.statform .evslidercol {
-	width: 193px;
-	margin-right: 9px;
-	margin-left: 5px;
-	padding-top: 2px;
-	text-align: center;
-}
-.evslider {
-	width: 192px;
-	margin: 0 auto;
 }
 .statform .totalev b {
 	color: #DD2222;
