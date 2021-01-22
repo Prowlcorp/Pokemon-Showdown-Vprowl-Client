@@ -1164,12 +1164,12 @@ class BattleTooltips {
 		min = tr(tr(2 * baseSpe * level / 100 + 5) * minNature);
 		max = tr(tr((2 * baseSpe + maxIvEvOffset) * level / 100 + 5) * maxNature);
 		if(pokemon.shiny === "Shiny") {
-			min = tr(min*1.25);
-			max = tr(max*1.25);
+			min = tr(min * 1.25);
+			max = tr(max * 1.25);
 		}
 		if(pokemon.shiny === "Albino") {
-			min = tr(min*1.5);
-			max = tr(max*1.5);
+			min = tr(min * 1.5);
+			max = tr(max * 1.5);
 		}
 		return [min, max];
 	}
@@ -2442,7 +2442,7 @@ class BattleStatGuesser {
 		let val = ~~(~~(2 * baseStat + iv + ~~(ev / 4)) * level / 100 + 5);
 		if (natureOverride) {
 			val *= natureOverride;
-		} else if (BattleNatures[set.nature!]?.plus === stat) {
+		} else if (BattleNatures[set.nature!]?.plus === stat || BattleNatures[set.nature!]?.plus2 === stat || BattleNatures[set.nature!]?.plus3 === stat) {
 			val *= 1.1;
 		} else if (BattleNatures[set.nature!]?.minus === stat && !BattleNatures[set.nature!]?.minus2) {
 			val *= 0.9;

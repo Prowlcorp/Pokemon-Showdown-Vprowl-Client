@@ -47,6 +47,8 @@
 			'input .statform input[type=number].numform': 'statChange',
 			'change select[name=nature]': 'natureChange',
 			'change select[name=ivspread]': 'ivSpreadChange',
+			'change .evslider': 'statSlided',
+			'input .evslider': 'statSlide',
 
 			// teambuilder events
 			'click .utilichart a': 'chartClick',
@@ -2011,6 +2013,13 @@
 			}
 			buf += '</div>';
 
+			buf += '<div class="col evslidercol"><div></div>';
+			for (var i in stats) {
+				if (i === 'spd' && this.curTeam.gen === 1) continue;
+				buf += '<div><input type="range" name="evslider-' + i + '" value="' + BattleLog.escapeHTML(set.evs[i] === undefined ? '' + defaultEV : '' + set.evs[i]) + '" min="0" max="' + maxEV + '" step="' + stepEV + '" class="evslider" tabindex="-1" aria-hidden="true" /></div>';
+			}
+			buf += '</div>';
+
 			buf += '<div class="col ivcol"><div><strong>IVs</strong></div>';
 			if (!set.ivs) set.ivs = {};
 			for (var i in stats) {
@@ -2144,16 +2153,16 @@
 				if (curNature.plus) {
 					buf += ' (+' + BattleStatNames[curNature.plus];
 					if(curNature.plus2) {
-						buf += ', +' + BattleStatNames[curNature.plus2];
+						buf += ', ' + BattleStatNames[curNature.plus2];
 						if(curNature.plus3) {
-							buf += ', +' + BattleStatNames[curNature.plus3];
+							buf += ', ' + BattleStatNames[curNature.plus3];
 						}
 					}
 				}
 				if(curNature.minus) {
 					buf += ', -' + BattleStatNames[curNature.minus];
 					if(curNature.minus2) {
-						buf += ', -' + BattleStatNames[curNature.minus2];
+						buf += ', ' + BattleStatNames[curNature.minus2];
 					}
 					buf += ')';
 				}
@@ -2165,6 +2174,9 @@
 
 			buf += '</div>';
 			this.$chart.html(buf);
+		},
+		setSlider: function (stat, val) {
+			this.$chart.find('input[name=evslider-' + stat + ']').val(val || 0);
 		},
 		updateNature: function () {
 			var set = this.curSet;
@@ -2210,7 +2222,7 @@
 				} else if ((lastchar === '-' || lastchar === "\u2212" || firstchar === '-' || firstchar === "\u2212") && stat !== 'hp') {
 					if (this.minus && this.minus !== stat) this.$chart.find('input[name=stat-' + this.minus + ']').val(set.evs[this.minus] || '');
 					this.minus = stat;
-					if (this.minus2 && this.minus2 !== stat) this.$chart.find('input[name=stat-' + this.minus2 + ']').val(set.evs[this.minus] || '');
+					if (this.minus2 && this.minus2 !== stat) this.$chart.find('input[name=stat-' + this.minus2 + ']').val(set.evs[this.minus2] || '');
 					this.minus2 = stat;
 				} else if (this.plus === stat) {
 					this.plus = '';
@@ -3047,7 +3059,7 @@
 			var val = Math.floor(Math.floor(2 * baseStat + iv + Math.floor(ev / 4)) * set.level / 100 + 5);
 			if (natureOverride) {
 				val *= natureOverride;
-			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].plus === stat) {
+			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].plus === stat || BattleNatures[set.nature] && BattleNatures[set.nature].plus2 === stat || BattleNatures[set.nature] && BattleNatures[set.nature].plus3 === stat) {
 				val *= 1.1;
 			} else if (BattleNatures[set.nature] && BattleNatures[set.nature].minus === stat && !BattleNatures[set.nature].minus2) {
 				val *= 0.9;

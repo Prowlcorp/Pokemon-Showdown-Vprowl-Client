@@ -3084,6 +3084,17 @@ a.ilink.yours {
 	width: 48px;
 	text-align: center;
 }
+.statform .evslidercol {
+	width: 193px;
+	margin-right: 9px;
+	margin-left: 5px;
+	padding-top: 2px;
+	text-align: center;
+}
+.evslider {
+	width: 192px;
+	margin: 0 auto;
+}
 .statform .totalev b {
 	color: #DD2222;
 }
