@@ -264,7 +264,7 @@ class MainMenuRoom extends PSRoom {
 class NewsPanel extends PSRoomPanel {
 	render() {
 		return <PSPanelWrapper room={this.props.room} scrollable>
-			<div class="mini-window-body" dangerouslySetInnerHTML={{__html: PS.newsHTML}}></div>
+			<div class="mini-window-body" dangerouslySetInnerHTML={{__html: PS.newsHTML}}/>
 		</PSPanelWrapper>;
 	}
 }
@@ -287,8 +287,8 @@ class MainMenuPanel extends PSRoomPanel<MainMenuRoom> {
 			return <div class="pmbox">
 				<div class="mini-window">
 					<h3>
-						<button class="closebutton" name="closeRoom" value={roomid} aria-label="Close" tabIndex={-1}><i class="fa fa-times-circle"></i></button>
-						<button class="minimizebutton" tabIndex={-1}><i class="fa fa-minus-circle"></i></button>
+						<button class="closebutton" name="closeRoom" value={roomid} aria-label="Close" tabIndex={-1}><i class="fa fa-times-circle"/></button>
+						<button class="minimizebutton" tabIndex={-1}><i class="fa fa-minus-circle"/></button>
 						{room.title}
 					</h3>
 					{this.renderMiniRoom(room)}
@@ -347,7 +347,7 @@ class MainMenuPanel extends PSRoomPanel<MainMenuRoom> {
 					</div>
 				</div>
 				<div class="mainmenufooter">
-					<div class="bgcredit"></div>
+					<div class="bgcredit"/>
 					<small>
 						<a href={`//${Config.routes.dex}/`} target="_blank">Pok&eacute;dex</a> | {}
 						<a href={`//${Config.routes.replays}/`} target="_blank">Replays</a> | {}
@@ -414,12 +414,12 @@ class TeamDropdown extends preact.Component<{format: string}> {
 				<div class="team">
 					<strong>Random team</strong>
 					<small>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
-						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}></span>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
+						<span class="picon" style={`float:left;background:transparent url(https://${Config.routes.client}/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px`}/>
 					</small>
 				</div>
 			</button>;

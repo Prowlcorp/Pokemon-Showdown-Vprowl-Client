@@ -139,9 +139,9 @@ class TeambuilderPanel extends PSRoomPanel<TeambuilderRoom> {
 		]);
 
 		let renderedFormatFolders = [
-			<div class="foldersep"></div>,
+			<div class="foldersep"/>,
 			<TeamFolder cur={false} value="+">
-				<i class="fa fa-plus"></i><em>(add format folder)</em>
+				<i class="fa fa-plus"/><em>(add format folder)</em>
 			</TeamFolder>,
 		];
 
@@ -155,7 +155,7 @@ class TeambuilderPanel extends PSRoomPanel<TeambuilderRoom> {
 				if (gen === 0) {
 					renderedFolders.push(...renderedFormatFolders);
 					renderedFormatFolders = [];
-					renderedFolders.push(<div class="foldersep"></div>);
+					renderedFolders.push(<div class="foldersep"/>);
 					renderedFolders.push(<div class="folder"><h3>Folders</h3></div>);
 				} else {
 					renderedFolders.push(<div class="folder"><h3>Gen {gen}</h3></div>);
@@ -166,32 +166,32 @@ class TeambuilderPanel extends PSRoomPanel<TeambuilderRoom> {
 				renderedFolders.push(<TeamFolder cur={room.curFolder === format} value={format}>
 					<i class={
 						`fa ${folderOpenIcon}${format === '/' ? '-o' : ''}`
-					}></i>
+					}/>
 					{format.slice(0, -1) || '(uncategorized)'}
 				</TeamFolder>);
 				continue;
 			}
 
 			renderedFolders.push(<TeamFolder cur={room.curFolder === format} value={format}>
-				<i class={`fa ${folderOpenIcon}-o`}></i>
+				<i class={`fa ${folderOpenIcon}-o`}/>
 				{format.slice(4) || '(uncategorized)'}
 			</TeamFolder>);
 		}
 		renderedFolders.push(...renderedFormatFolders);
 
 		return <div class="folderlist" onClick={this.selectFolder}>
-			<div class="folderlistbefore"></div>
+			<div class="folderlistbefore"/>
 
 			<TeamFolder cur={!room.curFolder} value="">
 				<em>(all)</em>
 			</TeamFolder>
 			{renderedFolders}
-			<div class="foldersep"></div>
+			<div class="foldersep"/>
 			<TeamFolder cur={false} value="++">
-				<i class="fa fa-plus"></i><em>(add folder)</em>
+				<i class="fa fa-plus"/><em>(add folder)</em>
 			</TeamFolder>
 
-			<div class="folderlistafter"></div>
+			<div class="folderlistafter"/>
 		</div>;
 	}
 
@@ -223,38 +223,38 @@ class TeambuilderPanel extends PSRoomPanel<TeambuilderRoom> {
 			<div class="teampane">
 				{filterFolder ?
 					<h2>
-						<i class="fa fa-folder-open"></i> {filterFolder} {}
+						<i class="fa fa-folder-open"/> {filterFolder} {}
 						<button class="button small" style="margin-left:5px" name="renameFolder">
-							<i class="fa fa-pencil"></i> Rename
+							<i class="fa fa-pencil"/> Rename
 						</button> {}
 						<button class="button small" style="margin-left:5px" name="promptDeleteFolder">
-							<i class="fa fa-times"></i> Remove
+							<i class="fa fa-times"/> Remove
 						</button>
 					</h2>
 				: filterFolder === '' ?
-					<h2><i class="fa fa-folder-open-o"></i> Teams not in any folders</h2>
+					<h2><i class="fa fa-folder-open-o"/> Teams not in any folders</h2>
 				: filterFormat ?
-					<h2><i class="fa fa-folder-open-o"></i> {filterFormat}</h2>
+					<h2><i class="fa fa-folder-open-o"/> {filterFormat}</h2>
 				:
 					<h2>All Teams</h2>
 				}
 				<p>
-					<button name="cmd" value="/newteam" class="button big"><i class="fa fa-plus-circle"></i> New Team</button>
+					<button name="cmd" value="/newteam" class="button big"><i class="fa fa-plus-circle"/> New Team</button>
 				</p>
 				<ul class="teamlist">
 					{teams.map(team => team ? (
 						<li key={team.key}>
 							<TeamBox team={team} /> {}
-							<button name="cmd" value={`/deleteteam ${team.key}`}><i class="fa fa-trash"></i> Delete</button>
+							<button name="cmd" value={`/deleteteam ${team.key}`}><i class="fa fa-trash"/> Delete</button>
 						</li>
 					) : (
 						<li key="undelete">
-							<button name="cmd" value={`/undeleteteam`}><i class="fa fa-undo"></i> Undo delete</button>
+							<button name="cmd" value={`/undeleteteam`}><i class="fa fa-undo"/> Undo delete</button>
 						</li>
 					))}
 				</ul>
 				<p>
-					<button name="cmd" value="/newteam bottom" class="button"><i class="fa fa-plus-circle"></i> New Team</button>
+					<button name="cmd" value="/newteam bottom" class="button"><i class="fa fa-plus-circle"/> New Team</button>
 				</p>
 			</div>
 		</PSPanelWrapper>;

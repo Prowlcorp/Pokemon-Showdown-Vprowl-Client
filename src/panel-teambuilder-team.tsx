@@ -171,14 +171,14 @@ class TeamTextbox extends preact.Component<{team: Team}> {
 
 					return <span class="picon" style={
 						`top:${prevOffset + 1}px;left:50px;position:absolute;${iconStyle}`
-					}></span>;
+					}/>;
 				})}
 				{this.activeOffsetY >= 0 &&
-					<div class="teaminnertextbox" style={{top: this.activeOffsetY - 1}}></div>
+					<div class="teaminnertextbox" style={{top: this.activeOffsetY - 1}}/>
 				}
 			</div>
 			{this.activeType && <div class="searchresults" style={{top: this.activeSetIndex >= 0 ? this.setInfo[this.activeSetIndex].bottomY - 12 : 0}}>
-				<button class="button closesearch" onClick={this.closeMenu}><i class="fa fa-times"></i> Close</button>
+				<button class="button closesearch" onClick={this.closeMenu}><i class="fa fa-times"/> Close</button>
 				<PSSearchResults search={this.search} />
 			</div>}
 		</div>;
@@ -203,7 +203,7 @@ class TeamPanel extends PSRoomPanel<TeamRoom> {
 		if (!team) {
 			return <PSPanelWrapper room={room}>
 				<button class="button" onClick={this.backToList}>
-					<i class="fa fa-chevron-left"></i> List
+					<i class="fa fa-chevron-left"/> List
 				</button>
 				<p class="error">
 					Team doesn't exist
@@ -215,7 +215,7 @@ class TeamPanel extends PSRoomPanel<TeamRoom> {
 		return <PSPanelWrapper room={room} scrollable>
 			<div class="pad">
 				<button class="button" onClick={this.backToList}>
-					<i class="fa fa-chevron-left"></i> List
+					<i class="fa fa-chevron-left"/> List
 				</button>
 				<label class="label teamname">
 					Team name:

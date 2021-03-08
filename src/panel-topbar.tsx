@@ -22,19 +22,19 @@ class PSHeader extends preact.Component<{style: {}}> {
 		switch (room.type) {
 		case '':
 		case 'mainmenu':
-			icon = <i class="fa fa-home"></i>;
+			icon = <i class="fa fa-home"/>;
 			break;
 		case 'teambuilder':
-			icon = <i class="fa fa-pencil-square-o"></i>;
+			icon = <i class="fa fa-pencil-square-o"/>;
 			break;
 		case 'ladder':
-			icon = <i class="fa fa-list-ol"></i>;
+			icon = <i class="fa fa-list-ol"/>;
 			break;
 		case 'battles':
-			icon = <i class="fa fa-caret-square-o-right"></i>;
+			icon = <i class="fa fa-caret-square-o-right"/>;
 			break;
 		case 'rooms':
-			icon = <i class="fa fa-plus" style="margin:7px auto -6px auto"></i>;
+			icon = <i class="fa fa-plus" style="margin:7px auto -6px auto"/>;
 			title = '';
 			break;
 		case 'battle':
@@ -61,7 +61,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 			icon = <i class="text">{formatid}</i>;
 			break;
 		case 'chat':
-			icon = <i class="fa fa-comment-o"></i>;
+			icon = <i class="fa fa-comment-o"/>;
 			break;
 		case 'html':
 		default:
@@ -73,12 +73,12 @@ class PSHeader extends preact.Component<{style: {}}> {
 					break;
 				}
 			}
-			icon = <i class="fa fa-file-text-o"></i>;
+			icon = <i class="fa fa-file-text-o"/>;
 			break;
 		}
 		if (closable) {
 			closeButton = <button class="closebutton" name="closeRoom" value={id} aria-label="Close">
-				<i class="fa fa-times-circle"></i>
+				<i class="fa fa-times-circle"/>
 			</button>;
 		}
 		return <li><a class={className} href={`/${id}`} draggable={true}>{icon} <span>{title}</span></a>{closeButton}</li>;
@@ -93,7 +93,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 				alt="Pokémon Showdown! (beta)"
 				width="146" height="44"
 			/>
-			<div class="maintabbarbottom"></div>
+			<div class="maintabbarbottom"/>
 			<div class="tabbar maintabbar"><div class="inner">
 				<ul>
 					{this.renderRoomTab('' as RoomID)}
@@ -107,13 +107,13 @@ class PSHeader extends preact.Component<{style: {}}> {
 			</div></div>
 			<div class="userbar">
 				<span class="username" data-name={PS.user.name} style={userColor}>
-					<i class="fa fa-user" style="color:#779EC5"></i> {PS.user.name}
+					<i class="fa fa-user" style="color:#779EC5"/> {PS.user.name}
 				</span> {}
 				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
-					<i class={PS.prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
+					<i class={PS.prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}/>
 				</button> {}
 				<button class="icon button" name="joinRoom" value="options" title="Options" aria-label="Options">
-					<i class="fa fa-cog"></i>
+					<i class="fa fa-cog"/>
 				</button>
 			</div>
 		</div>;
@@ -247,8 +247,8 @@ class UserPanel extends PSRoomPanel<UserRoom> {
 			}
 			{isSelf && <hr />}
 			{isSelf && <p class="buttonbar" style="text-align: right">
-				<button class="button disabled" name="login"><i class="fa fa-pencil"></i> Change name</button> {}
-				<button class="button disabled" name="logout"><i class="fa fa-power-off"></i> Log out</button>
+				<button class="button disabled" name="login"><i class="fa fa-pencil"/> Change name</button> {}
+				<button class="button disabled" name="logout"><i class="fa fa-power-off"/> Log out</button>
 			</p>}
 		</PSPanelWrapper>;
 	}

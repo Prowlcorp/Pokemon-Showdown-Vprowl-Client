@@ -56,7 +56,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				<span class="col numcol">{search.getTier(pokemon)}</span>
 
 				<span class="col iconcol">
-					<span style={Dex.getPokemonIcon(pokemon.id)}></span>
+					<span style={Dex.getPokemonIcon(pokemon.id)}/>
 				</span>
 
 				<span class="col pokemonnamecol">{this.renderName(pokemon.name, matchStart, matchEnd, tagStart)}</span>
@@ -69,7 +69,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			<span class="col numcol">{search.getTier(pokemon)}</span>
 
 			<span class="col iconcol">
-				<span style={Dex.getPokemonIcon(pokemon.id)}></span>
+				<span style={Dex.getPokemonIcon(pokemon.id)}/>
 			</span>
 
 			<span class="col pokemonnamecol">{this.renderName(pokemon.name, matchStart, matchEnd, tagStart)}</span>
@@ -90,7 +90,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			: pokemon.abilities['H'] ?
 				<span class={`col abilitycol''`}>{pokemon.abilities['H']}</span>
 			:
-				<span class="col abilitycol"></span>
+				<span class="col abilitycol"/>
 			}
 
 			<span class="col statcol"><em>HP</em><br />{stats.hp}</span>
@@ -144,7 +144,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 
 		return <li class="result"><a href={`${this.URL_ROOT}items/${id}`} data-target="push" data-entry={`item|${item.name}`}>
 			<span class="col itemiconcol">
-				<span style={Dex.getItemIcon(item)}></span>
+				<span style={Dex.getItemIcon(item)}/>
 			</span>
 
 			<span class="col namecol">{this.renderName(item.name, matchStart, matchEnd)}</span>
@@ -316,7 +316,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				.replace(/&lt;em>/g, '<em>').replace(/&lt;\/em>/g, '</em>')
 				.replace(/&lt;strong>/g, '<strong>').replace(/&lt;\/strong>/g, '</strong>');
 			return <li class="result">
-				<p dangerouslySetInnerHTML={{__html: sanitizedHTML}}></p>
+				<p dangerouslySetInnerHTML={{__html: sanitizedHTML}}/>
 			</li>;
 		case 'header':
 			return <li class="result"><h3>{id}</h3></li>;
@@ -353,7 +353,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				Filters: {}
 				{search.filters.map(([type, name]) =>
 					<button class="filter" value={`${type}:${name}`}>
-						${name} <i class="fa fa-times-circle"></i>
+						${name} <i class="fa fa-times-circle"/>
 					</button>
 				)}
 				{!search.query && <small style="color: #888">(backspace = delete filter)</small>}

@@ -1149,7 +1149,6 @@ class BattleTooltips {
 		let level = pokemon.level;
 		let baseSpe = pokemon.getSpecies().baseStats['spe'];
 		let tier = this.battle.tier;
-		let gen = this.battle.gen;
 		let isRandomBattle = (tier.includes('Random') && tier.includes('Battle'));
 
 		let minNature = (isRandomBattle) ? 1 : 0.9;
@@ -1258,6 +1257,7 @@ class BattleTooltips {
 				if (value.abilityModify(0, 'Colonize')) moveType = 'Bug';
 				if (value.abilityModify(0, 'Galvanize')) moveType = 'Electric';
 				if (value.abilityModify(0, 'Pixilate')) moveType = 'Fairy';
+				if (value.abilityModify(0, 'As One (Seyzar)-M')) moveType = 'Fairy';
 				if (value.abilityModify(0, 'Refrigerate')) moveType = 'Ice';
 			}
 			if (value.abilityModify(0, 'Normalize')) moveType = 'Normal';
@@ -1557,6 +1557,7 @@ class BattleTooltips {
 				value.abilityModify(1.2, "Colonize");
 				value.abilityModify(1.2, "Galvanize");
 				value.abilityModify(1.2, "Pixilate");
+				value.abilityModify(1.2, "As One (Seyzar)-M");
 				value.abilityModify(1.2, "Refrigerate");
 			}
 			value.abilityModify(1.2, "Normalize");

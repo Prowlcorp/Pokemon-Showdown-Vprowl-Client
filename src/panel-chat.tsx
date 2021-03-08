@@ -380,7 +380,7 @@ class ChatPanel extends PSRoomPanel<ChatRoom> {
 		</div> : null;
 
 		return <PSPanelWrapper room={room}>
-			<div class="tournament-wrapper hasuserlist"></div>
+			<div class="tournament-wrapper hasuserlist"/>
 			<ChatLog class="chat-log" room={this.props.room} onClick={this.focusIfNoSelection} left={tinyLayout ? 0 : 146}>
 				{challengeTo || challengeFrom && [challengeTo, challengeFrom]}
 			</ChatLog>
@@ -510,7 +510,7 @@ class ChatLog extends preact.Component<{
 	render() {
 		return <div class={this.props.class} role="log" onClick={this.props.onClick} style={{
 			left: this.props.left || 0, top: this.props.top || 0,
-		}}></div>;
+		}}/>;
 	}
 }
 

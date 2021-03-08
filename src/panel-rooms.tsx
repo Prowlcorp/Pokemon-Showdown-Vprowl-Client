@@ -133,21 +133,21 @@ class RoomsPanel extends PSRoomPanel {
 
 		return <PSPanelWrapper room={this.props.room} scrollable><div class="pad">
 			<button class="button" style="float:right;font-size:10pt;margin-top:3px" onClick={this.hide}>
-				<i class="fa fa-caret-right"></i> Hide
+				<i class="fa fa-caret-right"/> Hide
 			</button>
 			<div class="roomcounters">
 				<button class="button" data-href="/users" title="Find an online user">
 					<span
 						class="pixelated usercount"
 						title="Meloetta is PS's mascot! The Aria forme is about using its voice, and represents our chatrooms."
-					></span>
+					/>
 					<strong>{rooms.userCount || '-'}</strong> users online
 				</button> {}
 				<button class="button" data-href="/battles" title="Watch an active battle">
 					<span
 						class="pixelated battlecount"
 						title="Meloetta is PS's mascot! The Pirouette forme is Fighting-type, and represents our battles."
-					></span>
+					/>
 					<strong>{rooms.battleCount || '-'}</strong> active battles
 				</button>
 			</div>
@@ -171,12 +171,12 @@ class RoomsPanel extends PSRoomPanel {
 			{sortedRooms.map(roomInfo => <div>
 				<a href={`/${toID(roomInfo.title)}`} class="blocklink">
 					{roomInfo.userCount !== undefined && <small style="float:right">({roomInfo.userCount} users)</small>}
-					<strong><i class="fa fa-comment-o"></i> {roomInfo.title}<br /></strong>
+					<strong><i class="fa fa-comment-o"/> {roomInfo.title}<br /></strong>
 					<small>{roomInfo.desc || ''}</small>
 					{roomInfo.subRooms && <small><br />
-						<i class="fa fa-level-up fa-rotate-90"></i> Subrooms: <strong>
+						<i class="fa fa-level-up fa-rotate-90"/> Subrooms: <strong>
 							{roomInfo.subRooms.map((roomName, i) => [
-								<i class="fa fa-comment-o"></i>, " " + roomName + (i === roomInfo.subRooms!.length - 1 ? "" : ", "),
+								<i class="fa fa-comment-o"/>, " " + roomName + (i === roomInfo.subRooms!.length - 1 ? "" : ", "),
 							])}
 						</strong>
 					</small>}

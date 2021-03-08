@@ -569,7 +569,7 @@ function TeamFolder(props: {cur?: boolean, value: string, children: preact.Compo
 	// less weird interactions with HTML5 drag-and-drop
 	if (props.cur) {
 		return <div class="folder cur"><div class="folderhack3">
-			<div class="folderhack1"></div><div class="folderhack2"></div>
+			<div class="folderhack1"/><div class="folderhack2"/>
 			<div class="selectFolder" data-value={props.value}>{props.children}</div>
 		</div></div>;
 	}
@@ -588,7 +588,7 @@ function TeamBox(props: {team: Team | null, noLink?: boolean, button?: boolean})
 				icons = <em>(empty team)</em>;
 			} else {
 				icons = PSTeambuilder.packedTeamNames(team.packedTeam).map(species =>
-					<span class="picon" style={Dex.getPokemonIcon(species)}></span>
+					<span class="picon" style={Dex.getPokemonIcon(species)}/>
 				);
 			}
 			team.iconCache = icons;
@@ -695,11 +695,11 @@ class TeamDropdownPanel extends PSRoomPanel {
 
 		teamList.push(<p>
 			{baseFormat.length > 4 && <button class={'button' + (baseFormat === this.format ? ' disabled' : '')} onClick={this.setFormat} name="format" value={baseFormat}>
-				<i class="fa fa-folder-o"></i> [{baseFormat.slice(0, 4)}] {baseFormat.slice(4)}
+				<i class="fa fa-folder-o"/> [{baseFormat.slice(0, 4)}] {baseFormat.slice(4)}
 			</button>} <button class={'button' + (baseGen === this.format ? ' disabled' : '')} onClick={this.setFormat} name="format" value={baseGen}>
-				<i class="fa fa-folder-o"></i> [{baseGen}] <em>(uncategorized)</em>
+				<i class="fa fa-folder-o"/> [{baseGen}] <em>(uncategorized)</em>
 			</button> <button class={'button' + (baseGen === this.gen ? ' disabled' : '')} onClick={this.setFormat} name="gen" value={baseGen}>
-				<i class="fa fa-folder-o"></i> [{baseGen}] <em>(all)</em>
+				<i class="fa fa-folder-o"/> [{baseGen}] <em>(all)</em>
 			</button> {hasOtherGens && !this.gen && <button class="button" onClick={this.setFormat} name="gen" value={baseGen}>Other gens</button>}
 		</p>);
 
@@ -707,7 +707,7 @@ class TeamDropdownPanel extends PSRoomPanel {
 			teamList.push(<h2>Other gens</h2>);
 			teamList.push(<p>{genList.sort().map(gen => [
 				<button class={'button' + (gen === this.gen ? ' disabled' : '')} onClick={this.setFormat} name="gen" value={gen}>
-					<i class="fa fa-folder-o"></i> [{gen}] <em>(all)</em>
+					<i class="fa fa-folder-o"/> [{gen}] <em>(all)</em>
 				</button>,
 				" ",
 			])}</p>);
@@ -717,20 +717,20 @@ class TeamDropdownPanel extends PSRoomPanel {
 		for (let folder in teamBuckets) {
 			if (folder && (this.gen || this.format)) {
 				teamList.push(<h2>
-					<i class="fa fa-folder-open"></i> {folder} + {}
-					<i class="fa fa-folder-open-o"></i> {this.format || this.gen}
+					<i class="fa fa-folder-open"/> {folder} + {}
+					<i class="fa fa-folder-open-o"/> {this.format || this.gen}
 				</h2>);
 			} else if (folder) {
 				teamList.push(<h2>
-					<i class="fa fa-folder-open"></i> {folder}
+					<i class="fa fa-folder-open"/> {folder}
 				</h2>);
 			} else if (this.gen || this.format) {
 				teamList.push(<h2>
-					<i class="fa fa-folder-open-o"></i> {this.format || this.gen}
+					<i class="fa fa-folder-open-o"/> {this.format || this.gen}
 				</h2>);
 			} else {
 				teamList.push(<h2>
-					<i class="fa fa-folder-open-o"></i> Teams not in any folders
+					<i class="fa fa-folder-open-o"/> Teams not in any folders
 				</h2>);
 			}
 			teamList.push(<ul class="teamdropdown" onClick={this.click}>
@@ -854,7 +854,7 @@ class FormatDropdownPanel extends PSRoomPanel {
 					</h3></li>
 				))}
 			</ul>)}
-			<div style="float: left"></div>
+			<div style="float: left"/>
 		</PSPanelWrapper>;
 	}
 }

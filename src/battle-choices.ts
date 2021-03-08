@@ -33,6 +33,7 @@ interface BattleRequestActivePokemon {
 	} | null)[];
 	canMegaEvo?: boolean;
 	canUltraBurst?: boolean;
+	canFormChange?: boolean;
 	trapped?: boolean;
 	maybeTrapped?: boolean;
 }

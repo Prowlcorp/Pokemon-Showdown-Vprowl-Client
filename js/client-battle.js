@@ -501,6 +501,7 @@
 			if (!curActive) return;
 			var trapped = curActive.trapped;
 			var canMegaEvo = curActive.canMegaEvo || switchables[pos].canMegaEvo;
+			var canFormChange = curActive.canFormChange || switchables[pos].canFormChange;
 			var canZMove = curActive.canZMove || switchables[pos].canZMove;
 			var canUltraBurst = curActive.canUltraBurst || switchables[pos].canUltraBurst;
 			if (canZMove && typeof canZMove[0] === 'string') {
@@ -645,6 +646,9 @@
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="zmove" />&nbsp;Z-Power</label>';
 				} else if (canUltraBurst) {
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="ultraburst" />&nbsp;Ultra Burst</label>';
+				}
+				if (canFormChange) {
+					moveMenu += '<br /><label class="formchange"><input type="checkbox" name="formchange" />&nbsp;Form&nbsp;Change</label>';
 				}
 				if (this.finalDecisionMove) {
 					moveMenu += '<em style="display:block;clear:both">You <strong>might</strong> have some moves disabled, so you won\'t be able to cancel an attack!</em><br/>';
@@ -1071,11 +1075,11 @@
 				var myActive = this.battle.mySide.active;
 				var isMega = !!(this.$('input[name=megaevo]')[0] || '').checked;
 				var isZMove = !!(this.$('input[name=zmove]')[0] || '').checked;
-				var isUltraBurst = !!(this.$('input[name=ultraburst]')[0] || '').checked;
+				var isUltraBurst = !!(this.$('input[name=ultraburst]')[0] || '').checked;//CHECK
 
 				var target = e.getAttribute('data-target');
 				var choosableTargets = {normal: 1, any: 1, adjacentAlly: 1, adjacentAllyOrSelf: 1, adjacentFoe: 1};
-
+				//CHECK
 				this.choice.choices.push('move ' + pos + (isMega ? ' mega' : '') + (isZMove ? ' zmove' : '') + (isUltraBurst ? ' ultra' : ''));
 				if (myActive.length > 1 && target in choosableTargets) {
 					this.choice.type = 'movetarget';
