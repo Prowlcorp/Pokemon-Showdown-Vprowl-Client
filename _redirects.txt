@@ -1,1 +1,1 @@
-/ /testclient.html 200
+/ /testclient.html

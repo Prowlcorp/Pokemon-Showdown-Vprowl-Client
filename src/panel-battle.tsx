@@ -235,13 +235,16 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 		}
 		return false;
 	};
-	toggleBoostedMove = (e: Event) => {// CHECK
+	toggleBoostedMove = (e: Event) => {
 		const checkbox = e.currentTarget as HTMLInputElement;
 		const choices = this.props.room.choices;
 		if (!choices) return; // shouldn't happen
 		switch (checkbox.name) {
 		case 'mega':
 			choices.current.mega = checkbox.checked;
+			break;
+		case 'formchange':
+			choices.current.formchange = checkbox.checked;
 			break;
 		case 'ultra':
 			choices.current.ultra = checkbox.checked;
@@ -469,6 +472,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			if (choice.choiceType === 'move') {
 				buf.push(`${pokemon.name} will `);
 				if (choice.mega) buf.push(`Mega Evolve and `);
+				if (choice.formchange) buf.push(`Form Change and `);
 				if (choice.ultra) buf.push(`Ultra Burst and `);
 				buf.push(`use `, <strong>{choices.getChosenMove(choice, i).name}</strong>);
 				if (choice.targetLoc > 0) {
@@ -526,8 +530,9 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			const pokemon = request.side.pokemon[index];
 			const moveRequest = choices.currentMoveRequest()!;
 
-			const canMegaEvo = moveRequest.canMegaEvo && !choices.alreadyMega; // CHECK
+			const canMegaEvo = moveRequest.canMegaEvo && !choices.alreadyMega;
 			const canZMove = moveRequest.zMoves && !choices.alreadyZ;
+			const canFormChange = moveRequest.canFormChange;
 
 			if (choices.current.move) {
 				const moveName = choices.getChosenMove(choices.current, choices.index()).name;
@@ -569,6 +574,10 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 						{canZMove && <label class={`megaevo${choices.current.z ? ' cur' : ''}`}>
 							<input type="checkbox" name="z" checked={choices.current.z} onChange={this.toggleBoostedMove} /> {}
 							Z-Power
+						</label>}
+						{canFormChange && <label class={`megaevo${choices.current.formchange ? ' cur' : ''}`}>
+							<input type="checkbox" name="formchange" checked={choices.current.formchange} onChange={this.toggleBoostedMove} /> {}
+							Form Change
 						</label>}
 					</div>
 				</div>

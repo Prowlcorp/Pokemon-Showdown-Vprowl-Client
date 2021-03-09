@@ -73,6 +73,7 @@ interface BattleMoveChoice {
 	move: number;
 	targetLoc: number;
 	mega: boolean;
+	formchange: boolean;
 	ultra: boolean;
 	z: boolean;
 }
