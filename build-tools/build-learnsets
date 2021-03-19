@@ -18,7 +18,7 @@ const thisFile = __filename;
 const thisDir = __dirname;
 const rootDir = path.resolve(thisDir, '..');
 
-const Dex = require('../data/pokemon-showdown-vprowl/.sim-dist/dex').Dex;
+const Dex = require('../data/Pokemon-Showdown-VProwl/.sim-dist/dex').Dex;
 const toID = Dex.toID;
 
 function updateLearnsets(callback) {
