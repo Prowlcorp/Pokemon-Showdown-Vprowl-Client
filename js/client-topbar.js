@@ -764,7 +764,7 @@
 			buf += '</div><div style="clear:left"></div>';
 			buf += '<p><strong>Official</strong></p>';
 			buf += '<div class="bglist">';
-//PROWL change?
+
 			buf += '<button name="setBg" value="charizards"' + (cur === 'charizards' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 0) + 'px"></span>Charizards</button>';
 			buf += '<button name="setBg" value="horizon"' + (cur === 'horizon' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 1) + 'px"></span>Horizon</button>';
 			buf += '<button name="setBg" value="waterfall"' + (cur === 'waterfall' ? ' class="cur"' : '') + '><span class="bg" style="background-position:0 -' + (90 * 2) + 'px"></span>Waterfall</button>';
